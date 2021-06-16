@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="30dp"
+    android:layout_marginTop="20dp"
+    android:layout_marginEnd="20dp"
+    android:layout_marginBottom="30dp"
+    android:background="@drawable/scissors5"
+    app:cardBackgroundColor="#00FFFFFF"
+    app:cardCornerRadius="30dp"
+    tools:context=".ui.new_barbershop.NewBarbershopFragment">
+
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/scissors5"
+            android:orientation="vertical">
+
+
+            <View
+                android:layout_width="361dp"
+                android:layout_height="0dp"
+                android:background="#8F000000"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <EditText
+                android:id="@+id/newBarbershop_address"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/input_bg"
+                android:drawableLeft="@drawable/custom_location_icon"
+                android:drawablePadding="10dp"
+                android:ems="10"
+                android:hint="Address"
+                android:inputType="textPostalAddress"
+                android:paddingLeft="20dp"
+                android:paddingTop="13dp"
+                android:paddingRight="20dp"
+                android:paddingBottom="13dp"
+                android:textColor="#FFFFFF"
+                android:textColorHint="#B9FFFFFF"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/newBarbershop_name" />
+
+            <EditText
+                android:id="@+id/newBarbershop_phone"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/input_bg"
+                android:drawableLeft="@drawable/custom_phone_icon"
+                android:drawablePadding="10dp"
+                android:ems="10"
+                android:hint="Phone Number"
+                android:inputType="phone"
+                android:paddingLeft="20dp"
+                android:paddingTop="13dp"
+                android:paddingRight="20dp"
+                android:paddingBottom="13dp"
+                android:textColor="#FFFFFF"
+                android:textColorHint="#B9FFFFFF"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/newBarbershop_address" />
+
+            <EditText
+                android:id="@+id/newBarbershop_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/input_bg"
+                android:drawableLeft="@drawable/custom_person_icon"
+                android:drawablePadding="10dp"
+                android:ems="10"
+                android:hint="Barbershop Name"
+                android:inputType="text"
+                android:paddingLeft="20dp"
+                android:paddingTop="13dp"
+                android:paddingRight="20dp"
+                android:paddingBottom="13dp"
+                android:textColor="#FFFFFF"
+                android:textColorHint="#B9FFFFFF"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/newBarbershop_imgV" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/newBarbershop_save_btn"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="35dp"
+                android:background="@drawable/button"
+                android:text="ADD"
+                android:textColor="@color/white"
+                app:layout_constraintEnd_toEndOf="@+id/newBarbershop_address"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/newBarbershop_address"
+                app:layout_constraintTop_toBottomOf="@+id/textView14" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/newBarbershop_back_btn"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="28dp"
+                android:background="@drawable/button"
+                android:text="Back"
+                android:textColor="@color/white"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/newBarbershop_save_btn"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/newBarbershop_save_btn"
+                app:layout_constraintTop_toBottomOf="@+id/newBarbershop_save_btn" />
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/newBarbershop_imgV"
+                android:layout_width="374dp"
+                android:layout_height="209dp"
+                android:layout_marginTop="16dp"
+                android:src="@drawable/avatar"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageButton
+                android:id="@+id/newBarbershop_imageCameraBtn"
+                android:layout_width="41dp"
+                android:layout_height="35dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/camera_icon"
+                app:layout_constraintBottom_toBottomOf="@+id/newBarbershop_imgV"
+                app:layout_constraintEnd_toEndOf="@+id/newBarbershop_imgV" />
+
+            <ImageButton
+                android:id="@+id/newBarbershop_imageGalleryBtn"
+                android:layout_width="41dp"
+                android:layout_height="35dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/gallery_icon"
+                app:layout_constraintBottom_toBottomOf="@+id/newBarbershop_imgV"
+                app:layout_constraintEnd_toStartOf="@+id/newBarbershop_imageCameraBtn"
+                app:layout_constraintTop_toTopOf="@+id/newBarbershop_imageCameraBtn" />
+
+            <TextView
+                android:id="@+id/textView14"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:text="add here googleMap"
+                android:textColor="#FFFFFF"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/newBarbershop_phone" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+
+</androidx.cardview.widget.CardView>

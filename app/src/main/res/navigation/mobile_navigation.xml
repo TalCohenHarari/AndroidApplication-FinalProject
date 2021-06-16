@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/nav_login">
+
+    <fragment
+        android:id="@+id/nav_login"
+        android:name="com.example.finalproject.ui.login.LoginFragment"
+        android:label=" "
+        tools:layout="@layout/fragment_login">
+        <action
+            android:id="@+id/action_nav_login_to_barbershops_list_Fragment"
+            app:destination="@id/nav_barbershops_list_Fragment" />
+        <action
+            android:id="@+id/action_nav_login_to_nav_signUpFragment"
+            app:destination="@id/nav_signUpFragment" />
+        <action
+            android:id="@+id/action_nav_login_to_barbershopCalendarFragment"
+            app:destination="@id/nav_barbershopCalendarFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_signUpFragment"
+        android:name="com.example.finalproject.ui.signUp.SignUpFragment"
+        android:label="SignUp"
+        tools:layout="@layout/fragment_sign_up" >
+        <action
+            android:id="@+id/action_nav_signUpFragment_to_nav_barbershops_list_Fragment"
+            app:destination="@id/nav_barbershops_list_Fragment" />
+        <action
+            android:id="@+id/action_nav_signUpFragment_to_nav_newBarbershopFragment"
+            app:destination="@id/nav_newBarbershopFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_newBarbershopFragment"
+        android:name="com.example.finalproject.ui.new_barbershop.NewBarbershopFragment"
+        android:label="New Barbershop"
+        tools:layout="@layout/fragment_new_baebershop">
+        <argument
+            android:name="userName"
+            app:argType="string" />
+        <argument
+            android:name="email"
+            app:argType="string" />
+        <argument
+            android:name="phone"
+            app:argType="string" />
+        <argument
+            android:name="password"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_barbershops_list_Fragment"
+        android:name="com.example.finalproject.ui.baebershops_list.barbershops_list_Fragment"
+        android:label="All Baebershops"
+        tools:layout="@layout/fragment_barbershops_list_">
+        <action
+            android:id="@+id/action_barbershops_list_Fragment_to_barbershopDetailsFragment"
+            app:destination="@id/nav_barbershopDetailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_barbershopDetailsFragment"
+        android:name="com.example.finalproject.ui.barbershopDetails.BarbershopDetailsFragment"
+        android:label="Barbershop Details"
+        tools:layout="@layout/fragment_baebershop_details">
+        <argument
+            android:name="baebershopID"
+            app:argType="integer" />
+        <action
+            android:id="@+id/action_barbershopDetailsFragment_to_new_queue_Fragment"
+            app:destination="@id/nav_newQueue" />
+        <action
+            android:id="@+id/action_nav_barbershopDetailsFragment_to_editBarbershopFragment"
+            app:destination="@id/nav_editBarbershopFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_queues_list_Fragment"
+        android:name="com.example.finalproject.ui.queues_list.Queues_list_Fragment"
+        android:label="My Queues"
+        tools:layout="@layout/fragment_queues_list" >
+        <argument
+            android:name="fuulDate"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_newQueue"
+        android:name="com.example.finalproject.ui.new_queue.new_queue_Fragment"
+        android:label="New Queue"
+        tools:layout="@layout/fragment_new_queue_" >
+        <action
+            android:id="@+id/action_nav_newQueue_to_hoursListFragment"
+            app:destination="@id/nav_hoursListFragment" />
+        <argument
+            android:name="baebershopId"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_userDetailsFragment"
+        android:name="com.example.finalproject.ui.userDetails.UserDetailsFragment"
+        android:label="My Account"
+        tools:layout="@layout/fragment_user_details">
+        <action
+            android:id="@+id/action_nav_userDetailsFragment_to_editUserFragment"
+            app:destination="@id/nav_editUserFragment" />
+        <action
+            android:id="@+id/action_nav_userDetailsFragment_to_nav_barbershopDetailsFragment2"
+            app:destination="@id/nav_barbershopDetailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_hoursListFragment"
+        android:name="com.example.finalproject.ui.hours_list.HoursListFragment"
+        android:label="Choose an hour"
+        tools:layout="@layout/fragment_hours_list" >
+        <argument
+            android:name="date"
+            app:argType="string" />
+        <argument
+            android:name="barbershopId"
+            app:argType="string" />
+    </fragment>
+    <action android:id="@+id/action_global_nav_userDetailsFragment" app:destination="@id/nav_userDetailsFragment" />
+    <fragment
+        android:id="@+id/nav_editUserFragment"
+        android:name="com.example.finalproject.ui.edit_user.EditUserFragment"
+        android:label="Edit  Account"
+        tools:layout="@layout/fragment_edit_user">
+        <argument
+            android:name="userName"
+            app:argType="string" />
+        <argument
+            android:name="email"
+            app:argType="string" />
+        <argument
+            android:name="phone"
+            app:argType="string" />
+        <argument
+            android:name="password"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_barbershopCalendarFragment"
+        android:name="com.example.finalproject.ui.barbershop_Calendar.BarbershopCalendarFragment"
+        android:label="My Calendar"
+        tools:layout="@layout/fragment_barbershop_calendar" >
+        <action
+            android:id="@+id/action_nav_barbershopCalendarFragment_to_nav_queues_list_Fragment"
+            app:destination="@id/nav_queues_list_Fragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_editBarbershopFragment"
+        android:name="com.example.finalproject.ui.edit_Barbershop.EditBarbershopFragment"
+        android:label="Edit Barbershop"
+        tools:layout="@layout/fragment_edit_barbershop" />
+</navigation>

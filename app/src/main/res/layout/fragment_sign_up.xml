@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.signUp.SignUpFragment"
+    android:background="@drawable/scissors">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#8F000000"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/home_witheLine4"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="#59FFFFFF"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/home_login_txt2" />
+
+            <TextView
+                android:id="@+id/signUp_witheLine"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="#51FFFFFF"
+                app:layout_constraintBottom_toTopOf="@+id/home_login_txt2"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/signup_signup_btn"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:background="@drawable/button"
+                android:text="SIGN UP"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="@+id/signUp_password_txtE"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/signUp_password_txtE"
+                app:layout_constraintTop_toBottomOf="@+id/textView12" />
+
+            <EditText
+                android:id="@+id/signUp_password_txtE"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/input_bg"
+                android:drawableLeft="@drawable/custom_security_icon"
+                android:drawablePadding="10dp"
+                android:ems="10"
+                android:hint="Password"
+                android:inputType="textPassword"
+                android:paddingLeft="20dp"
+                android:paddingTop="13dp"
+                android:paddingRight="20dp"
+                android:paddingBottom="10dp"
+                android:textColor="@color/white"
+                android:textColorHint="#B9FFFFFF"
+                app:layout_constraintEnd_toEndOf="@+id/signUp_phone_txtE"
+                app:layout_constraintStart_toStartOf="@+id/signUp_phone_txtE"
+                app:layout_constraintTop_toBottomOf="@+id/signUp_phone_txtE" />
+
+            <EditText
+                android:id="@+id/signUp_phone_txtE"
+                android:layout_width="0dp"
+                android:layout_height="43dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/input_bg"
+                android:drawableLeft="@drawable/custom_phone_icon"
+                android:drawablePadding="10dp"
+                android:hint="Phone"
+                android:inputType="phone"
+                android:paddingLeft="20dp"
+                android:paddingTop="13dp"
+                android:paddingRight="20dp"
+                android:paddingBottom="10dp"
+                android:textColor="@color/white"
+                android:textColorHint="#B9FFFFFF"
+                app:layout_constraintEnd_toEndOf="@+id/signUp_email_txtE"
+                app:layout_constraintStart_toStartOf="@+id/signUp_email_txtE"
+                app:layout_constraintTop_toBottomOf="@+id/signUp_email_txtE" />
+
+
+            <EditText
+                android:id="@+id/signUp_userName_txtE"
+                android:layout_width="0dp"
+                android:layout_height="43dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/input_bg"
+                android:drawableLeft="@drawable/custom_person_icon"
+                android:drawablePadding="10dp"
+                android:hint="Username"
+                android:inputType="textPersonName"
+                android:paddingLeft="20dp"
+                android:paddingTop="13dp"
+                android:paddingRight="20dp"
+                android:paddingBottom="10dp"
+                android:textColor="@color/white"
+                android:textColorHint="#B9FFFFFF"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/signUp_userImage_imgV" />
+
+            <EditText
+                android:id="@+id/signUp_email_txtE"
+                android:layout_width="0dp"
+                android:layout_height="43dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/input_bg"
+                android:drawableLeft="@drawable/custom_email_icon"
+                android:drawablePadding="10dp"
+                android:hint="Email"
+                android:inputType="textWebEmailAddress"
+                android:paddingLeft="20dp"
+                android:paddingTop="13dp"
+                android:paddingRight="20dp"
+                android:paddingBottom="10dp"
+                android:textColor="@color/white"
+                android:textColorHint="#B9FFFFFF"
+                app:layout_constraintEnd_toEndOf="@+id/signUp_userName_txtE"
+                app:layout_constraintStart_toStartOf="@+id/signUp_userName_txtE"
+                app:layout_constraintTop_toBottomOf="@+id/signUp_userName_txtE" />
+
+            <TextView
+                android:id="@+id/home_login_txt2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:text="SIGN UP"
+                android:textColor="@color/white"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView2" />
+
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="298dp"
+                android:layout_height="52dp"
+                android:layout_marginTop="24dp"
+                android:text="Sign Up for the app and you can make appointments conveniently and easily with the click of a bottun"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/signUp_already_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="60dp"
+                android:text="Already Have an Account?"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:background="?attr/selectableItemBackground"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/signup_signup_btn"
+                app:layout_constraintStart_toStartOf="@+id/signup_signup_btn"
+                app:layout_constraintTop_toBottomOf="@+id/signup_signup_btn" />
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/signUp_userImage_imgV"
+                android:layout_width="110dp"
+                android:layout_height="87dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="10dp"
+                android:src="@drawable/avatar_4"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/home_witheLine4" />
+
+            <ImageView
+                android:id="@+id/signUp_gallery_imgV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="72dp"
+                android:src="@drawable/gallery_icon"
+                app:layout_constraintBottom_toBottomOf="@+id/signUp_userImage_imgV"
+                app:layout_constraintStart_toEndOf="@+id/signUp_userImage_imgV"
+                app:layout_constraintTop_toBottomOf="@+id/home_witheLine4" />
+
+            <ImageView
+                android:id="@+id/signUp_camera_imgV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:src="@drawable/camera_icon"
+                app:layout_constraintBottom_toBottomOf="@+id/signUp_gallery_imgV"
+                app:layout_constraintStart_toEndOf="@+id/signUp_gallery_imgV"
+                app:layout_constraintTop_toTopOf="@+id/signUp_gallery_imgV" />
+
+            <ImageButton
+                android:id="@+id/signUp_add_Barbershop_imgBtn"
+                android:layout_width="31dp"
+                android:layout_height="27dp"
+                android:layout_marginStart="16dp"
+                android:background="#00FFFFFF"
+                android:src="@drawable/add_icon"
+                app:layout_constraintBottom_toBottomOf="@+id/textView12"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/textView12" />
+
+            <TextView
+                android:id="@+id/textView12"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
+                android:text="Do you own a barbershop? Add it!"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                app:layout_constraintStart_toEndOf="@+id/signUp_add_Barbershop_imgBtn"
+                app:layout_constraintTop_toBottomOf="@+id/signUp_password_txtE" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>
