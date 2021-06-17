@@ -81,9 +81,12 @@ public class SignUpFragment extends Fragment {
         //Disable return toolBar Btn:
         if( MainActivity.actionBar!=null)
             MainActivity.actionBar.setDisplayHomeAsUpEnabled(false);
+
+        //The fragment viewModel:
         signUpViewModel  = new ViewModelProvider(this).
                 get(SignUpViewModel.class);
 
+        //Initialize the params:
         haveAccount = view.findViewById(R.id.signUp_already_tv);
         signUp = view.findViewById(R.id.signup_signup_btn);
         addBarbershop = view.findViewById(R.id.signUp_add_Barbershop_imgBtn);
@@ -95,7 +98,7 @@ public class SignUpFragment extends Fragment {
         imageGalleryImgV = view.findViewById(R.id.signUp_gallery_imgV);
         imageV = view.findViewById(R.id.signUp_userImage_imgV);
 
-
+        //Listeners:
         addBarbershop.setOnClickListener(v->openDialog());
         imageCameraImgV.setOnClickListener(v->takePicture("user"));
         imageGalleryImgV.setOnClickListener(v->takePictureFromGallery("user"));

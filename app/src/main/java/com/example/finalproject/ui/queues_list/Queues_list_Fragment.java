@@ -15,12 +15,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.finalproject.MyApplication;
 import com.example.finalproject.R;
+import com.example.finalproject.model.Barbershop;
 import com.example.finalproject.model.Model;
 import com.example.finalproject.model.Queue;
 import com.example.finalproject.model.User;
@@ -28,6 +30,7 @@ import com.example.finalproject.ui.login.LoginFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
+import java.util.Random;
 
 
 public class Queues_list_Fragment extends Fragment {
@@ -39,7 +42,7 @@ public class Queues_list_Fragment extends Fragment {
     Button cancelDialogBtn;
     Button deleteDialogBtn;
     View view;
-    FloatingActionButton fab;
+    FloatingActionButton plusBtn;
     String date;
 
     @Override
@@ -110,8 +113,53 @@ public class Queues_list_Fragment extends Fragment {
             }
         });
 
+        plusBtn.setOnClickListener(v->{
+            if(!(Model.instance.getUser().isBarbershop()))
+                Navigation.findNavController(v).navigate(R.id.barberShopsList__RecyclerView);
+            else
+                openNewQueueDialog();
+        });
+
+
 
         return view;
+    }
+
+    private void openNewQueueDialog() {
+        dialog = new Dialog(getContext());
+        dialog.setContentView(R.layout.barbershop_add_queue_dialog);
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+            dialog.getWindow().setBackgroundDrawable(getActivity().getDrawable(R.drawable.popup_dialog_background));
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.setCancelable(true);
+        dialog.getWindow().getAttributes().windowAnimations = R.style.popup_dialog_animation;
+        dialog.show();
+
+        EditText time = dialog.findViewById(R.id.barbershop_add_queue_time);
+        Button addBtn = dialog.findViewById(R.id.barbershop_add_queue_add_btn);
+        Button backBtn = dialog.findViewById(R.id.barbershop_add_queue_back_btn);
+
+        addBtn.setOnClickListener(v-> {
+
+            if(!(time.getText().toString().equals(""))) {
+                Queue queue = new Queue();
+                queue.setBarbershopName(Model.instance.getUser().getName());
+                queue.setUserId("");
+                queue.setBarbershopId(Model.instance.getUser().getId());
+                queue.setQueueAvailable(true);
+                Barbershop barbershop = null;
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                    barbershop = (Barbershop) Model.instance.getAllBarbershops().getValue().stream().filter(b -> b.getOwner().equals(Model.instance.getUser().getId()));
+                }
+                queue.setBarbershopName(barbershop.getName());
+                queue.setQueueAddress(barbershop.getAddress());
+                queue.setQueueDate(date);
+                queue.setQueueTime(time.getText().toString());
+                queue.setId("newAddedQueue_" + Math.random() + barbershop.getOwner());
+            }
+        });
+
+        backBtn.setOnClickListener(v->dialog.dismiss());
     }
 
     private void openDialog(int position) {
