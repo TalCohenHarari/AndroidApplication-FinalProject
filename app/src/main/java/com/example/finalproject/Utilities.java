@@ -67,4 +67,11 @@ public class Utilities {
             userName.setCompoundDrawablesWithIntrinsicBounds(R.drawable.custom_person_icon,0,0,0);
         }
     }
+    public static void userNameExist(EditText userName){
+        userName.setBackground(MyApplication.context.getResources().getDrawable(R.drawable.input_bg_validation));
+        userName.setCompoundDrawablesWithIntrinsicBounds(R.drawable.person_icon_validation, 0, 0, 0);
+        userName.setText("");
+        userName.setHint("This Username already exist");
+        userName.setHintTextColor(redTxtColor);
+    }
 }

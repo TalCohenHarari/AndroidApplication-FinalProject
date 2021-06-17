@@ -22,6 +22,7 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
 import com.example.finalproject.MainActivity;
@@ -31,6 +32,7 @@ import com.example.finalproject.model.Barbershop;
 import com.example.finalproject.model.Model;
 import com.example.finalproject.model.Queue;
 import com.example.finalproject.model.User;
+import com.example.finalproject.ui.queues_list.QueuesListViewModel;
 
 import java.io.IOException;
 import java.util.LinkedList;
@@ -47,7 +49,7 @@ public class SignUpFragment extends Fragment {
     ImageButton addBarbershop;
     ImageView imageCameraImgV;
     ImageView imageGalleryImgV;
-
+    SignUpViewModel signUpViewModel;
     //User params:
     User newUser;
     EditText password;
@@ -76,6 +78,12 @@ public class SignUpFragment extends Fragment {
         // Inflate the layout for this fragment
        view = inflater.inflate(R.layout.fragment_sign_up, container, false);
 
+        //Disable return toolBar Btn:
+        if( MainActivity.actionBar!=null)
+            MainActivity.actionBar.setDisplayHomeAsUpEnabled(false);
+        signUpViewModel  = new ViewModelProvider(this).
+                get(SignUpViewModel.class);
+
         haveAccount = view.findViewById(R.id.signUp_already_tv);
         signUp = view.findViewById(R.id.signup_signup_btn);
         addBarbershop = view.findViewById(R.id.signUp_add_Barbershop_imgBtn);
@@ -100,13 +108,14 @@ public class SignUpFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                if(password.getText().toString().length()>=6 &&
+                if(signUpViewModel.isUserNameExist(userName.getText().toString()))
+                    Utilities.userNameExist(userName);
+                else if(password.getText().toString().length()>=6 &&
                         !(userName.getText().toString().isEmpty()) &&
-                        !(userName.getText().toString().matches(".*\\s.*")))
-                {
-                    dialog.show();
-                    signUp.setEnabled(false);
-                    save();
+                        !(userName.getText().toString().matches(".*\\s.*"))){
+                        dialog.show();
+                        signUp.setEnabled(false);
+                        save();
                 }
                 else
                     Utilities.validationOn(password,userName);
