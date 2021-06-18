@@ -20,7 +20,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/scissors2"
+            android:background="@drawable/time_image_clock"
             android:orientation="vertical">
 
 
@@ -44,12 +44,13 @@
                 android:background="@drawable/input_bg"
                 android:drawablePadding="10dp"
                 android:ems="10"
-                android:hint="Time         HH:MM -- HH:MM"
+                android:hint="HH:MM -- HH:MM"
                 android:inputType="textPostalAddress"
                 android:paddingLeft="20dp"
                 android:paddingTop="13dp"
                 android:paddingRight="20dp"
                 android:paddingBottom="13dp"
+                android:textAlignment="center"
                 android:textColor="#FFFFFF"
                 android:textColorHint="#B9FFFFFF"
                 android:textSize="18sp"

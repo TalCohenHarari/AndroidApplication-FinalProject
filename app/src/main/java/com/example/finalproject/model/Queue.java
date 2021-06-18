@@ -38,6 +38,21 @@ public class Queue implements JsonQueueModel{
     final static String IS_QUEUE_AVAILABLE = "isQueueAvailable";
     final static String IS_DELETED = "isDeleted";
 
+    public Queue(){}
+
+    public Queue( String id, String userId, String barbershopId, String barbershopName, String queueDate,
+                  String queueTime, String queueAddress, boolean isQueueAvailable, boolean isDeleted){
+        this.id=id;
+        this.userId=userId;
+        this.barbershopId=barbershopId;
+        this.barbershopName=barbershopName;
+        this.queueDate=queueDate;
+        this.queueTime=queueTime;
+        this.queueAddress=queueAddress;
+        this.isQueueAvailable=isQueueAvailable;
+        this.isDeleted=isDeleted;
+    }
+
 
     public void setId(String id) {
         this.id = id;

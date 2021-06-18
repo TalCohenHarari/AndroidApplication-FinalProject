@@ -78,7 +78,7 @@ public class HoursListFragment extends Fragment {
                 Queue queue = hoursListViewModel.list.get(position);
                 if(queue.isQueueAvailable) {
                     queue.setQueueAvailable(false);
-                    queue.userId= Model.instance.getUser().id;
+                    queue.userId= Model.instance.getUser().getId();
                     Model.instance.saveQueue(queue,()->{
                         Navigation.findNavController(view).navigate(R.id.nav_queues_list_Fragment);
                     });
