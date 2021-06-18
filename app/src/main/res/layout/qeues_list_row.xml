@@ -60,7 +60,7 @@
                 android:fontFamily="sans-serif"
                 android:textSize="18sp"
                 app:layout_constraintBottom_toBottomOf="@+id/queuesListrow_Name_textView"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/queuesListrow_delete_imgBtn"
                 app:layout_constraintStart_toEndOf="@+id/queuesListrow_Name_textView"
                 app:layout_constraintTop_toTopOf="@+id/queuesListrow_Name_textView" />
 
@@ -150,11 +150,22 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
-                android:text="DELETE"
+                android:text="CANCLE"
                 app:background="@drawable/button"
                 app:backgroundTint="#86FF0000"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/queuesListrow_isAvilable_tv" />
+
+            <ImageButton
+                android:id="@+id/queuesListrow_delete_imgBtn"
+                android:layout_width="27dp"
+                android:layout_height="29dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:background="#00FFFFFF"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@android:drawable/ic_delete" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 

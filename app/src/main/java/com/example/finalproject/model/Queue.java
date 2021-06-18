@@ -24,6 +24,8 @@ public class Queue implements JsonQueueModel{
     public String queueTime;
     public String queueAddress;
     public boolean isQueueAvailable;
+    public boolean isDeleted;
+
 
 
     final static String ID = "id";
@@ -34,6 +36,7 @@ public class Queue implements JsonQueueModel{
     final static String QUEUE_TIME = "queueTime";
     final static String QUEUE_ADDRESS = "queueAddress";
     final static String IS_QUEUE_AVAILABLE = "isQueueAvailable";
+    final static String IS_DELETED = "isDeleted";
 
 
     public void setId(String id) {
@@ -68,8 +71,9 @@ public class Queue implements JsonQueueModel{
         isQueueAvailable = queueAvailable;
     }
 
-
-
+    public void setDeleted(boolean deleted) {
+        isDeleted = deleted;
+    }
 
     public String getId() {
         return id;
@@ -103,6 +107,10 @@ public class Queue implements JsonQueueModel{
         return isQueueAvailable;
     }
 
+    public boolean isDeleted() {
+        return isDeleted;
+    }
+
     public Map<String,Object> toJson(){
         Map<String, Object> json = new HashMap<>();
         json.put(ID, id);
@@ -113,6 +121,7 @@ public class Queue implements JsonQueueModel{
         json.put(QUEUE_TIME, queueTime);
         json.put(QUEUE_ADDRESS, queueAddress);
         json.put(IS_QUEUE_AVAILABLE, isQueueAvailable);
+        json.put(IS_DELETED, isDeleted);
         return json;
     }
 
@@ -126,6 +135,7 @@ public class Queue implements JsonQueueModel{
         userQueue.queueTime = (String)json.get(QUEUE_TIME);
         userQueue.queueAddress = (String)json.get(QUEUE_ADDRESS);
         userQueue.isQueueAvailable = (boolean) json.get(IS_QUEUE_AVAILABLE);
+        userQueue.isDeleted = (boolean) json.get(IS_DELETED);
         return userQueue;
     }
 }

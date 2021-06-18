@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -39,7 +40,7 @@ public class Queues_list_Fragment extends Fragment {
     public QueuesListViewModel queuesListViewModel;
     MyAdapter adapter;
     Dialog dialog;
-    Button cancelDialogBtn;
+    Button backDialogBtn;
     Button deleteDialogBtn;
     View view;
     FloatingActionButton plusBtn;
@@ -66,7 +67,7 @@ public class Queues_list_Fragment extends Fragment {
 
         // Inflate the layout for this fragment
        view = inflater.inflate(R.layout.fragment_queues_list, container, false);
-
+        plusBtn = view.findViewById(R.id.myQueues_add_btn);
 
 
         RecyclerView queueList = view.findViewById(R.id.myQueues_RecyclerView);
@@ -94,6 +95,15 @@ public class Queues_list_Fragment extends Fragment {
                 if(!queue.isQueueAvailable)
                     openDialog(position);
             }
+
+            @Override
+            public void onDeleteClick(int position) {
+                Queue queue = queuesListViewModel.list.get(position);
+                queue.setDeleted(true);
+                queue.setQueueAvailable(false);
+                queue.setUserId("");
+                Model.instance.saveQueue(queue,()->adapter.notifyItemRemoved(position));
+            }
         });
 
 
@@ -115,7 +125,7 @@ public class Queues_list_Fragment extends Fragment {
 
         plusBtn.setOnClickListener(v->{
             if(!(Model.instance.getUser().isBarbershop()))
-                Navigation.findNavController(v).navigate(R.id.barberShopsList__RecyclerView);
+                Navigation.findNavController(v).navigate(R.id.nav_barbershops_list_Fragment);
             else
                 openNewQueueDialog();
         });
@@ -141,22 +151,26 @@ public class Queues_list_Fragment extends Fragment {
 
         addBtn.setOnClickListener(v-> {
 
-            if(!(time.getText().toString().equals(""))) {
-                Queue queue = new Queue();
-                queue.setBarbershopName(Model.instance.getUser().getName());
-                queue.setUserId("");
-                queue.setBarbershopId(Model.instance.getUser().getId());
-                queue.setQueueAvailable(true);
-                Barbershop barbershop = null;
-                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-                    barbershop = (Barbershop) Model.instance.getAllBarbershops().getValue().stream().filter(b -> b.getOwner().equals(Model.instance.getUser().getId()));
-                }
-                queue.setBarbershopName(barbershop.getName());
-                queue.setQueueAddress(barbershop.getAddress());
-                queue.setQueueDate(date);
-                queue.setQueueTime(time.getText().toString());
-                queue.setId("newAddedQueue_" + Math.random() + barbershop.getOwner());
-            }
+                    Barbershop barbershop=null;
+                    if(!(time.getText().toString().equals(""))){
+
+                            for (Barbershop b: queuesListViewModel.getBarbershop())
+                                if(b.getOwner().equals(Model.instance.getUser().getId())) {
+                                    barbershop = b;
+                                    break;
+                                }
+                    Queue queue = new Queue();
+                    queue.setUserId("");
+                    queue.setBarbershopId(Model.instance.getUser().getId());
+                    queue.setQueueAvailable(true);
+                    queue.setBarbershopName(barbershop.getName());
+                    queue.setQueueAddress(barbershop.getAddress());
+                    queue.setQueueDate(date);
+                    queue.setQueueTime(time.getText().toString());
+                    queue.setId(Math.random() + "_" + barbershop.getOwner());
+                    Model.instance.saveQueue(queue,()->dialog.dismiss());
+                    }
+
         });
 
         backBtn.setOnClickListener(v->dialog.dismiss());
@@ -174,9 +188,9 @@ public class Queues_list_Fragment extends Fragment {
 
 
         deleteDialogBtn = dialog.findViewById(R.id.popup_dialod_delete_btn);
-        cancelDialogBtn = dialog.findViewById(R.id.popup_dialod_cancel_btn);
+        backDialogBtn = dialog.findViewById(R.id.popup_dialod_cancel_btn);
 
-        cancelDialogBtn.setOnClickListener(new View.OnClickListener() {
+        backDialogBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(getContext(), "Canceled", Toast.LENGTH_SHORT).show();
@@ -214,6 +228,8 @@ public class Queues_list_Fragment extends Fragment {
         Button cancelBtn;
         TextView isAvailable;
         TextView titleName;
+        ImageButton deleteBtn;
+
         public MyViewHolder(@NonNull View itemView, OnItemClickListener listener) {
             super(itemView);
             nameTv = itemView.findViewById(R.id.queuesListrow_barbershopName_textView);
@@ -223,6 +239,7 @@ public class Queues_list_Fragment extends Fragment {
             addressTv = itemView.findViewById(R.id.queuesListrow_queueAddress_textView);
             cancelBtn = itemView.findViewById(R.id.queuesListrow_cancel_btn);
             isAvailable = itemView.findViewById(R.id.queuesListrow_isAvilable_tv);
+            deleteBtn = itemView.findViewById(R.id.queuesListrow_delete_imgBtn);
             //After we created the listener we connect it to this row:
             this.listener=listener;
             itemView.setOnClickListener(new View.OnClickListener() {
@@ -247,11 +264,24 @@ public class Queues_list_Fragment extends Fragment {
                     }
                 }
             });
+            deleteBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(listener!=null){
+                        int position=getAdapterPosition();
+                        if(position!=RecyclerView.NO_POSITION){
+                            listener.onDeleteClick(position);
+                        }
+                    }
+                }
+            });
         }
         public void bind(Queue queue) {
             if (!(Model.instance.getUser().isBarbershop())){
                 titleName.setText("Barbershop:");
                 nameTv.setText(queue.getBarbershopName());
+                deleteBtn.setVisibility(View.INVISIBLE);
+
             }
             else {
                 List<User> userList = Model.instance.getAllUsers().getValue();
@@ -263,7 +293,7 @@ public class Queues_list_Fragment extends Fragment {
             dateTv.setText(queue.getQueueDate());
             timeTv.setText(queue.getQueueTime());
             addressTv.setText(queue.getQueueAddress());
-            if(Model.instance.getUser().isBarbershop && !queue.isQueueAvailable)
+            if(Model.instance.getUser().isBarbershop() && !queue.isQueueAvailable())
                 isAvailable.setText("This queue is busy");
             else
                 isAvailable.setText("");
@@ -273,6 +303,7 @@ public class Queues_list_Fragment extends Fragment {
     public interface OnItemClickListener{
         void onClick(int position);
         void onCancelClick(int position);
+        void onDeleteClick(int position);
     }
 
     class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {

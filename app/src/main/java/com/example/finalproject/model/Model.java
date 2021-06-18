@@ -18,29 +18,31 @@ public class Model {
     ExecutorService executorService = Executors.newSingleThreadExecutor();
     User user;
 
-    public User getUser(){
+    public User getUser() {
         return user;
     }
 
-    public void setUser(User user){
-        this.user=user;
+    public void setUser(User user) {
+        this.user = user;
     }
 
-    public enum LoadingState{
+    public enum LoadingState {
         loaded,
         loading,
         error
     }
+
     public MutableLiveData<LoadingState> loadingState =
             new MutableLiveData<LoadingState>(LoadingState.loaded);
 
-    private Model(){ }
+    private Model() {
+    }
 
-    public interface GetDataListener{
+    public interface GetDataListener {
         void onComplete(List<Object> data);
     }
 
-    public interface OnCompleteListener{
+    public interface OnCompleteListener {
         void onComplete();
     }
     //---------------------------------------users---------------------------------------
@@ -50,36 +52,33 @@ public class Model {
 
     public LiveData<List<User>> getAllUsers() {
         loadingState.setValue(LoadingState.loading);
-        ModelFirebase.getAllUsers((users)->{
+        ModelFirebase.getAllUsers((users) -> {
             allUsers.setValue(users);
             loadingState.setValue(LoadingState.loaded);
         });
         return allUsers;
     }
 
-    public void saveUser(User user,String action, OnCompleteListener listener) {
+    public void saveUser(User user, String action, OnCompleteListener listener) {
         loadingState.setValue(LoadingState.loading);
-        ModelFirebase.saveUser(user,action,()->{
+        ModelFirebase.saveUser(user, action, () -> {
             listener.onComplete();
         });
         getAllUsers();//TODO: we need it?
     }
 
-    public void login(String username,String password,OnCompleteListener listener)
-    {
-        ModelFirebase.login(username,password,()->listener.onComplete());
+    public void login(String username, String password, OnCompleteListener listener) {
+        ModelFirebase.login(username, password, () -> listener.onComplete());
     }
 
 
-    public static void isLoggedIn(OnCompleteListener listener){
-        ModelFirebase.isLoggedIn(()-> listener.onComplete());
+    public static void isLoggedIn(OnCompleteListener listener) {
+        ModelFirebase.isLoggedIn(() -> listener.onComplete());
     }
 
-    public static void signOut(){
+    public static void signOut() {
         ModelFirebase.signOut();
     }
-
-
 
 
     //------------------------------------Queues---------------------------------
@@ -89,7 +88,7 @@ public class Model {
 
     public LiveData<List<Queue>> getAllQueues() {
         loadingState.setValue(LoadingState.loading);
-        ModelFirebase.getAllQueues((queues)->{
+        ModelFirebase.getAllQueues((queues) -> {
             allQueues.setValue(queues);
             loadingState.setValue(LoadingState.loaded);
         });
@@ -98,15 +97,16 @@ public class Model {
 
     public void saveQueue(Queue queue, OnCompleteListener listener) {
         loadingState.setValue(LoadingState.loading);
-        ModelFirebase.saveQueue(queue,()->{
+        ModelFirebase.saveQueue(queue, () -> {
             listener.onComplete();
         });
         getAllQueues();
     }
-    public void createCalendar(List<Queue> queues) {
+
+    public void createCalendar(List<Queue> queues, OnCompleteListener listener) {
         loadingState.setValue(LoadingState.loading);
         for (int i = 0; i < queues.size(); i++) {
-            ModelFirebase.createCalendar(queues.get(i));
+            ModelFirebase.saveQueue(queues.get(i),()->listener.onComplete());
         }
         getAllQueues();
     }

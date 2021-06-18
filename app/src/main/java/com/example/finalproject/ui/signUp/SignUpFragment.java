@@ -292,7 +292,7 @@ public class SignUpFragment extends Fragment {
                 queuesList.add(queue);
             }
         }
-        Model.instance.createCalendar(queuesList);
+        Model.instance.createCalendar(queuesList,()->{});
 
         dialog.dismiss();
         MainActivity.navigationView.getMenu().getItem(0).getSubMenu().getItem(1).setVisible(false);

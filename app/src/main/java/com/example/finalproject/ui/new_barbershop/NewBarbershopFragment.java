@@ -182,7 +182,7 @@ public class NewBarbershopFragment extends Fragment {
                 queuesList.add(queue);
             }
         }
-        Model.instance.createCalendar(queuesList);
+        Model.instance.createCalendar(queuesList,()->{});
         dialog.dismiss();
         Navigation.findNavController(view).navigate(R.id.nav_barbershopCalendarFragment);
 

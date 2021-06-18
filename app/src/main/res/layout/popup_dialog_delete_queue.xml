@@ -65,7 +65,7 @@
                 android:layout_marginEnd="4dp"
                 android:layout_marginBottom="32dp"
                 android:background="@drawable/button"
-                android:text="Cancel"
+                android:text="BACK"
                 android:textSize="18sp"
                 app:backgroundTint="#8C8C8C"
                 app:layout_constraintBottom_toBottomOf="parent"

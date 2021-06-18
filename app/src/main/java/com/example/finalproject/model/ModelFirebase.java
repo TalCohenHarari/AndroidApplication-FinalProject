@@ -35,8 +35,6 @@ public class ModelFirebase {
     private ModelFirebase() {
     }
 
-
-
     //-----------------------------------users--------------------------------------
     public interface GetAllUsersListener {
         public void onComplete(List<User> users);
@@ -195,17 +193,6 @@ public class ModelFirebase {
             public void onFailure(@NonNull Exception e) {
                 listener.onComplete();
             }
-        });
-    }
-    public static void createCalendar(Queue queue) {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection(queueCollection).document(queue.id).set(queue.toJson())
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {}
-                }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {}
         });
     }
 

@@ -26,9 +26,10 @@ public class hoursListViewModel extends ViewModel {
     {
         list = new LinkedList<>();
         for (Queue queue:   queuesList.getValue()) {
-                if (queue.barbershopId.equals(barbershopId) &&
-                        queue.queueDate.equals(fullDate))
-                    list.add(queue);
+                if (queue.getBarbershopId().equals(barbershopId)
+                        && queue.queueDate.equals(fullDate)
+                        && !(queue.isDeleted()))
+                         list.add(queue);
             }
 
         return list;
