@@ -57,12 +57,10 @@ public class Model {
     ModelFirebase.getAllUsers(localLastUpdate,(users)->{
         executorService.execute(()->
         {
-            Log.d("TAG",users.size()+"");
             Long lastUpdate = new Long(0);
             //update the local DB with the new records
             for (User user: users)
             {
-                Log.d("TAG",user.getName()+"");
 
                 if(!(user.isAvailable()))
                 {
@@ -123,13 +121,11 @@ public class Model {
         ModelFirebase.getAllQueues(localLastUpdate,(queues)->{
             executorService.execute(()->
             {
-                Log.d("TAG3",queues.size()+"");
 
                 Long lastUpdate = new Long(0);
                 //update the local DB with the new records
                 for (Queue queue : queues)
                 {
-                    Log.d("TAG3",queue.getBarbershopName()+"");
 
                     if(queue.isDeleted())
                     {
@@ -183,10 +179,9 @@ public class Model {
         //read the local last update time
         Long localLastUpdate = Barbershop.getLocalLastUpdateTime();
         //ge all updates from firebase
-        ModelFirebase.getAllBarbershops(localLastUpdate,(barbershops)->
-            executorService.execute(()->
-            {
-                Log.d("TAG2", barbershops.size() + "");
+        ModelFirebase.getAllBarbershops(localLastUpdate,(barbershops)->{
+                executorService.execute(()->
+                {
 
                 Long lastUpdate = new Long(0);
                 //update the local DB with the new records
@@ -194,7 +189,6 @@ public class Model {
                     if (barbershop.isDeleted()) {
                         AppLocalDB.db.BarbershopDao().delete(barbershop);
                     } else {
-                        Log.d("TAG2", barbershop.getName() + "  was insert to local DB");
                         AppLocalDB.db.BarbershopDao().insertAll(barbershop);
                     }
                     //update the local last update time
@@ -208,7 +202,8 @@ public class Model {
                 //read all the data from the local DB -> return the data to the caller
                 //automatically perform by room -> live data gets updated
 
-            }));
+            });
+        });
 
         return allBarbershops;
     }

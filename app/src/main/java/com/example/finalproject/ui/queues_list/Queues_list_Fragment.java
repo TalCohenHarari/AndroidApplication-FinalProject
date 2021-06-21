@@ -54,6 +54,7 @@ public class Queues_list_Fragment extends Fragment {
         //If it's barbershop get the data from his calendar:
         if(Model.instance.getUser().isBarbershop())
             date = Queues_list_FragmentArgs.fromBundle(getArguments()).getFuulDate();
+
         //ViewModel
         queuesListViewModel  = new ViewModelProvider(this).
                 get(QueuesListViewModel.class);
@@ -65,20 +66,26 @@ public class Queues_list_Fragment extends Fragment {
                         queuesListViewModel.getFilterForUser(Model.instance.getUser().getId());
                     adapter.notifyDataSetChanged();
                 });
+        queuesListViewModel.getBarbershopsList().observe(getViewLifecycleOwner(),
+                (data)->{});
+        queuesListViewModel.getUsersList().observe(getViewLifecycleOwner(),
+                (data)->{});
 
-        // Inflate the layout for this fragment
+        //Initialize params
        view = inflater.inflate(R.layout.fragment_queues_list, container, false);
+        pb = view.findViewById(R.id.myQueues_progressBar);
+        pb.setVisibility(View.GONE);
         plusBtn = view.findViewById(R.id.myQueues_add_btn);
 
+        // RecyclerView
         RecyclerView queueList = view.findViewById(R.id.myQueues_RecyclerView);
         queueList.setHasFixedSize(true);
-        // LayoutManager:
         RecyclerView.LayoutManager manager = new LinearLayoutManager(MyApplication.context);
         queueList.setLayoutManager(manager);
-        //Connect the Adapter to the RecyclerView:
         adapter = new MyAdapter();
         queueList.setAdapter(adapter);
-        //Add the onItemClickListener:
+
+        // Listeners
         adapter.setOnClickListener(new OnItemClickListener()
         {
             @Override
@@ -86,7 +93,6 @@ public class Queues_list_Fragment extends Fragment {
 
             @Override
             public void onCancelClick(int position) {
-                //popup  dialog for if sure to cancel this queue:
                 Queue queue = queuesListViewModel.list.get(position);
                 if(!queue.isQueueAvailable())
                     openCancelDialog(position);
@@ -95,7 +101,6 @@ public class Queues_list_Fragment extends Fragment {
             @Override
             public void onDeleteClick(int position) {
                 Queue queue = queuesListViewModel.list.get(position);
-//                queuesListViewModel.list.remove(position);
                 queue.setDeleted(true);
                 queue.setQueueAvailable(false);
                 queue.setUserId("");
@@ -103,9 +108,13 @@ public class Queues_list_Fragment extends Fragment {
             }
         });
 
+        plusBtn.setOnClickListener(v->{
+            if(!(Model.instance.getUser().isBarbershop()))
+                Navigation.findNavController(v).navigate(R.id.nav_barbershops_list_Fragment);
+            else
+                openNewQueueDialog();
+        });
 
-        pb = view.findViewById(R.id.myQueues_progressBar);
-        pb.setVisibility(View.GONE);
         Model.instance.loadingState.observe(getViewLifecycleOwner(),(state)->{
             switch(state){
                 case loaded:
@@ -118,14 +127,6 @@ public class Queues_list_Fragment extends Fragment {
                     //TODO: display error message
             }
         });
-
-        plusBtn.setOnClickListener(v->{
-            if(!(Model.instance.getUser().isBarbershop()))
-                Navigation.findNavController(v).navigate(R.id.nav_barbershops_list_Fragment);
-            else
-                openNewQueueDialog();
-        });
-
 
 
         return view;
@@ -152,9 +153,10 @@ public class Queues_list_Fragment extends Fragment {
 
     private void addQueue(EditText time){
         Barbershop barbershop=null;
-        if(!(time.getText().toString().equals("")) && queuesListViewModel.getBarbershop()!=null){
+        List<Barbershop> tempList = queuesListViewModel.getBarbershopsList().getValue();
+        if(!(time.getText().toString().equals("")) && tempList!=null){
 
-            for (Barbershop b: queuesListViewModel.getBarbershop())
+            for (Barbershop b: tempList)
             {
                 if(b.getOwner().equals(Model.instance.getUser().getId()))
                 {

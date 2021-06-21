@@ -1,5 +1,7 @@
 package com.example.finalproject.ui.queues_list;
 
+import android.util.Log;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -21,7 +23,7 @@ public class QueuesListViewModel extends ViewModel {
 
     public QueuesListViewModel() {
         queuesList = Model.instance.getAllQueues();
-        barbershopsList =Model.instance.getAllBarbershops();
+        barbershopsList = Model.instance.getAllBarbershops();
         usersList = Model.instance.getAllUsers();
         list = new LinkedList<>();
     }
@@ -49,18 +51,20 @@ public class QueuesListViewModel extends ViewModel {
         return list;
     }
 
-    public List<Barbershop> getBarbershop() {
-        return barbershopsList.getValue();
+    public LiveData<List<Barbershop>> getBarbershopsList() {
+        return barbershopsList;
+    }
+
+    public LiveData<List<User>> getUsersList() {
+        return usersList;
     }
 
     public String getUserName(String userId) {
 
         if(usersList.getValue()!=null)
-        {
             for (User user : usersList.getValue())
                 if (user.getId().equals(userId))
                     return user.getName();
-        }
 
         return "";
     }
