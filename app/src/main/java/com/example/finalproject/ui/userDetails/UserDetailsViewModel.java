@@ -19,10 +19,12 @@ public class UserDetailsViewModel extends ViewModel {
     public Integer geFilterByPosition(String userId){
 
         List<Barbershop> barbershops =  barbershopsList.getValue();
-        for (int i=0 ; i<barbershops.size();i++) {
-            if(barbershops.get(i).owner.equals(userId))
-            {
-                return i;
+
+        if(barbershops!=null) {
+            for (int i = 0; i < barbershops.size(); i++) {
+                if (barbershops.get(i).owner.equals(userId)) {
+                    return i;
+                }
             }
         }
         return 0;

@@ -25,10 +25,11 @@ public class SignUpViewModel extends ViewModel {
 
     public boolean isUserNameExist(String userName) {
 
-        for (User user:usersList.getValue() )
-            if (user.getName().equals(userName))
-                return true;
-
+        if(usersList.getValue()!=null) {
+            for (User user : usersList.getValue())
+                if (user.getName().equals(userName))
+                    return true;
+        }
         return false;
     }
 }

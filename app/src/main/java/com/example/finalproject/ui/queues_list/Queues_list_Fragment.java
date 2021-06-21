@@ -60,9 +60,9 @@ public class Queues_list_Fragment extends Fragment {
         queuesListViewModel.getData().observe(getViewLifecycleOwner(),
                 (data)->{
                     if(Model.instance.getUser().isBarbershop())
-                        queuesListViewModel.getFilterDataWithDate(date);
+                        queuesListViewModel.getFilterForBarbershop(date);
                     else
-                        queuesListViewModel.getFilterData(Model.instance.getUser().getId());
+                        queuesListViewModel.getFilterForUser(Model.instance.getUser().getId());
                     adapter.notifyDataSetChanged();
                 });
 
@@ -152,7 +152,7 @@ public class Queues_list_Fragment extends Fragment {
 
     private void addQueue(EditText time){
         Barbershop barbershop=null;
-        if(!(time.getText().toString().equals(""))){
+        if(!(time.getText().toString().equals("")) && queuesListViewModel.getBarbershop()!=null){
 
             for (Barbershop b: queuesListViewModel.getBarbershop())
             {

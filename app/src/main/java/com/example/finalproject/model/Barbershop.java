@@ -1,18 +1,23 @@
 package com.example.finalproject.model;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
+
+import com.example.finalproject.MyApplication;
+import com.google.firebase.Timestamp;
+import com.google.firebase.firestore.FieldValue;
+
 import java.util.HashMap;
 import java.util.Map;
 
 
-interface JsonBarbershopModel{
-    Map<String,Object> toJson();
-}
 
 @Entity
-public class Barbershop implements JsonBarbershopModel{
+public class Barbershop{
     @PrimaryKey
     @NonNull
     public String owner;
@@ -20,14 +25,16 @@ public class Barbershop implements JsonBarbershopModel{
     public String address;
     public String phone;
     public String avatar;
-    public boolean isAvailable;
+    public Long lastUpdated;
+    public boolean isDeleted;
 
     final static String OWNER = "owner";
     final static String NAME = "name";
     final static String ADDRESS = "address";
     final static String PHONE = "phone";
     final static String AVATAR = "avatar";
-    final static String IS_AVAILABLE = "isAvailable";
+    final static String LAST_UPDATED = "lastUpdated";
+    final static String IS_DELETED = "isDeleted";
 
     //Setters:
     public void setOwner(String owner) {
@@ -50,8 +57,12 @@ public class Barbershop implements JsonBarbershopModel{
         this.avatar = avatar;
     }
 
-    public void setAvailable(boolean available) {
-        isAvailable = available;
+    public void setLastUpdated(Long lastUpdated) {
+        this.lastUpdated = lastUpdated;
+    }
+
+    public void setDeleted(boolean isDeleted) {
+        this.isDeleted = isDeleted;
     }
 
 
@@ -76,8 +87,12 @@ public class Barbershop implements JsonBarbershopModel{
         return avatar;
     }
 
-    public boolean isAvailable() {
-        return isAvailable;
+    public Long getLastUpdated() {
+        return lastUpdated;
+    }
+
+    public boolean isDeleted() {
+        return isDeleted;
     }
 
     public Map<String,Object> toJson(){
@@ -87,7 +102,8 @@ public class Barbershop implements JsonBarbershopModel{
         json.put(ADDRESS, address);
         json.put(PHONE, phone);
         json.put(AVATAR, avatar);
-        json.put(IS_AVAILABLE, isAvailable);
+        json.put(LAST_UPDATED, FieldValue.serverTimestamp());
+        json.put(IS_DELETED, isDeleted);
 
         return json;
     }
@@ -99,8 +115,28 @@ public class Barbershop implements JsonBarbershopModel{
         barbershop.address = (String)json.get(ADDRESS);
         barbershop.phone = (String)json.get(PHONE);
         barbershop.avatar = (String)json.get(AVATAR);
-        barbershop.owner = (String)json.get(OWNER);
+        Timestamp ts = (Timestamp) json.get(LAST_UPDATED);
+        if(ts!=null)
+            barbershop.lastUpdated = new Long(ts.getSeconds());
+        else
+            barbershop.lastUpdated = new Long(0);
+
+        barbershop.isDeleted = (boolean)json.get(IS_DELETED);
 
         return barbershop;
+    }
+
+    private static final String BARBERSHOP_LAST_UPDATE = "BarbershopLastUpdate";
+
+    static public void setLocalLastUpdateTime(Long ts){
+        //Shared preference, saving the ts on the disk (like the db):
+        SharedPreferences.Editor editor = MyApplication.context.getSharedPreferences("TAG", Context.MODE_PRIVATE).edit();
+        editor.putLong(BARBERSHOP_LAST_UPDATE,ts);
+        editor.commit();
+    }
+    static public Long getLocalLastUpdateTime(){
+        //Shared preference, saving the ts in app:
+        return MyApplication.context.getSharedPreferences("TAG", Context.MODE_PRIVATE)
+                .getLong(BARBERSHOP_LAST_UPDATE,0);
     }
 }

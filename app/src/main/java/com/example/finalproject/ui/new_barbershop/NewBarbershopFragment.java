@@ -137,7 +137,7 @@ public class NewBarbershopFragment extends Fragment {
         barbershop.setOwner(user.getId());
         barbershop.setName(nameEt.getText().toString());
         barbershop.setAddress(addressEt.getText().toString());
-        barbershop.setAvailable(true);
+        barbershop.setDeleted(false);
         barbershop.setPhone(phoneEt.getText().toString());
 
         Model.instance.saveBarbershop(barbershop, ()->{

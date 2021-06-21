@@ -23,34 +23,27 @@ public class QueuesListViewModel extends ViewModel {
         queuesList = Model.instance.getAllQueues();
         barbershopsList =Model.instance.getAllBarbershops();
         usersList = Model.instance.getAllUsers();
+        list = new LinkedList<>();
     }
 
     public LiveData<List<Queue>> getData() {
-        getFilterData(Model.instance.getUser().id);
         return queuesList;
     }
 
-    public List<Queue> getFilterData(String userId) {
+    public List<Queue> getFilterForUser(String userId) {
         list = new LinkedList<>();
-        for (Queue queue:   queuesList.getValue()) {
-            if(Model.instance.getUser().isBarbershop()) {
-                if (queue.getBarbershopId().equals(userId) && !queue.isDeleted())
-                    list.add(queue);
-            }
-            else {
+        if( queuesList.getValue()!=null)
+            for (Queue queue:   queuesList.getValue())
                 if (queue.getUserId().equals(userId))
-                    list.add(queue);
-            }
-        }
+                        list.add(queue);
         return list;
     }
 
-    public List<Queue> getFilterDataWithDate(String date) {
+    public List<Queue> getFilterForBarbershop(String date) {
         list = new LinkedList<>();
         for (Queue queue : queuesList.getValue()) {
             if(queue.getBarbershopId().equals(Model.instance.getUser().getId())
-                    && queue.getQueueDate().equals(date)
-                    && !(queue.isDeleted()))
+                    && queue.getQueueDate().equals(date))
                 list.add(queue);
         }
         return list;
@@ -61,10 +54,13 @@ public class QueuesListViewModel extends ViewModel {
     }
 
     public String getUserName(String userId) {
-        List<User> temp = usersList.getValue();
-        for (User user: temp)
-            if(user.getId().equals(userId))
-                return user.getName();
+
+        if(usersList.getValue()!=null)
+        {
+            for (User user : usersList.getValue())
+                if (user.getId().equals(userId))
+                    return user.getName();
+        }
 
         return "";
     }

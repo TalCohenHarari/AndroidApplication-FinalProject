@@ -11,6 +11,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -32,17 +33,18 @@ public class ModelFirebase {
     final static String queueCollection = "queues";
 
 
-    private ModelFirebase() {
-    }
+    private ModelFirebase() {}
 
-    //-----------------------------------users--------------------------------------
+    //--------------------------------------users--------------------------------------------
+
     public interface GetAllUsersListener {
         public void onComplete(List<User> users);
     }
 
-    public static void getAllUsers(GetAllUsersListener listener) {
+    public static void getAllUsers(Long since, GetAllUsersListener listener) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection(userCollection)
+                .whereGreaterThanOrEqualTo(User.LAST_UPDATED,new Timestamp(since,0))
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -61,7 +63,8 @@ public class ModelFirebase {
     //Save and sign up:
     public static void saveUser(User user, String action, Model.OnCompleteListener listener) {
 
-        if (action.equals("signUp")) {
+        if (action.equals("signUp"))
+        {
             FirebaseAuth mAuth = FirebaseAuth.getInstance();
             mAuth.createUserWithEmailAndPassword(user.name + "@a.com", user.password).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                 @Override
@@ -71,7 +74,6 @@ public class ModelFirebase {
                     save(user,action,()->listener.onComplete());
                 }
             });
-
         }
         else if(action.equals("updateEmail"))//If it's an update username based on firebase authentication:
         {
@@ -89,7 +91,6 @@ public class ModelFirebase {
         }
         else //If it's an update details or delete user:
             save(user,action,listener);
-
     }
 
     public static void save(User user,String action ,Model.OnCompleteListener listener) {
@@ -130,7 +131,7 @@ public class ModelFirebase {
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if(currentUser != null){
             LoginFragment.dialog.show();  //TODO: Do we need it?
-            getCurrentUser(listener);
+            getCurrentUser(()->listener.onComplete());
         }
     }
 
@@ -143,8 +144,7 @@ public class ModelFirebase {
         db.collection(userCollection).document(firebaseUser.getUid()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
-                Model.instance.setUser(User.create(documentSnapshot.getData()));
-                listener.onComplete();
+                Model.instance.setUser(User.create(documentSnapshot.getData()),()->listener.onComplete());
             }
         });
     }
@@ -156,12 +156,15 @@ public class ModelFirebase {
 
 
     //---------------------------------------Queues----------------------------------
+
     public interface GetAllQueuesListener{
         public void onComplete(List<Queue> queues);
     }
-    public static void getAllQueues(GetAllQueuesListener listener){
+
+    public static void getAllQueues(Long since, GetAllQueuesListener listener){
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection(queueCollection)
+                .whereGreaterThanOrEqualTo(Queue.LAST_UPDATED,new Timestamp(since,0))
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -196,14 +199,14 @@ public class ModelFirebase {
         });
     }
 
-
     //----------------------------------barbershops------------------------------------
     public interface GetAllBarbershopsListener{
         public void onComplete(List<Barbershop> barbershops);
     }
-    public static void getAllBarbershops(GetAllBarbershopsListener listener){
+    public static void getAllBarbershops(Long since, GetAllBarbershopsListener listener){
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection(barbershopCollection)
+                .whereGreaterThanOrEqualTo(Barbershop.LAST_UPDATED,new Timestamp(since,0))
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -213,9 +216,7 @@ public class ModelFirebase {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 list.add(Barbershop.create(document.getData()));
                             }
-                        } else {
-
-                        }
+                        } else {}
                         listener.onComplete(list);
                     }
                 });
@@ -237,6 +238,7 @@ public class ModelFirebase {
             }
         });
     }
+
     public static void deleteBarbershopImage(Barbershop barbershop, Model.OnCompleteListener listener){
         FirebaseStorage storage = FirebaseStorage.getInstance();
         // Create a storage reference from our app
@@ -254,25 +256,6 @@ public class ModelFirebase {
                 listener.onComplete();            }
         });
     }
-    public static void deleteBarbershop(Barbershop barbershop, Model.OnCompleteListener listener) {
-
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection(barbershopCollection).document(barbershop.owner)
-                .delete()
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        listener.onComplete();
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        listener.onComplete();
-                    }
-                });
-    }
-
     //--------------------------------SaveImages in storage----------------------------
 
 

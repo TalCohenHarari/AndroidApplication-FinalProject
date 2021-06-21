@@ -1,19 +1,24 @@
 package com.example.finalproject.model;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
+
+import com.example.finalproject.MyApplication;
+import com.google.firebase.Timestamp;
+import com.google.firebase.firestore.FieldValue;
 
 import java.util.HashMap;
 import java.util.Map;
 
 
-interface JsonQueueModel {
-    Map<String,Object> toJson();
-}
 
 @Entity
-public class Queue implements JsonQueueModel{
+public class Queue{
     @PrimaryKey
     @NonNull
     public String id;
@@ -23,6 +28,7 @@ public class Queue implements JsonQueueModel{
     public String queueDate;
     public String queueTime;
     public String queueAddress;
+    public Long lastUpdated;
     public boolean isQueueAvailable;
     public boolean isDeleted;
 
@@ -35,11 +41,12 @@ public class Queue implements JsonQueueModel{
     final static String QUEUE_DATE = "queueDate";
     final static String QUEUE_TIME = "queueTime";
     final static String QUEUE_ADDRESS = "queueAddress";
+    final static String LAST_UPDATED = "lastUpdated";
     final static String IS_QUEUE_AVAILABLE = "isQueueAvailable";
     final static String IS_DELETED = "isDeleted";
 
     public Queue(){}
-
+    @Ignore
     public Queue( String id, String userId, String barbershopId, String barbershopName, String queueDate,
                   String queueTime, String queueAddress, boolean isQueueAvailable, boolean isDeleted){
         this.id=id;
@@ -82,6 +89,10 @@ public class Queue implements JsonQueueModel{
         this.queueAddress = queueAddress;
     }
 
+    public void setLastUpdated(Long lastUpdated) {
+        this.lastUpdated = lastUpdated;
+    }
+
     public void setQueueAvailable(boolean queueAvailable) {
         isQueueAvailable = queueAvailable;
     }
@@ -118,6 +129,10 @@ public class Queue implements JsonQueueModel{
         return queueAddress;
     }
 
+    public Long getLastUpdated() {
+        return lastUpdated;
+    }
+
     public boolean isQueueAvailable() {
         return isQueueAvailable;
     }
@@ -135,6 +150,7 @@ public class Queue implements JsonQueueModel{
         json.put(QUEUE_DATE, queueDate);
         json.put(QUEUE_TIME, queueTime);
         json.put(QUEUE_ADDRESS, queueAddress);
+        json.put(LAST_UPDATED, FieldValue.serverTimestamp());
         json.put(IS_QUEUE_AVAILABLE, isQueueAvailable);
         json.put(IS_DELETED, isDeleted);
         return json;
@@ -149,8 +165,27 @@ public class Queue implements JsonQueueModel{
         userQueue.queueDate = (String)json.get(QUEUE_DATE);
         userQueue.queueTime = (String)json.get(QUEUE_TIME);
         userQueue.queueAddress = (String)json.get(QUEUE_ADDRESS);
+        Timestamp ts = (Timestamp) json.get(LAST_UPDATED);
+        if(ts!=null)
+            userQueue.lastUpdated = new Long(ts.getSeconds());
+        else
+            userQueue.lastUpdated = new Long(0);
         userQueue.isQueueAvailable = (boolean) json.get(IS_QUEUE_AVAILABLE);
         userQueue.isDeleted = (boolean) json.get(IS_DELETED);
         return userQueue;
+    }
+
+    private static final String QUEUE_LAST_UPDATE = "QueueLastUpdate";
+
+    static public void setLocalLastUpdateTime(Long ts){
+        //Shared preference, saving the ts on the disk (like the db):
+        SharedPreferences.Editor editor = MyApplication.context.getSharedPreferences("TAG", Context.MODE_PRIVATE).edit();
+        editor.putLong(QUEUE_LAST_UPDATE,ts);
+        editor.commit();
+    }
+    static public Long getLocalLastUpdateTime(){
+        //Shared preference, saving the ts in app:
+        return MyApplication.context.getSharedPreferences("TAG", Context.MODE_PRIVATE)
+                .getLong(QUEUE_LAST_UPDATE,0);
     }
 }

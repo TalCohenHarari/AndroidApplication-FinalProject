@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -20,10 +19,6 @@ import com.example.finalproject.MyApplication;
 import com.example.finalproject.R;
 import com.example.finalproject.model.Model;
 import com.example.finalproject.model.Queue;
-import com.example.finalproject.ui.login.LoginFragment;
-
-import java.util.LinkedList;
-import java.util.List;
 
 
 public class HoursListFragment extends Fragment {
@@ -34,6 +29,7 @@ public class HoursListFragment extends Fragment {
     MyAdapter adapter;
     TextView dateTv;
     RecyclerView queueList;
+    ProgressBar pb;
 
 
     @Override
@@ -50,7 +46,7 @@ public class HoursListFragment extends Fragment {
 
         hoursListViewModel.getData().observe(getViewLifecycleOwner(),
                 (data)->{
-            hoursListViewModel.getFilterData(fullDate,barbershopId);
+                    hoursListViewModel.getFilterData(fullDate,barbershopId);
                     adapter.notifyDataSetChanged();
                 });
 
@@ -86,7 +82,7 @@ public class HoursListFragment extends Fragment {
             }
         });
 
-        ProgressBar pb = view.findViewById(R.id.hoursList_progressBar);
+        pb = view.findViewById(R.id.hoursList_progressBar);
         pb.setVisibility(View.GONE);
 
         Model.instance.loadingState.observe(getViewLifecycleOwner(),(state)->{
@@ -104,7 +100,7 @@ public class HoursListFragment extends Fragment {
 
         return view;
     }
-    
+
     static class MyViewHolder extends RecyclerView.ViewHolder{
         OnItemClickListener listener;
         TextView timeTv;

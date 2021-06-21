@@ -83,8 +83,7 @@ public class SignUpFragment extends Fragment {
             MainActivity.actionBar.setDisplayHomeAsUpEnabled(false);
 
         //The fragment viewModel:
-        signUpViewModel  = new ViewModelProvider(this).
-                get(SignUpViewModel.class);
+        signUpViewModel  = new ViewModelProvider(this).get(SignUpViewModel.class);
 
         //Initialize the params:
         haveAccount = view.findViewById(R.id.signUp_already_tv);
@@ -237,7 +236,7 @@ public class SignUpFragment extends Fragment {
             barbershop = new Barbershop();
             barbershop.setName(barbershopNameEt.getText().toString());
             barbershop.setAddress(barbershopAddressEt.getText().toString());
-            barbershop.setAvailable(true);
+            barbershop.setDeleted(false);
             barbershop.setAvatar("");
             barbershop.setPhone(barbershopPhoneEt.getText().toString());
             dialogBarbershop.dismiss();

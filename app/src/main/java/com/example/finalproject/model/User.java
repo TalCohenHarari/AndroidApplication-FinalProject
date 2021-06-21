@@ -1,19 +1,24 @@
 package com.example.finalproject.model;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import com.example.finalproject.MyApplication;
+import com.google.firebase.Timestamp;
+import com.google.firebase.firestore.FieldValue;
+
+import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 
 
-interface JsonUsersModel{
-    Map<String,Object> toJson();
-}
 
 @Entity
-public class User implements JsonUsersModel{
+public class User{
     @PrimaryKey
     @NonNull
     public String id;
@@ -22,6 +27,7 @@ public class User implements JsonUsersModel{
     public String email;
     public String phone;
     public String avatar;
+    public Long lastUpdated;
     public boolean isBarbershop;
     public boolean isAvailable;
 
@@ -31,6 +37,7 @@ public class User implements JsonUsersModel{
     final static String EMAIL = "email";
     final static String PHONE = "phone";
     final static String AVATAR = "avatar";
+    final static String LAST_UPDATED = "lastUpdated";
     final static String IS_BARBERSHOP = "isBarbershop";
     final static String IS_AVAILABLE = "isAvailable";
 
@@ -58,6 +65,10 @@ public class User implements JsonUsersModel{
 
     public void setAvatar(String avatar) {
         this.avatar = avatar;
+    }
+
+    public void setLastUpdated(Long lastUpdated) {
+        this.lastUpdated = lastUpdated;
     }
 
     public void setBarbershop(boolean barbershop) {
@@ -93,6 +104,10 @@ public class User implements JsonUsersModel{
         return avatar;
     }
 
+    public Long getLastUpdated() {
+        return lastUpdated;
+    }
+
     public boolean isBarbershop() {
         return isBarbershop;
     }
@@ -110,6 +125,7 @@ public class User implements JsonUsersModel{
         json.put(EMAIL, email);
         json.put(PHONE, phone);
         json.put(AVATAR, avatar);
+        json.put(LAST_UPDATED, FieldValue.serverTimestamp());
         json.put(IS_BARBERSHOP,isBarbershop);
         json.put(IS_AVAILABLE,isAvailable);
 
@@ -123,9 +139,32 @@ public class User implements JsonUsersModel{
         user.email = (String)json.get(EMAIL);
         user.phone = (String)json.get(PHONE);
         user.avatar = (String)json.get(AVATAR);
+        Timestamp ts = (Timestamp) json.get(LAST_UPDATED);
+
+        if(ts!=null)
+            user.lastUpdated = new Long(ts.getSeconds());
+        else
+            user.lastUpdated = new Long(0);
+
         user.isBarbershop = (boolean)json.get(IS_BARBERSHOP);
         user.isAvailable = (boolean)json.get(IS_AVAILABLE);
 
         return user;
     }
+
+    private static final String STUDENT_LAST_UPDATE = "StudentLastUpdate";
+
+    static public void setLocalLastUpdateTime(Long ts){
+        //Shared preference, saving the ts on the disk (like the db):
+        SharedPreferences.Editor editor = MyApplication.context.getSharedPreferences("TAG", Context.MODE_PRIVATE).edit();
+        editor.putLong(STUDENT_LAST_UPDATE,ts);
+        editor.commit();
+    }
+
+    static public Long getLocalLastUpdateTime(){
+        //Shared preference, saving the ts in app:
+         return MyApplication.context.getSharedPreferences("TAG", Context.MODE_PRIVATE)
+                 .getLong(STUDENT_LAST_UPDATE,0);
+    }
+
 }

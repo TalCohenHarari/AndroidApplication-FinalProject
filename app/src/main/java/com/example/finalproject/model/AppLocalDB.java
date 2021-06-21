@@ -15,7 +15,7 @@ abstract class AppLocalDbRepository extends RoomDatabase {
 }
 
 public class AppLocalDB{
-    final static public AppLocalDbRepository db =
+    public final static  AppLocalDbRepository db =
             Room.databaseBuilder(MyApplication.context,
                     AppLocalDbRepository.class,
                     "dbBestBarbershops.db")

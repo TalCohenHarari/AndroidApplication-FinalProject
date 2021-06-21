@@ -34,8 +34,9 @@ public class LoginFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
 
         //ViewModel:
-        loginViewModel =
-                new ViewModelProvider(this).get(LoginViewModel.class);
+        loginViewModel = new ViewModelProvider(this).get(LoginViewModel.class);
+        loginViewModel.getData().observe(getViewLifecycleOwner(), (data)->{});
+
         view = inflater.inflate(R.layout.fragment_login, container, false);
 
         popupLoadingDialog();

@@ -84,7 +84,7 @@ public class EditBarbershopFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Model.instance.getUser().setBarbershop(false);
-                barbershop.setAvailable(false);
+                barbershop.setDeleted(true);
                 //TODO: set unavailable on his all queues...
                 Model.instance.saveBarbershop(barbershop,()->{
                     Model.instance.saveUser(Model.instance.getUser(),"update",
@@ -135,7 +135,7 @@ public class EditBarbershopFragment extends Fragment {
         barbershop.setName(nameEt.getText().toString());
         barbershop.setAddress(addressEt.getText().toString());
         barbershop.setPhone(phoneEt.getText().toString());
-        barbershop.setAvailable(true);
+        barbershop.setDeleted(false);
         barbershop.setOwner(Model.instance.getUser().getId());
 
         Model.instance.saveBarbershop(barbershop, ()->{

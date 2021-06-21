@@ -5,9 +5,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
@@ -15,10 +15,6 @@ import androidx.navigation.Navigation;
 import com.example.finalproject.R;
 import com.example.finalproject.model.Barbershop;
 import com.example.finalproject.model.Model;
-import com.example.finalproject.ui.login.LoginFragment;
-import com.example.finalproject.ui.new_queue.new_queue_FragmentDirections;
-import com.example.finalproject.ui.users_list.usersListViewModel;
-import com.squareup.picasso.Picasso;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -48,9 +44,10 @@ public class BarbershopDetailsFragment extends Fragment {
                     BarbershopDetailsFragmentArgs.fromBundle(getArguments()).
                             getBaebershopID();
             barbershop = barbershopDetailsViewModel.getData().getValue().get(barbershopIdPosition);
-        nameTv.setText(barbershop.getName());
-        addressTv.setText(barbershop.getAddress());
-        phoneTv.setText(barbershop.getPhone());
+
+            nameTv.setText(barbershop.getName());
+            addressTv.setText(barbershop.getAddress());
+            phoneTv.setText(barbershop.getPhone());
 //        if(barbershop.getAvatar()!=null && !(barbershop.getAvatar().equals("")))
 //            Picasso.get().load(barbershop.getAvatar()).into(imageV);
 
@@ -64,23 +61,15 @@ public class BarbershopDetailsFragment extends Fragment {
             editBtn.setVisibility(View.INVISIBLE);
 
         //Add an appointment:
-        addBtn.setOnClickListener(new View.OnClickListener() {
-             @Override
-             public void onClick(View v) {
-                 BarbershopDetailsFragmentDirections.ActionBarbershopDetailsFragmentToNewQueueFragment
-                         action = BarbershopDetailsFragmentDirections.actionBarbershopDetailsFragmentToNewQueueFragment(barbershop.owner);
-                 Navigation.findNavController(view).navigate(action);
-            }
-         });
+        addBtn.setOnClickListener(v -> {
+            BarbershopDetailsFragmentDirections.ActionBarbershopDetailsFragmentToNewQueueFragment
+                    action = BarbershopDetailsFragmentDirections.actionBarbershopDetailsFragmentToNewQueueFragment(barbershop.owner);
+            Navigation.findNavController(view).navigate(action);
+       });
 
         backBtn.setOnClickListener(v->Navigation.findNavController(v).navigateUp());
 
-        editBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Navigation.findNavController(v).navigate(R.id.nav_editBarbershopFragment);
-            }
-        });
+        editBtn.setOnClickListener(v ->Navigation.findNavController(v).navigate(R.id.nav_editBarbershopFragment));
 
         return view;
     }
