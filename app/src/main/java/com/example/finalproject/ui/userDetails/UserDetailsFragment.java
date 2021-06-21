@@ -1,5 +1,6 @@
 package com.example.finalproject.ui.userDetails;
 
+import android.app.Dialog;
 import android.os.Build;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
@@ -12,11 +13,13 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.finalproject.MainActivity;
 import com.example.finalproject.R;
 import com.example.finalproject.model.Barbershop;
 import com.example.finalproject.model.Model;
+import com.example.finalproject.model.Queue;
 import com.example.finalproject.model.User;
 import com.example.finalproject.ui.barbershopDetails.BarbershopDetailsViewModel;
 import com.example.finalproject.ui.login.LoginFragment;
@@ -30,14 +33,15 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class UserDetailsFragment extends Fragment {
 
-
+    View view;
+    Dialog dialog;
     UserDetailsViewModel userDetailsViewModel;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_user_details, container, false);
+        view = inflater.inflate(R.layout.fragment_user_details, container, false);
         ImageButton editImgBtn = view.findViewById(R.id.userDetails_edit_imageButton);
         ImageView barberIcon = view.findViewById(R.id.userDetails_barberIcon_imgV);
         TextView userName = view.findViewById(R.id.userDetails_username_tv);
@@ -88,19 +92,43 @@ public class UserDetailsFragment extends Fragment {
             }
         });
 
-        deleteBtn.setOnClickListener(v->{
-            if(!(Model.instance.getUser().isBarbershop()))
-            {
-                Model.instance.getUser().setAvailable(false);
-                Model.instance.saveUser(Model.instance.getUser(),"delete",()->{
-                    Model.instance.signOut();
-                    while(MainActivity.navController.popBackStack());
-                    Navigation.findNavController(v).navigate(R.id.nav_login);
-                });
-            }
-        });
+        deleteBtn.setOnClickListener(v->deleteUserDialog());
         backBtn.setOnClickListener(v->Navigation.findNavController(v).navigateUp());
 
         return view;
+    }
+
+    private void deleteUserDialog() {
+        //Dialog settings:
+        dialog = new Dialog(getContext());
+        dialog.setContentView(R.layout.popup_dialog_delete_user);
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+            dialog.getWindow().setBackgroundDrawable(getActivity().getDrawable(R.drawable.popup_dialog_background));
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.setCancelable(true);
+        dialog.getWindow().getAttributes().windowAnimations = R.style.popup_dialog_animation;
+        dialog.show();
+        //Params:
+        Button deleteDialogBtn = dialog.findViewById(R.id.popup_dialod_delete_user_btn);
+        Button backDialogBtn = dialog.findViewById(R.id.popup_dialod_back_user_btn);
+        //Listeners:
+        backDialogBtn.setOnClickListener(v->{
+                Toast.makeText(getContext(), "Canceled", Toast.LENGTH_SHORT).show();
+                dialog.dismiss();
+            });
+        deleteDialogBtn.setOnClickListener(v->deleteUser());
+    }
+
+    public void deleteUser(){
+        if(!(Model.instance.getUser().isBarbershop()))
+        {
+            Model.instance.getUser().setAvailable(false);
+            Model.instance.saveUser(Model.instance.getUser(),"delete",()->{
+                dialog.dismiss();
+                Model.instance.signOut();
+                while(MainActivity.navController.popBackStack());
+                Navigation.findNavController(view).navigate(R.id.nav_login);
+            });
+        }
     }
 }

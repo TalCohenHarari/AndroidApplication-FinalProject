@@ -124,7 +124,8 @@ public class HoursListFragment extends Fragment {
                 }
             });
         }
-        public void bind(Queue queue){
+        public void bind(Queue queue)
+        {
             timeTv.setText(queue.getQueueTime());
             if(!queue.isQueueAvailable)
                 isQueueAvailableTv.setText("Not Available");
