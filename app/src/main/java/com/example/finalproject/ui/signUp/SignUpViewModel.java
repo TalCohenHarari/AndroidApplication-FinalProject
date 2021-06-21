@@ -27,7 +27,7 @@ public class SignUpViewModel extends ViewModel {
 
         if(usersList.getValue()!=null) {
             for (User user : usersList.getValue())
-                if (user.getName().equals(userName))
+                if (user.getName().equals(userName) && user.isAvailable())
                     return true;
         }
         return false;

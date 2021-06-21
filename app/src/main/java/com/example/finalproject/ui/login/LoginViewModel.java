@@ -28,7 +28,7 @@ public class LoginViewModel extends ViewModel {
         {
             for (User user : usersList.getValue())
             {
-                if (user.name.equals(userName) && user.password.equals(password))
+                if (user.name.equals(userName) && user.password.equals(password) && user.isAvailable())
                 {
                     return true;
                 }

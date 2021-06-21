@@ -28,7 +28,7 @@ import androidx.appcompat.widget.Toolbar;
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private AppBarConfiguration mAppBarConfiguration;
-    NavController navController;
+    public static NavController navController;
     public static ActionBar actionBar;
     public static NavigationView navigationView;
     DrawerLayout drawer;

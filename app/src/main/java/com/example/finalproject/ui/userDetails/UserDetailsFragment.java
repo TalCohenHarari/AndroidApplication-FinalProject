@@ -12,6 +12,8 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.example.finalproject.MainActivity;
 import com.example.finalproject.R;
 import com.example.finalproject.model.Barbershop;
 import com.example.finalproject.model.Model;
@@ -43,12 +45,9 @@ public class UserDetailsFragment extends Fragment {
         TextView email = view.findViewById(R.id.userDetails_email_tv);
         TextView password = view.findViewById(R.id.userDetails_password_tv);
         Button backBtn = view.findViewById(R.id.userDetails_back_btn);
+        ImageView deleteBtn = view.findViewById(R.id.userDetails_delete_btn);
         CircleImageView image = view.findViewById(R.id.userDetails_image_imgV);
 
-
-
-
-        //TODO: Cheacke if to add viewModel to this class or not?
         userDetailsViewModel  = new ViewModelProvider(this).
                 get(UserDetailsViewModel.class);
 
@@ -89,7 +88,17 @@ public class UserDetailsFragment extends Fragment {
             }
         });
 
-
+        deleteBtn.setOnClickListener(v->{
+            if(!(Model.instance.getUser().isBarbershop()))
+            {
+                Model.instance.getUser().setAvailable(false);
+                Model.instance.saveUser(Model.instance.getUser(),"delete",()->{
+                    Model.instance.signOut();
+                    while(MainActivity.navController.popBackStack());
+                    Navigation.findNavController(v).navigate(R.id.nav_login);
+                });
+            }
+        });
         backBtn.setOnClickListener(v->Navigation.findNavController(v).navigateUp());
 
         return view;

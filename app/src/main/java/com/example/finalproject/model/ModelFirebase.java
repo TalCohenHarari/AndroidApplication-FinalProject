@@ -89,7 +89,21 @@ public class ModelFirebase {
                         }
                     });
         }
-        else //If it's an update details or delete user:
+        else if(action.equals("delete")) //delete user
+        {
+            save(user,action,()->{
+            FirebaseUser deletedUser = FirebaseAuth.getInstance().getCurrentUser();
+            deletedUser.delete()
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                               listener.onComplete();
+                            }
+                        }
+                    });});
+        }
+        else //If it's an update details:
             save(user,action,listener);
     }
 

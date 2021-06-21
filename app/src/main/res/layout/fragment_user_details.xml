@@ -143,9 +143,9 @@
                 android:id="@+id/userDetails_back_btn"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
+                android:layout_marginStart="32dp"
                 android:layout_marginTop="83dp"
-                android:layout_marginEnd="8dp"
+                android:layout_marginEnd="32dp"
                 android:layout_marginBottom="24dp"
                 android:background="@drawable/button"
                 android:text="BACK"
@@ -153,24 +153,9 @@
                 android:textSize="18sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/userDetails_delete_btn"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/userDetails_password_tv" />
 
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/userDetails_delete_btn"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
-                android:text="DELETE"
-                android:textSize="18sp"
-                android:background="@drawable/button"
-                android:textColor="@color/white"
-                app:layout_constraintBottom_toBottomOf="@+id/userDetails_back_btn"
-                app:layout_constraintEnd_toStartOf="@+id/userDetails_back_btn"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/userDetails_back_btn" />
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/userDetails_image_imgV"
@@ -206,6 +191,16 @@
                 app:layout_constraintBottom_toBottomOf="@+id/userDetails_edit_imageButton"
                 app:layout_constraintStart_toEndOf="@+id/userDetails_edit_imageButton"
                 app:layout_constraintTop_toTopOf="@+id/userDetails_edit_imageButton" />
+
+            <ImageView
+                android:id="@+id/userDetails_delete_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                android:src="@drawable/delete_icon"
+                app:layout_constraintBottom_toTopOf="@+id/home_witheLine4"
+                app:layout_constraintEnd_toEndOf="parent" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

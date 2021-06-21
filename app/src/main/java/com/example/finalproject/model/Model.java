@@ -1,7 +1,6 @@
 package com.example.finalproject.model;
 
 import android.graphics.Bitmap;
-import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -16,13 +15,10 @@ public class Model {
     ExecutorService executorService = Executors.newCachedThreadPool();
     User user;
 
-    public User getUser() {
-        return user;
-    }
+    private Model() {}
 
-    public void setUser(User user,OnCompleteListener listener) {
-        this.user = user;
-        listener.onComplete();
+    public interface OnCompleteListener {
+        void onComplete();
     }
 
     public enum LoadingState {
@@ -34,18 +30,16 @@ public class Model {
     public MutableLiveData<LoadingState> loadingState =
             new MutableLiveData<LoadingState>(LoadingState.loaded);
 
-    private Model() {
+    public User getUser() {
+        return user;
     }
 
-    public interface GetDataListener {
-        void onComplete(List<Object> data);
+    public void setUser(User user,OnCompleteListener listener) {
+        this.user = user;
+        listener.onComplete();
     }
 
-    public interface OnCompleteListener {
-        void onComplete();
-    }
     //---------------------------------------users---------------------------------------
-
 
     LiveData<List<User>> allUsers =   AppLocalDB.db.userDao().getAll();
 
