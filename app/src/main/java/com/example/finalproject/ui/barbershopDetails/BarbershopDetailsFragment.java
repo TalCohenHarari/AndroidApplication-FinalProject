@@ -37,6 +37,7 @@ public class BarbershopDetailsFragment extends Fragment {
 //        imageV = view.findViewById(R.id.baebershopDeails_image_imgV);
         barbershopDetailsViewModel  = new ViewModelProvider(this).
                 get(BarbershopDetailsViewModel.class);
+        barbershopDetailsViewModel.getData().observe(getViewLifecycleOwner(), (data)->{});
 
 
         // Getting the parameters from the Bundle:

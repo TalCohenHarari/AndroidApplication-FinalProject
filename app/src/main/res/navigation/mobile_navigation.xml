@@ -153,4 +153,13 @@
         android:name="com.example.finalproject.ui.edit_Barbershop.EditBarbershopFragment"
         android:label="Edit Barbershop"
         tools:layout="@layout/fragment_edit_barbershop" />
+    <fragment
+        android:id="@+id/nav_mapFragment"
+        android:name="com.example.finalproject.ui.map.MapFragment"
+        android:label="fragment_map"
+        tools:layout="@layout/fragment_map" >
+        <action
+            android:id="@+id/action_nav_mapFragment_to_nav_signUpFragment2"
+            app:destination="@id/nav_signUpFragment" />
+    </fragment>
 </navigation>

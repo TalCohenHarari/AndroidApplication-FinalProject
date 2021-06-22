@@ -28,6 +28,7 @@
 
 
             <View
+                android:id="@+id/view4"
                 android:layout_width="361dp"
                 android:layout_height="0dp"
                 android:background="#8F000000"
@@ -114,14 +115,14 @@
                 android:id="@+id/newBarbershop_save_btn"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="35dp"
+                android:layout_marginTop="32dp"
                 android:background="@drawable/button"
                 android:text="ADD"
                 android:textColor="@color/white"
                 app:layout_constraintEnd_toEndOf="@+id/newBarbershop_address"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="@+id/newBarbershop_address"
-                app:layout_constraintTop_toBottomOf="@+id/textView14" />
+                app:layout_constraintTop_toBottomOf="@+id/newBarbershop_phone" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/newBarbershop_back_btn"
@@ -167,16 +168,7 @@
                 app:layout_constraintEnd_toStartOf="@+id/newBarbershop_imageCameraBtn"
                 app:layout_constraintTop_toTopOf="@+id/newBarbershop_imageCameraBtn" />
 
-            <TextView
-                android:id="@+id/textView14"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:text="add here googleMap"
-                android:textColor="#FFFFFF"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/newBarbershop_phone" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 

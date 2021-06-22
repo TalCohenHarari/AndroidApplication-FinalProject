@@ -27,6 +27,10 @@ public class Barbershop{
     public String avatar;
     public Long lastUpdated;
     public boolean isDeleted;
+    public double latitude;
+    public double longitude;
+
+
 
     final static String OWNER = "owner";
     final static String NAME = "name";
@@ -35,6 +39,8 @@ public class Barbershop{
     final static String AVATAR = "avatar";
     final static String LAST_UPDATED = "lastUpdated";
     final static String IS_DELETED = "isDeleted";
+    final static String LATITUDE = "latitude";
+    final static String LONGITUDE = "longitude";
 
     //Setters:
     public void setOwner(String owner) {
@@ -63,6 +69,14 @@ public class Barbershop{
 
     public void setDeleted(boolean isDeleted) {
         this.isDeleted = isDeleted;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
     }
 
 
@@ -95,6 +109,14 @@ public class Barbershop{
         return isDeleted;
     }
 
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
     public Map<String,Object> toJson(){
         Map<String, Object> json = new HashMap<>();
         json.put(OWNER, owner);
@@ -104,6 +126,8 @@ public class Barbershop{
         json.put(AVATAR, avatar);
         json.put(LAST_UPDATED, FieldValue.serverTimestamp());
         json.put(IS_DELETED, isDeleted);
+        json.put(LATITUDE, latitude);
+        json.put(LONGITUDE, longitude);
 
         return json;
     }
@@ -115,6 +139,9 @@ public class Barbershop{
         barbershop.address = (String)json.get(ADDRESS);
         barbershop.phone = (String)json.get(PHONE);
         barbershop.avatar = (String)json.get(AVATAR);
+        barbershop.latitude = (double)json.get(LATITUDE);
+        barbershop.longitude = (double)json.get(LONGITUDE);
+
         Timestamp ts = (Timestamp) json.get(LAST_UPDATED);
         if(ts!=null)
             barbershop.lastUpdated = new Long(ts.getSeconds());

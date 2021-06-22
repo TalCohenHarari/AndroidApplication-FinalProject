@@ -1,7 +1,6 @@
 package com.example.finalproject.ui.signUp;
 
 import android.app.Dialog;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -17,11 +16,9 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
@@ -32,32 +29,23 @@ import com.example.finalproject.model.Barbershop;
 import com.example.finalproject.model.Model;
 import com.example.finalproject.model.Queue;
 import com.example.finalproject.model.User;
-import com.example.finalproject.ui.queues_list.QueuesListViewModel;
 
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
 
-public class SignUpFragment extends Fragment {
+public class SignUpFragment extends Fragment{
 
-    //General:
-    View view;
-    Dialog dialog;
-    TextView haveAccount;
-    Button signUp;
-    ImageButton addBarbershop;
-    ImageView imageCameraImgV;
-    ImageView imageGalleryImgV;
+    //General:                                  //User params:
+    View view;                                  User newUser;
+    Dialog dialog;                              EditText password;
+    TextView haveAccount;                       EditText userName;
+    Button signUp;                              EditText email;
+    ImageButton addBarbershop;                  EditText phone;
+    ImageView imageCameraImgV;                  ImageView imageV;
+    ImageView imageGalleryImgV;                 Bitmap imageBitmap;
     SignUpViewModel signUpViewModel;
-    //User params:
-    User newUser;
-    EditText password;
-    EditText userName;
-    EditText email;
-    EditText phone;
-    ImageView imageV;
-    Bitmap imageBitmap;
 
     //Barbershop Params:
     Dialog dialogBarbershop;
@@ -71,6 +59,12 @@ public class SignUpFragment extends Fragment {
     Button barbershopAddBtn;
     Button barbershopBackBtn;
     Barbershop barbershop;
+    ImageView locationIcon;
+    public static double latitude=0;
+    public static double longitude=0;
+
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -96,33 +90,33 @@ public class SignUpFragment extends Fragment {
         imageCameraImgV = view.findViewById(R.id.signUp_camera_imgV);
         imageGalleryImgV = view.findViewById(R.id.signUp_gallery_imgV);
         imageV = view.findViewById(R.id.signUp_userImage_imgV);
+        dialogBarbershop = new Dialog(getContext());
+        dialogBarbershop.setContentView(R.layout.fragment_new_baebershop);
+        locationIcon = view.findViewById(R.id.signUp_locationIcon_imgV);
 
         //Listeners:
         addBarbershop.setOnClickListener(v->openDialog());
         imageCameraImgV.setOnClickListener(v->takePicture("user"));
         imageGalleryImgV.setOnClickListener(v->takePictureFromGallery("user"));
         haveAccount.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.nav_login));
+        locationIcon.setOnClickListener(v->Navigation.findNavController(v).navigate(R.id.nav_mapFragment));
         userName.setOnKeyListener((v,keyCode,event)->{Utilities.offValidationUserName(userName);return false;});
         password.setOnKeyListener((v,keyCode,event)->{Utilities.offValidationPassword(password);return false;});
         popupLoadingDialog();
+        signUp.setOnClickListener(v -> {
 
-        signUp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                if(signUpViewModel.isUserNameExist(userName.getText().toString()))
-                    Utilities.userNameExist(userName);
-                else if(password.getText().toString().length()>=6 &&
-                        !(userName.getText().toString().isEmpty()) &&
-                        !(userName.getText().toString().matches(".*\\s.*"))){
-                        dialog.show();
-                        signUp.setEnabled(false);
-                        save();
-                }
-                else
-                    Utilities.validationOn(password,userName);
-
+            if(signUpViewModel.isUserNameExist(userName.getText().toString()))
+                Utilities.userNameExist(userName);
+            else if(password.getText().toString().length()>=6 &&
+                    !(userName.getText().toString().isEmpty()) &&
+                    !(userName.getText().toString().matches(".*\\s.*"))){
+                    dialog.show();
+                    signUp.setEnabled(false);
+                    save();
             }
+            else
+                Utilities.validationOn(password,userName);
+
         });
 
         return view;
@@ -167,7 +161,8 @@ public class SignUpFragment extends Fragment {
                 });
             });
         }
-        //User wih no image but he is a Barbershop:
+
+        //User with no image but he is a Barbershop:
         else if(imageBitmap==null && barbershop!=null)
         {
             //Saving the user:
@@ -175,6 +170,9 @@ public class SignUpFragment extends Fragment {
             Model.instance.saveUser(newUser, "signUp",()->
             {
                 barbershop.setOwner(newUser.getId());
+                barbershop.setLatitude(latitude);
+                barbershop.setLongitude(longitude);
+
                 if(barbershopImageBitmap!=null)
                     Model.instance.uploadImage(barbershopImageBitmap, newUser.getId(),"barbershop", (barbershopUrl)-> saveBarbershop(barbershopUrl));
                 else
@@ -197,6 +195,8 @@ public class SignUpFragment extends Fragment {
                     {
                             //Saving the barbershop:
                             barbershop.setOwner(newUser.getId());
+                            barbershop.setLatitude(latitude);
+                            barbershop.setLongitude(longitude);
                             //If there is an image to the barbershop saving his image and then saving himself:
                             if(barbershopImageBitmap!=null)
                                 Model.instance.uploadImage(barbershopImageBitmap, newUser.getId(), "barbershop",(barbershopUrl)-> saveBarbershop(barbershopUrl));
@@ -212,8 +212,7 @@ public class SignUpFragment extends Fragment {
 
     private void openDialog() {
 
-        dialogBarbershop = new Dialog(getContext());
-        dialogBarbershop.setContentView(R.layout.fragment_new_baebershop);
+
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
             dialogBarbershop.getWindow().setBackgroundDrawable(getActivity().getDrawable(R.drawable.popup_dialog_background));
         dialogBarbershop.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT);
@@ -243,6 +242,7 @@ public class SignUpFragment extends Fragment {
         });
 
         dialogBarbershop.show();
+
     }
 
     void saveBarbershop(String url) {
@@ -393,5 +393,4 @@ public class SignUpFragment extends Fragment {
             }
         }
     }
-
 }
