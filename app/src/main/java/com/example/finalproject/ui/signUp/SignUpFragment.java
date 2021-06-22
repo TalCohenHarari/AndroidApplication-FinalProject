@@ -23,6 +23,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
 import com.example.finalproject.MainActivity;
+import com.example.finalproject.MyApplication;
 import com.example.finalproject.R;
 import com.example.finalproject.Utilities;
 import com.example.finalproject.model.Barbershop;
@@ -59,6 +60,7 @@ public class SignUpFragment extends Fragment{
     Button barbershopAddBtn;
     Button barbershopBackBtn;
     Barbershop barbershop;
+    TextView textAddBarbershop;
     ImageView locationIcon;
     public static double latitude=0;
     public static double longitude=0;
@@ -92,6 +94,7 @@ public class SignUpFragment extends Fragment{
         imageV = view.findViewById(R.id.signUp_userImage_imgV);
         dialogBarbershop = new Dialog(getContext());
         dialogBarbershop.setContentView(R.layout.fragment_new_baebershop);
+        textAddBarbershop = view.findViewById(R.id.signUp_addBarbershop_text_tv);
         locationIcon = view.findViewById(R.id.signUp_locationIcon_imgV);
 
         //Listeners:
@@ -230,7 +233,14 @@ public class SignUpFragment extends Fragment{
 
         barbershopImageCameraBtn.setOnClickListener(v->takePicture("barbershop"));
         barbershopImageGalleryBtn.setOnClickListener(v->takePictureFromGallery("barbershop"));
-        barbershopBackBtn.setOnClickListener(v->{barbershop=null; dialogBarbershop.dismiss();});
+        barbershopBackBtn.setOnClickListener(v->{
+            if(barbershop!=null) {
+                textAddBarbershop.setText("Barbershop deleted");
+                textAddBarbershop.setTextColor(MyApplication.context.getResources().getColor(R.color.design_default_color_error));
+                barbershop = null;
+            }
+            dialogBarbershop.dismiss();
+        });
         barbershopAddBtn.setOnClickListener(v->{
             barbershop = new Barbershop();
             barbershop.setName(barbershopNameEt.getText().toString());
@@ -238,7 +248,10 @@ public class SignUpFragment extends Fragment{
             barbershop.setDeleted(false);
             barbershop.setAvatar("");
             barbershop.setPhone(barbershopPhoneEt.getText().toString());
+            textAddBarbershop.setText("Barbershop added");
+            textAddBarbershop.setTextColor(MyApplication.context.getResources().getColor(R.color.green));
             dialogBarbershop.dismiss();
+            
         });
 
         dialogBarbershop.show();

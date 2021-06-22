@@ -222,12 +222,12 @@
                 android:layout_marginStart="16dp"
                 android:background="#00FFFFFF"
                 android:src="@drawable/add_icon"
-                app:layout_constraintBottom_toBottomOf="@+id/textView12"
+                app:layout_constraintBottom_toBottomOf="@+id/signUp_addBarbershop_text_tv"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/textView12" />
+                app:layout_constraintTop_toTopOf="@+id/signUp_addBarbershop_text_tv" />
 
             <TextView
-                android:id="@+id/textView12"
+                android:id="@+id/signUp_addBarbershop_text_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -246,8 +246,8 @@
                 android:text="Add location on map"
                 android:textColor="#FFFFFF"
                 android:textSize="16sp"
-                app:layout_constraintStart_toStartOf="@+id/textView12"
-                app:layout_constraintTop_toBottomOf="@+id/textView12" />
+                app:layout_constraintStart_toStartOf="@+id/signUp_addBarbershop_text_tv"
+                app:layout_constraintTop_toBottomOf="@+id/signUp_addBarbershop_text_tv" />
 
             <ImageView
                 android:id="@+id/signUp_locationIcon_imgV"
