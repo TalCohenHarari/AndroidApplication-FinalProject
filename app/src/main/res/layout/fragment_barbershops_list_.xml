@@ -78,11 +78,23 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="Click me to see on barbershops location map"
+        android:text="Click me to see barbershops location on map"
         android:textColor="#FFFFFF"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/barbershopsList_witheLine3" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginBottom="8dp"
+        android:src="@drawable/location_icon"
+        app:layout_constraintBottom_toBottomOf="@+id/barbershopsList_seeAllBarbershopsOnMap_tv"
+        app:layout_constraintEnd_toStartOf="@+id/barbershopsList_seeAllBarbershopsOnMap_tv"
+        app:layout_constraintTop_toTopOf="@+id/barbershopsList_seeAllBarbershopsOnMap_tv" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
