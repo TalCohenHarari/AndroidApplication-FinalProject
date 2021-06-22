@@ -28,7 +28,7 @@ public class barbershops_list_Fragment extends Fragment {
     MyAdapter adapter;
     View view;
     ProgressBar pb;
-
+    TextView clickMeTv;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -62,8 +62,10 @@ public class barbershops_list_Fragment extends Fragment {
         });
 
 
+        clickMeTv = view.findViewById(R.id.barbershopsList_seeAllBarbershopsOnMap_tv);
+        clickMeTv.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.nav_barbershopsOnMapFragment));
 
-       pb = view.findViewById(R.id.barberShopsList_progressBar);
+        pb = view.findViewById(R.id.barberShopsList_progressBar);
         pb.setVisibility(View.GONE);
 
         Model.instance.loadingState.observe(getViewLifecycleOwner(),(state)->{

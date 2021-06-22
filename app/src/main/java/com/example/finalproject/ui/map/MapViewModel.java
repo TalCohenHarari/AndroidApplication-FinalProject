@@ -1,23 +1,31 @@
-package com.example.finalproject.ui.barbershopDetails;
+package com.example.finalproject.ui.map;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.finalproject.model.Barbershop;
 import com.example.finalproject.model.Model;
-import com.example.finalproject.ui.login.LoginFragment;
 
-import java.util.LinkedList;
 import java.util.List;
 
-public class BarbershopDetailsViewModel extends ViewModel {
+public class MapViewModel extends ViewModel {
     private LiveData<List<Barbershop>> barbershopsList;
 
-    public BarbershopDetailsViewModel() {
+    public MapViewModel() {
         barbershopsList = Model.instance.getAllBarbershops();
     }
 
     public LiveData<List<Barbershop>> getData() {
             return barbershopsList;
+    }
+
+    public int getBarbershopPosition(String barbershopName){
+
+        for(int i=0; i<barbershopsList.getValue().size(); ++i)
+        {
+            if(barbershopsList.getValue().get(i).getName().equals(barbershopName))
+                return i;
+        }
+        return 0;
     }
 }

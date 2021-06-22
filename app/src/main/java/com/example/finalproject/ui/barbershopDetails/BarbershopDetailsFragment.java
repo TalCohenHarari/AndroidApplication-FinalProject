@@ -15,6 +15,7 @@ import androidx.navigation.Navigation;
 import com.example.finalproject.R;
 import com.example.finalproject.model.Barbershop;
 import com.example.finalproject.model.Model;
+import com.squareup.picasso.Picasso;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -34,32 +35,29 @@ public class BarbershopDetailsFragment extends Fragment {
         Button addBtn = view.findViewById(R.id.baebershopDeails_add_an_appointment_btn);
         Button backBtn = view.findViewById(R.id.baebershopDeails_back_btn);
         ImageView editBtn = view.findViewById(R.id.baebershopDeails_edit);
-//        imageV = view.findViewById(R.id.baebershopDeails_image_imgV);
+        imageV = view.findViewById(R.id.baebershopDeails_image_imgV);
         barbershopDetailsViewModel  = new ViewModelProvider(this).
                 get(BarbershopDetailsViewModel.class);
-        barbershopDetailsViewModel.getData().observe(getViewLifecycleOwner(), (data)->{});
-
-
-        // Getting the parameters from the Bundle:
-            barbershopIdPosition =
-                    BarbershopDetailsFragmentArgs.fromBundle(getArguments()).
-                            getBaebershopID();
-            barbershop = barbershopDetailsViewModel.getData().getValue().get(barbershopIdPosition);
-
+        barbershopDetailsViewModel.getData().observe(getViewLifecycleOwner(), (data)->{
+            barbershop = data.get(barbershopIdPosition);
             nameTv.setText(barbershop.getName());
             addressTv.setText(barbershop.getAddress());
             phoneTv.setText(barbershop.getPhone());
-//        if(barbershop.getAvatar()!=null && !(barbershop.getAvatar().equals("")))
-//            Picasso.get().load(barbershop.getAvatar()).into(imageV);
+            if(barbershop.getAvatar()!=null && !(barbershop.getAvatar().equals("")))
+                Picasso.get().load(barbershop.getAvatar()).into(imageV);
+            //If (current session user is this barbershop) so Invisible the add appointment
+            //else (if it's not current barbershop in session) Invisible edit button
+            if(Model.instance.getUser().isBarbershop()
+                    && Model.instance.getUser().getId().equals(barbershop.getOwner()))
+                addBtn.setVisibility(View.INVISIBLE);
+            else
+                editBtn.setVisibility(View.INVISIBLE);
+        });
 
 
-        //If (current session user is this barbershop) so Invisible the add appointment
-        //else (if it's not current barbershop in session) Invisible edit button
-        if(Model.instance.getUser().isBarbershop()
-            && Model.instance.getUser().getId().equals(barbershop.getOwner()))
-            addBtn.setVisibility(View.INVISIBLE);
-        else
-            editBtn.setVisibility(View.INVISIBLE);
+        // Getting the parameters from the Bundle:
+        barbershopIdPosition = BarbershopDetailsFragmentArgs.fromBundle(getArguments()).getBaebershopID();
+
 
         //Add an appointment:
         addBtn.setOnClickListener(v -> {

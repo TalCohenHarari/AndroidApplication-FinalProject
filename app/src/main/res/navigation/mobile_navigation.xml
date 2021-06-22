@@ -59,6 +59,9 @@
         <action
             android:id="@+id/action_barbershops_list_Fragment_to_barbershopDetailsFragment"
             app:destination="@id/nav_barbershopDetailsFragment" />
+        <action
+            android:id="@+id/action_nav_barbershops_list_Fragment_to_barbershopsOnMapFragment"
+            app:destination="@id/nav_barbershopsOnMapFragment" />
     </fragment>
     <fragment
         android:id="@+id/nav_barbershopDetailsFragment"
@@ -161,5 +164,14 @@
         <action
             android:id="@+id/action_nav_mapFragment_to_nav_signUpFragment2"
             app:destination="@id/nav_signUpFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_barbershopsOnMapFragment"
+        android:name="com.example.finalproject.ui.map.BarbershopsOnMapFragment"
+        android:label="fragment_barbershops_on_map"
+        tools:layout="@layout/fragment_barbershops_on_map" >
+        <action
+            android:id="@+id/action_barbershopsOnMapFragment_to_nav_barbershopDetailsFragment"
+            app:destination="@id/nav_barbershopDetailsFragment" />
     </fragment>
 </navigation>

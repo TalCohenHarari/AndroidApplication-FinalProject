@@ -2,6 +2,6 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item android:state_focused="true" android:drawable="@drawable/location_icon_focused"/>
-    <item android:state_focused="false" android:drawable="@drawable/location_icon"/>
+    <item android:state_focused="false" android:drawable="@drawable/my_location_icon"/>
 
 </selector>

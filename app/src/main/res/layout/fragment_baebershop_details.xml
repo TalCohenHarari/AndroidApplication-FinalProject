@@ -155,6 +155,18 @@
                 app:layout_constraintBottom_toTopOf="@+id/textView5"
                 app:layout_constraintStart_toStartOf="parent" />
 
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/baebershopDeails_image_imgV"
+                android:layout_width="328dp"
+                android:layout_height="199dp"
+                android:layout_marginStart="41dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginEnd="41dp"
+                android:src="@drawable/avatar"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
             <!--            <fragment-->
 <!--                android:id="@+id/baebershopDeails_fragment"-->
 <!--                android:layout_width="0dp"-->
