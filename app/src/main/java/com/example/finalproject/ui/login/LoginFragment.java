@@ -68,7 +68,8 @@ public class LoginFragment extends Fragment {
                             () -> {
 
                                 //Pop up login page after we connected:
-                                Navigation.findNavController(v).popBackStack();
+//                                Navigation.findNavController(v).popBackStack();
+                                while(Navigation.findNavController(view).popBackStack());
                                 dialog.dismiss();
                                 if (Model.instance.getUser().isBarbershop()){
                                     Navigation.findNavController(v).

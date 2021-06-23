@@ -7,6 +7,11 @@ import android.graphics.Color;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
@@ -14,17 +19,8 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
-import android.provider.Settings;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.Toast;
-
 import com.example.finalproject.R;
 import com.example.finalproject.model.Barbershop;
-import com.example.finalproject.ui.barbershopDetails.BarbershopDetailsViewModel;
-import com.example.finalproject.ui.signUp.SignUpFragment;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -42,8 +38,6 @@ import com.karumi.dexter.listener.PermissionDeniedResponse;
 import com.karumi.dexter.listener.PermissionGrantedResponse;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.single.PermissionListener;
-
-import java.util.List;
 
 
 public class BarbershopsOnMapFragment extends Fragment implements OnMapReadyCallback {
@@ -162,7 +156,6 @@ public class BarbershopsOnMapFragment extends Fragment implements OnMapReadyCall
                 Navigation.findNavController(view).navigate(action);
             }
         });
-
         drawAllBarbershopsMarks();
     }
 
@@ -174,7 +167,6 @@ public class BarbershopsOnMapFragment extends Fragment implements OnMapReadyCall
             }
         }
     }
-
 
 }
 

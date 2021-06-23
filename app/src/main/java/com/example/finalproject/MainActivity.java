@@ -21,7 +21,7 @@ import com.google.android.material.navigation.NavigationView;
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private AppBarConfiguration mAppBarConfiguration;
-    public static NavController navController;
+    NavController navController;
     public static ActionBar actionBar;
     public static NavigationView navigationView;
     DrawerLayout drawer;
@@ -108,6 +108,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     Model.instance.signOut();
                     //Pop the all prev pages to start over:
                     while(navController.popBackStack());
+                    //Set user on Model to null
+                    Model.instance.setUser(null,()->{});
                     //Set item menu visible if he is np visible:
                     if(!(MainActivity.navigationView.getMenu().getItem(0).getSubMenu().getItem(1).isVisible()))
                         MainActivity.navigationView.getMenu().getItem(0).getSubMenu().getItem(1).setVisible(true);

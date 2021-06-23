@@ -142,7 +142,8 @@ public class SignUpFragment extends Fragment{
         {
             Model.instance.saveUser(newUser, "signUp", ()->{
             dialog.dismiss();
-            Navigation.findNavController(view).navigate(R.id.nav_barbershops_list_Fragment);
+                while(Navigation.findNavController(view).popBackStack());
+                Navigation.findNavController(view).navigate(R.id.nav_barbershops_list_Fragment);
             });
         }
         //Regular user with image:
@@ -159,6 +160,7 @@ public class SignUpFragment extends Fragment{
                     Model.instance.saveUser(newUser, "update", ()->
                     {
                         dialog.dismiss();
+                        while(Navigation.findNavController(view).popBackStack());
                         Navigation.findNavController(view).navigate(R.id.nav_barbershops_list_Fragment);
                     });
                 });
@@ -182,6 +184,7 @@ public class SignUpFragment extends Fragment{
                     saveBarbershop(null);
             });
         }
+
         //User wih image and he is a Barbershop:
         else if(imageBitmap!=null && barbershop!=null)
         {
@@ -308,6 +311,7 @@ public class SignUpFragment extends Fragment{
 
         dialog.dismiss();
         MainActivity.navigationView.getMenu().getItem(0).getSubMenu().getItem(1).setVisible(false);
+        while(Navigation.findNavController(view).popBackStack());
         Navigation.findNavController(view).navigate(R.id.nav_barbershopCalendarFragment);
 
     }

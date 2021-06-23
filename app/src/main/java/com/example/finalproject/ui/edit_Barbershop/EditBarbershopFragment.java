@@ -64,14 +64,15 @@ public class EditBarbershopFragment extends Fragment {
         editBarbershopViewModel = new ViewModelProvider(this).
                 get(EditBarbershopViewModel.class);
 
-        barbershop = editBarbershopViewModel.getCurrentBarbershop(Model.instance.getUser().getId());
+        editBarbershopViewModel.getData().observe(getViewLifecycleOwner(), (data)->{
 
-        nameEt.setText(barbershop.getName());
-        addressEt.setText(barbershop.getAddress());
-        phoneEt.setText(barbershop.getPhone());
-
-        if(barbershop.getAvatar()!=null && !(barbershop.getAvatar().equals("")))
-            Picasso.get().load(barbershop.getAvatar()).into(imageV);
+            barbershop = editBarbershopViewModel.getCurrentBarbershop(Model.instance.getUser().getId());
+            nameEt.setText(barbershop.getName());
+            addressEt.setText(barbershop.getAddress());
+            phoneEt.setText(barbershop.getPhone());
+            if(barbershop.getAvatar()!=null && !(barbershop.getAvatar().equals("")))
+                Picasso.get().load(barbershop.getAvatar()).into(imageV);
+        });
 
 
         backBtn.setOnClickListener(v->Navigation.findNavController(v).navigateUp());
@@ -106,6 +107,7 @@ public class EditBarbershopFragment extends Fragment {
         popupLoadingDialog();
         saveBtn.setEnabled(false);
         cameraImgB.setEnabled(false);
+        galleryImgB.setEnabled(false);
 
         if(imageBitmap!=null)
         {
@@ -128,7 +130,7 @@ public class EditBarbershopFragment extends Fragment {
 
         if(url!=null)
             barbershop.setAvatar(url);
-        else
+        else if(barbershop.getAvatar()==null || barbershop.getAvatar().equals(""))
             barbershop.setAvatar("");
 
 

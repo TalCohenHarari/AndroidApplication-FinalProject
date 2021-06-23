@@ -21,6 +21,65 @@
             android:layout_height="wrap_content">
 
             <TextView
+                android:id="@+id/textView12"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:fontFamily="@font/arizonia"
+                android:text="Name: "
+                android:textColor="#FFFFFF"
+                android:textSize="30sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@+id/userDetails_username_tv"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/userDetails_username_tv" />
+
+            <TextView
+                android:id="@+id/textView14"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="326dp"
+                android:fontFamily="@font/arizonia"
+                android:text="Email:"
+                android:textColor="#FFFFFF"
+                android:textSize="30sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@+id/userDetails_email_tv"
+                app:layout_constraintStart_toStartOf="@+id/textView12"
+                app:layout_constraintTop_toTopOf="@+id/userDetails_email_tv"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <TextView
+                android:id="@+id/textView18"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="64dp"
+                android:fontFamily="@font/arizonia"
+                android:text="Phone:"
+                android:textColor="#FFFFFF"
+                android:textSize="30sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@+id/userDetails_phone_tv"
+                app:layout_constraintStart_toStartOf="@+id/textView14"
+                app:layout_constraintTop_toTopOf="@+id/userDetails_phone_tv"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <TextView
+                android:id="@+id/textView19"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="68dp"
+                android:fontFamily="@font/arizonia"
+                android:text="Password:"
+                android:textColor="#FFFFFF"
+                android:textSize="30sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@+id/userDetails_password_tv"
+                app:layout_constraintStart_toStartOf="@+id/textView18"
+                app:layout_constraintTop_toTopOf="@+id/userDetails_password_tv"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <TextView
                 android:id="@+id/home_login_txt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -58,12 +117,10 @@
                 android:id="@+id/userDetails_password_tv"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="16dp"
-                android:background="@drawable/input_bg"
-                android:drawableLeft="@drawable/security_icon"
                 android:drawablePadding="10dp"
                 android:ems="10"
-                android:hint="Password"
                 android:inputType="textPassword"
                 android:paddingLeft="20dp"
                 android:paddingTop="13dp"
@@ -71,17 +128,18 @@
                 android:paddingBottom="10dp"
                 android:textColor="@color/white"
                 android:textColorHint="#B9FFFFFF"
+                android:textSize="18sp"
+                android:textStyle="italic"
                 app:layout_constraintEnd_toEndOf="@+id/userDetails_phone_tv"
-                app:layout_constraintStart_toStartOf="@+id/userDetails_phone_tv"
+                app:layout_constraintStart_toEndOf="@+id/textView19"
                 app:layout_constraintTop_toBottomOf="@+id/userDetails_phone_tv" />
 
             <TextView
                 android:id="@+id/userDetails_phone_tv"
                 android:layout_width="0dp"
                 android:layout_height="43dp"
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="16dp"
-                android:background="@drawable/input_bg"
-                android:drawableLeft="@drawable/phone_icon"
                 android:drawablePadding="10dp"
                 android:hint="Phone is missing"
                 android:inputType="phone"
@@ -91,8 +149,10 @@
                 android:paddingBottom="10dp"
                 android:textColor="@color/white"
                 android:textColorHint="#B9FFFFFF"
+                android:textSize="18sp"
+                android:textStyle="italic"
                 app:layout_constraintEnd_toEndOf="@+id/userDetails_email_tv"
-                app:layout_constraintStart_toStartOf="@+id/userDetails_email_tv"
+                app:layout_constraintStart_toEndOf="@+id/textView18"
                 app:layout_constraintTop_toBottomOf="@+id/userDetails_email_tv" />
 
 
@@ -100,13 +160,10 @@
                 android:id="@+id/userDetails_username_tv"
                 android:layout_width="0dp"
                 android:layout_height="43dp"
-                android:layout_marginStart="16dp"
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="55dp"
                 android:layout_marginEnd="16dp"
-                android:background="@drawable/input_bg"
-                android:drawableLeft="@drawable/person_icon"
                 android:drawablePadding="10dp"
-                android:hint="Username"
                 android:inputType="textPersonName"
                 android:paddingLeft="20dp"
                 android:paddingTop="13dp"
@@ -114,17 +171,18 @@
                 android:paddingBottom="10dp"
                 android:textColor="@color/white"
                 android:textColorHint="#B9FFFFFF"
+                android:textSize="18sp"
+                android:textStyle="italic"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/textView12"
                 app:layout_constraintTop_toBottomOf="@+id/home_login_txt" />
 
             <TextView
                 android:id="@+id/userDetails_email_tv"
                 android:layout_width="0dp"
                 android:layout_height="43dp"
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="16dp"
-                android:background="@drawable/input_bg"
-                android:drawableLeft="@drawable/email_icon"
                 android:drawablePadding="10dp"
                 android:hint="Email is missing"
                 android:inputType="textWebEmailAddress"
@@ -134,8 +192,10 @@
                 android:paddingBottom="10dp"
                 android:textColor="@color/white"
                 android:textColorHint="#B9FFFFFF"
+                android:textSize="18sp"
+                android:textStyle="italic"
                 app:layout_constraintEnd_toEndOf="@+id/userDetails_username_tv"
-                app:layout_constraintStart_toStartOf="@+id/userDetails_username_tv"
+                app:layout_constraintStart_toEndOf="@+id/textView14"
                 app:layout_constraintTop_toBottomOf="@+id/userDetails_username_tv" />
 
 

@@ -28,6 +28,8 @@ public class BarbershopDetailsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        //Initialize Params
         View view = inflater.inflate(R.layout.fragment_baebershop_details, container, false);
         TextView nameTv = view.findViewById(R.id.baebershopDeails_name);
         TextView addressTv = view.findViewById(R.id.baebershopDeails_address);
@@ -36,9 +38,14 @@ public class BarbershopDetailsFragment extends Fragment {
         Button backBtn = view.findViewById(R.id.baebershopDeails_back_btn);
         ImageView editBtn = view.findViewById(R.id.baebershopDeails_edit);
         imageV = view.findViewById(R.id.baebershopDeails_image_imgV);
+
+        //ViewModel
         barbershopDetailsViewModel  = new ViewModelProvider(this).
                 get(BarbershopDetailsViewModel.class);
         barbershopDetailsViewModel.getData().observe(getViewLifecycleOwner(), (data)->{
+            // Getting the parameters from the Bundle:
+            barbershopIdPosition = BarbershopDetailsFragmentArgs.fromBundle(getArguments()).getBaebershopID();
+
             barbershop = data.get(barbershopIdPosition);
             nameTv.setText(barbershop.getName());
             addressTv.setText(barbershop.getAddress());
@@ -55,8 +62,6 @@ public class BarbershopDetailsFragment extends Fragment {
         });
 
 
-        // Getting the parameters from the Bundle:
-        barbershopIdPosition = BarbershopDetailsFragmentArgs.fromBundle(getArguments()).getBaebershopID();
 
 
         //Add an appointment:

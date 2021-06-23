@@ -54,6 +54,7 @@ public class UserDetailsFragment extends Fragment {
 
         userDetailsViewModel  = new ViewModelProvider(this).
                 get(UserDetailsViewModel.class);
+        userDetailsViewModel.getData().observe(getViewLifecycleOwner(), (data)->{});
 
         userName.setText(Model.instance.getUser().name);
         password.setText(Model.instance.getUser().password);
@@ -126,7 +127,8 @@ public class UserDetailsFragment extends Fragment {
             Model.instance.saveUser(Model.instance.getUser(),"delete",()->{
                 dialog.dismiss();
                 Model.instance.signOut();
-                while(MainActivity.navController.popBackStack());
+//                while(MainActivity.navController.popBackStack());
+                while(Navigation.findNavController(view).popBackStack());
                 Navigation.findNavController(view).navigate(R.id.nav_login);
             });
         }

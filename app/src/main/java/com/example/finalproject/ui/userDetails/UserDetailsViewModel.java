@@ -16,6 +16,10 @@ public class UserDetailsViewModel extends ViewModel {
         barbershopsList = Model.instance.getAllBarbershops();
     }
 
+    public LiveData<List<Barbershop>> getData() {
+        return barbershopsList;
+    }
+
     public Integer geFilterByPosition(String userId){
 
         List<Barbershop> barbershops =  barbershopsList.getValue();
