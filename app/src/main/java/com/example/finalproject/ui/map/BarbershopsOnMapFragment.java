@@ -119,7 +119,7 @@ public class BarbershopsOnMapFragment extends Fragment implements OnMapReadyCall
     private void goToLocation(double latitude, double longitude) {
         LatLng latLng = new LatLng(latitude, longitude);
 //        LatLng latLng = new LatLng(32.013733,34.765637);
-        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 18);
+        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 16);
         mGoogleMap.moveCamera(cameraUpdate);
         mGoogleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
 //        mGoogleMap.addMarker(new MarkerOptions().position(latLng).title("My Location"));
@@ -163,7 +163,7 @@ public class BarbershopsOnMapFragment extends Fragment implements OnMapReadyCall
         if(isPermissionGranted) {
             for (Barbershop b : mapViewModel.getData().getValue()) {
                 LatLng latLng = new LatLng(b.latitude, b.longitude);
-                mGoogleMap.addMarker(new MarkerOptions().position(latLng).title(b.getName()));
+                mGoogleMap.addMarker(new MarkerOptions().position(latLng).title(b.getName() + " (Barbershop)"));
             }
         }
     }

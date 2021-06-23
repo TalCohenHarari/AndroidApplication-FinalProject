@@ -33,21 +33,21 @@
                 android:id="@+id/editBaebershop_imageGallery_Btn"
                 android:layout_width="41dp"
                 android:layout_height="35dp"
-                android:layout_marginEnd="14dp"
-                android:layout_marginBottom="8dp"
+                android:layout_marginTop="26dp"
+                android:layout_marginEnd="16dp"
                 android:background="@drawable/gallery_icon"
-                app:layout_constraintBottom_toTopOf="@+id/editBaebershop_imageCamera_Btn"
-                app:layout_constraintEnd_toStartOf="@+id/editBaebershop_image_imgV" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/editBaebershop_image_imgV" />
 
             <ImageButton
                 android:id="@+id/editBaebershop_imageCamera_Btn"
                 android:layout_width="41dp"
                 android:layout_height="35dp"
-                android:layout_marginEnd="14dp"
-                android:layout_marginBottom="22dp"
+                android:layout_marginEnd="8dp"
                 android:background="@drawable/camera_icon"
-                app:layout_constraintBottom_toTopOf="@+id/editBaebershop_name_et"
-                app:layout_constraintEnd_toStartOf="@+id/editBaebershop_image_imgV" />
+                app:layout_constraintBottom_toBottomOf="@+id/editBaebershop_imageGallery_Btn"
+                app:layout_constraintEnd_toStartOf="@+id/editBaebershop_imageGallery_Btn"
+                app:layout_constraintTop_toTopOf="@+id/editBaebershop_imageGallery_Btn" />
 
             <EditText
                 android:id="@+id/editBaebershop_phone_et"
@@ -63,7 +63,8 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toEndOf="@+id/textView17"
-                app:layout_constraintTop_toTopOf="@+id/textView17" />
+                app:layout_constraintTop_toTopOf="@+id/textView17"
+                app:layout_constraintVertical_bias="0.0" />
 
             <EditText
                 android:id="@+id/editBaebershop_name_et"
@@ -100,6 +101,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
+                android:layout_marginTop="100dp"
                 android:layout_marginBottom="11dp"
                 android:fontFamily="@font/arizonia"
                 android:text="Name: "
@@ -107,7 +109,8 @@
                 android:textSize="30sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@+id/textView16"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/editBaebershop_image_imgV" />
 
             <TextView
                 android:id="@+id/textView16"
@@ -142,17 +145,17 @@
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_marginStart="8dp"
-                android:layout_marginBottom="8dp"
                 android:src="@drawable/delete_icon"
-                app:layout_constraintBottom_toTopOf="@+id/textView4"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintEnd_toStartOf="@+id/editBaebershop_imageCamera_Btn"
+                app:layout_constraintHorizontal_bias="0.031"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/editBaebershop_imageCamera_Btn" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/editBaebershop_back_btn"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="550dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginBottom="16dp"
                 android:background="@drawable/button"
@@ -160,8 +163,20 @@
                 android:textColor="@color/white"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/editBaebershop_save_btn"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintStart_toEndOf="@+id/editBaebershop_save_btn" />
+
+            <!--            <fragment-->
+<!--                android:id="@+id/editBaebershop_map_fragment"-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="0dp"-->
+<!--                android:layout_marginStart="32dp"-->
+<!--                android:layout_marginTop="32dp"-->
+<!--                android:layout_marginEnd="32dp"-->
+<!--                android:layout_marginBottom="16dp"-->
+<!--                app:layout_constraintBottom_toTopOf="@+id/editBaebershop_image_imgV"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintTop_toTopOf="parent" />-->
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/editBaebershop_save_btn"
@@ -179,29 +194,38 @@
                 app:layout_constraintTop_toTopOf="@+id/editBaebershop_back_btn"
                 app:layout_constraintVertical_bias="0.0" />
 
-<!--            <fragment-->
-<!--                android:id="@+id/editBaebershop_map_fragment"-->
-<!--                android:layout_width="0dp"-->
-<!--                android:layout_height="0dp"-->
-<!--                android:layout_marginStart="32dp"-->
-<!--                android:layout_marginTop="32dp"-->
-<!--                android:layout_marginEnd="32dp"-->
-<!--                android:layout_marginBottom="16dp"-->
-<!--                app:layout_constraintBottom_toTopOf="@+id/editBaebershop_image_imgV"-->
-<!--                app:layout_constraintEnd_toEndOf="parent"-->
-<!--                app:layout_constraintStart_toStartOf="parent"-->
-<!--                app:layout_constraintTop_toTopOf="parent" />-->
-
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/editBaebershop_image_imgV"
-                android:layout_width="152dp"
-                android:layout_height="114dp"
-                android:layout_marginBottom="22dp"
+                android:layout_width="0dp"
+                android:layout_height="203dp"
+                android:layout_marginTop="40dp"
                 android:src="@drawable/avatar"
-                app:layout_constraintBottom_toTopOf="@+id/editBaebershop_name_et"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.976"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintHorizontal_bias="0.437"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/imageView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:src="@drawable/location_icon"
+                app:layout_constraintBottom_toTopOf="@+id/editBaebershop_save_btn"
+                app:layout_constraintStart_toStartOf="@+id/textView17"
+                app:layout_constraintTop_toBottomOf="@+id/textView17" />
+
+            <TextView
+                android:id="@+id/editBarbershop_clickMe"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="Click me to change the location on the map"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="@+id/imageView2"
+                app:layout_constraintStart_toEndOf="@+id/imageView2"
+                app:layout_constraintTop_toTopOf="@+id/imageView2" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

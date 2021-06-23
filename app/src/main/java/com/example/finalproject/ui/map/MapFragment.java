@@ -19,9 +19,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
 import com.example.finalproject.R;
+import com.example.finalproject.model.Barbershop;
+import com.example.finalproject.model.Model;
+import com.example.finalproject.ui.edit_Barbershop.EditBarbershopFragment;
 import com.example.finalproject.ui.signUp.SignUpFragment;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -55,7 +59,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     Button saveLocationBtn;
     double mLatitude = 0;
     double mLongitude = 0;
-
+    MapViewModel mapViewModel;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -63,6 +67,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         view = inflater.inflate(R.layout.fragment_map, container, false);
         zoom = view.findViewById(R.id.floatingActionButton_map);
         saveLocationBtn = view.findViewById(R.id.signUp_saveLOcation_btn);
+
+
+        mapViewModel  = new ViewModelProvider(this).
+                get(MapViewModel.class);
+        mapViewModel.getData().observe(getViewLifecycleOwner(), (data)-> {});
+
 
         checkPermission();
 
@@ -77,8 +87,15 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             }
         });
         saveLocationBtn.setOnClickListener(v -> {
-            SignUpFragment.latitude = mLatitude;
-            SignUpFragment.longitude = mLongitude;
+            if(Model.instance.getUser()!=null && Model.instance.getUser().isBarbershop())
+            {
+                EditBarbershopFragment.latitude = mLatitude;
+                EditBarbershopFragment.longitude = mLongitude;
+            }
+            else {
+                SignUpFragment.latitude = mLatitude;
+                SignUpFragment.longitude = mLongitude;
+            }
             Navigation.findNavController(view).navigateUp();
         });
 
@@ -128,7 +145,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private void goToLocation(double latitude, double longitude) {
         LatLng latLng = new LatLng(latitude, longitude);
 //        LatLng latLng = new LatLng(32.013733,34.765637);
-        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 18);
+        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 16);
         mGoogleMap.moveCamera(cameraUpdate);
         mGoogleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
 //        mGoogleMap.addMarker(new MarkerOptions().position(latLng).title("My Location"));
@@ -172,8 +189,21 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 return false;
             }
         });
+
+        if(Model.instance.getUser()!=null && Model.instance.getUser().isBarbershop())
+            drawBarbershopMark();
     }
 
+    private void drawBarbershopMark(){
+        if(isPermissionGranted) {
+            for (Barbershop b : mapViewModel.getData().getValue()) {
+                if(Model.instance.getUser().getId().equals(b.getOwner())) {
+                    LatLng latLng = new LatLng(b.latitude, b.longitude);
+                    mGoogleMap.addMarker(new MarkerOptions().position(latLng).title(b.getName() + " (My Barbershop"));
+                }
+            }
+        }
+    }
 
 
 }

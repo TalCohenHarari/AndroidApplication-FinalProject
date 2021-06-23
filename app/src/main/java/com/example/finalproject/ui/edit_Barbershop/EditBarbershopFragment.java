@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -41,11 +42,15 @@ public class EditBarbershopFragment extends Fragment {
     EditText nameEt;
     EditText addressEt;
     EditText phoneEt;
+    TextView clickMeLocationOnMap;
+    public static double latitude=0;
+    public static double longitude=0;
     Barbershop barbershop;
     Dialog dialog;
     ProgressBar pb;
     CircleImageView imageV;
     Bitmap imageBitmap;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -61,6 +66,8 @@ public class EditBarbershopFragment extends Fragment {
         cameraImgB = view.findViewById(R.id.editBaebershop_imageCamera_Btn);
         imageV = view.findViewById(R.id.editBaebershop_image_imgV);
         deleteImgV = view.findViewById(R.id.editBaebershop_delete_imgV);
+        clickMeLocationOnMap = view.findViewById(R.id.editBarbershop_clickMe);
+
         editBarbershopViewModel = new ViewModelProvider(this).
                 get(EditBarbershopViewModel.class);
 
@@ -79,7 +86,7 @@ public class EditBarbershopFragment extends Fragment {
         saveBtn.setOnClickListener(v->save());
         cameraImgB.setOnClickListener(v->takePicture());
         galleryImgB.setOnClickListener(v->takePictureFromGallery());
-
+        clickMeLocationOnMap.setOnClickListener(v->Navigation.findNavController(v).navigate(R.id.nav_mapFragment));
         //Delete Barbershop:
         deleteImgV.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -126,25 +133,23 @@ public class EditBarbershopFragment extends Fragment {
 
     void saveBarbershop(String url)
     {
-
-
         if(url!=null)
             barbershop.setAvatar(url);
         else if(barbershop.getAvatar()==null || barbershop.getAvatar().equals(""))
             barbershop.setAvatar("");
-
 
         barbershop.setName(nameEt.getText().toString());
         barbershop.setAddress(addressEt.getText().toString());
         barbershop.setPhone(phoneEt.getText().toString());
         barbershop.setDeleted(false);
         barbershop.setOwner(Model.instance.getUser().getId());
+        barbershop.setLatitude(latitude);
+        barbershop.setLongitude(longitude);
 
         Model.instance.saveBarbershop(barbershop, ()->{
             dialog.dismiss();
             Navigation.findNavController(view).navigateUp();
         });
-
     }
 
     private void popupLoadingDialog() {
