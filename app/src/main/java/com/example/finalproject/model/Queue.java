@@ -165,13 +165,17 @@ public class Queue{
         userQueue.queueDate = (String)json.get(QUEUE_DATE);
         userQueue.queueTime = (String)json.get(QUEUE_TIME);
         userQueue.queueAddress = (String)json.get(QUEUE_ADDRESS);
-        Timestamp ts = (Timestamp) json.get(LAST_UPDATED);
-        if(ts!=null)
-            userQueue.lastUpdated = new Long(ts.getSeconds());
-        else
-            userQueue.lastUpdated = new Long(0);
         userQueue.isQueueAvailable = (boolean) json.get(IS_QUEUE_AVAILABLE);
         userQueue.isDeleted = (boolean) json.get(IS_DELETED);
+
+        Timestamp ts = (Timestamp) json.get(LAST_UPDATED);
+        if(ts!=null) {
+            userQueue.lastUpdated = new Long(ts.getSeconds());
+        }
+        else {
+            userQueue.lastUpdated = new Long(0);
+        }
+
         return userQueue;
     }
 

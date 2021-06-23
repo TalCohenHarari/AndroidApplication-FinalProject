@@ -5,9 +5,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 
 import androidx.annotation.NonNull;
-import androidx.lifecycle.MutableLiveData;
 
-import com.example.finalproject.ui.login.LoginFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -29,14 +27,15 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class ModelFirebase {
-    final static String barbershopCollection = "barbershops";
+
     final static String userCollection = "users";
+    final static String barbershopCollection = "barbershops";
     final static String queueCollection = "queues";
 
 
     private ModelFirebase() {}
 
-    //--------------------------------------users--------------------------------------------
+    //--------------------------------------User--------------------------------------------
 
     public interface GetAllUsersListener {
         public void onComplete(List<User> users);
@@ -61,7 +60,7 @@ public class ModelFirebase {
                 });
     }
 
-    //Save and sign up:
+    //Save and signUp:
     public static void saveUser(User user, String action, Model.OnCompleteListener listener) {
 
         if (action.equals("signUp"))
@@ -140,8 +139,6 @@ public class ModelFirebase {
                 });
     }
 
-
-
     public static void isLoggedIn(Model.OnCompleteListener listener) {
 
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
@@ -171,8 +168,7 @@ public class ModelFirebase {
     }
 
 
-
-    //---------------------------------------Queues----------------------------------
+    //---------------------------------------Queue--------------------------------------------
 
     public interface GetAllQueuesListener{
         public void onComplete(List<Queue> queues);
@@ -191,9 +187,7 @@ public class ModelFirebase {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 list.add(Queue.create(document.getData()));
                             }
-                        } else {
-
-                        }
+                        } else { }
                         listener.onComplete(list);
                     }
                 });
@@ -216,7 +210,8 @@ public class ModelFirebase {
         });
     }
 
-    //----------------------------------barbershops------------------------------------
+    //----------------------------------Barbershop------------------------------------------
+
     public interface GetAllBarbershopsListener{
         public void onComplete(List<Barbershop> barbershops);
     }
@@ -273,8 +268,8 @@ public class ModelFirebase {
                 listener.onComplete();            }
         });
     }
-    //--------------------------------SaveImages in storage----------------------------
 
+    //--------------------------------SaveImages in storage----------------------------
 
     public static void uploadImage(Bitmap imageBmp, String name,String who, final Model.UpLoadImageListener listener){
         FirebaseStorage storage = FirebaseStorage.getInstance();

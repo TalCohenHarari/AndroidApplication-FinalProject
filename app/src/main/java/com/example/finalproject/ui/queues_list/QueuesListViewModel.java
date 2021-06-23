@@ -32,6 +32,14 @@ public class QueuesListViewModel extends ViewModel {
         return queuesList;
     }
 
+    public LiveData<List<Barbershop>> getBarbershopsList() {
+        return barbershopsList;
+    }
+
+    public LiveData<List<User>> getUsersList() {
+        return usersList;
+    }
+
     public List<Queue> getFilterForUser(String userId) {
         list = new LinkedList<>();
         if( queuesList.getValue()!=null)
@@ -51,14 +59,6 @@ public class QueuesListViewModel extends ViewModel {
         return list;
     }
 
-    public LiveData<List<Barbershop>> getBarbershopsList() {
-        return barbershopsList;
-    }
-
-    public LiveData<List<User>> getUsersList() {
-        return usersList;
-    }
-
     public String getUserName(String userId) {
 
         if(usersList.getValue()!=null)
@@ -68,6 +68,4 @@ public class QueuesListViewModel extends ViewModel {
 
         return "";
     }
-
-
 }

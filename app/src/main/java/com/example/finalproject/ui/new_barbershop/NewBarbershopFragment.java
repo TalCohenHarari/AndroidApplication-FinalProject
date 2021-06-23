@@ -50,7 +50,8 @@ public class NewBarbershopFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-         view = inflater.inflate(R.layout.fragment_new_baebershop, container, false);
+        //Initialise Params
+        view = inflater.inflate(R.layout.fragment_new_baebershop, container, false);
          nameEt = view.findViewById(R.id.newBarbershop_name);
          addressEt = view.findViewById(R.id.newBarbershop_address);
          phoneEt = view.findViewById(R.id.newBarbershop_phone);
@@ -59,21 +60,14 @@ public class NewBarbershopFragment extends Fragment {
         backBtn = view.findViewById(R.id.newBarbershop_back_btn);
         imageCameraBtn = view.findViewById(R.id.newBarbershop_imageCameraBtn);
         imageGalleryBtn = view.findViewById(R.id.newBarbershop_imageGalleryBtn);
-//        pb = view.findViewById(R.id.newBarbershop_progressBar);
-//         pb.setVisibility(View.INVISIBLE);
 
         //Get all data from signUp fragment:
-        String userName = NewBarbershopFragmentArgs.fromBundle(getArguments()).
-                getUserName();
-        String email = NewBarbershopFragmentArgs.fromBundle(getArguments()).
-                getEmail();
-        String phone = NewBarbershopFragmentArgs.fromBundle(getArguments()).
-                getPhone();
-        String password = NewBarbershopFragmentArgs.fromBundle(getArguments()).
-                getPassword();
-
+        String userName = NewBarbershopFragmentArgs.fromBundle(getArguments()).getUserName();
+        String email = NewBarbershopFragmentArgs.fromBundle(getArguments()).getEmail();
+        String phone = NewBarbershopFragmentArgs.fromBundle(getArguments()).getPhone();
+        String password = NewBarbershopFragmentArgs.fromBundle(getArguments()).getPassword();
         user = new User();
-        //Getting an ID from firebase
+        //The id we will get from firebase
         user.setName(userName);
         user.setEmail(email);
         user.setPhone(phone);
@@ -81,23 +75,9 @@ public class NewBarbershopFragment extends Fragment {
         user.setAvailable(true);
         user.setBarbershop(true);
 
-        saveBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Model.instance.saveUser(user,"signUp",()->{
-                    save();
-                });
-
-            }
-        });
-
-        backBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-               Navigation.findNavController(v).navigateUp();
-            }
-        });
-
+        //Listeners
+        saveBtn.setOnClickListener(v -> Model.instance.saveUser(user,"signUp",()->{ save(); }));
+        backBtn.setOnClickListener(v -> Navigation.findNavController(v).navigateUp());
         imageCameraBtn.setOnClickListener(v->takePicture());
         imageGalleryBtn.setOnClickListener(v->takePictureFromGallery());
 
@@ -210,8 +190,8 @@ public class NewBarbershopFragment extends Fragment {
     final static int RESULT_SUCCESS = -1;
      void takePicture()
      {
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-//        //start the activity camera:
+         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+         //start the activity camera:
          startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
     }
     void takePictureFromGallery(){

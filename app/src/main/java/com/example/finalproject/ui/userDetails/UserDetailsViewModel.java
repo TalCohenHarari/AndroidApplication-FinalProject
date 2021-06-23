@@ -5,11 +5,11 @@ import androidx.lifecycle.ViewModel;
 
 import com.example.finalproject.model.Barbershop;
 import com.example.finalproject.model.Model;
-import com.example.finalproject.model.User;
 
 import java.util.List;
 
 public class UserDetailsViewModel extends ViewModel {
+
     private LiveData<List<Barbershop>> barbershopsList;
 
     public UserDetailsViewModel() {

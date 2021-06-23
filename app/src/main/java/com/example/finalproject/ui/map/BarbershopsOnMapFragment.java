@@ -43,12 +43,12 @@ import com.karumi.dexter.listener.single.PermissionListener;
 public class BarbershopsOnMapFragment extends Fragment implements OnMapReadyCallback {
 
 
+    View view;
+    MapViewModel mapViewModel;
+    boolean isPermissionGranted;
     FusedLocationProviderClient client;
     GoogleMap mGoogleMap;
     FloatingActionButton zoom;
-    boolean isPermissionGranted;
-    View view;
-    MapViewModel mapViewModel;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

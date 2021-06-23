@@ -296,14 +296,14 @@ public class SignUpFragment extends Fragment{
             for (int i = 0; i < hours.size(); i++)
             {
                 Queue queue = new Queue();
-                queue.barbershopId = barbershop.owner;
-                queue.userId="";
-                queue.id=""+i + "_" + barbershop.owner;
-                queue.isQueueAvailable=true;
-                queue.barbershopName = barbershop.name;
-                queue.queueTime= hours.get(i);
-                queue.queueDate = j + "/" + 6 + "/2021";
-                queue.queueAddress=barbershop.address;
+                queue.setBarbershopId(barbershop.getOwner());
+                queue.setUserId("");
+                queue.setId(""+i + "_" + barbershop.getOwner());
+                queue.setQueueAvailable(true);
+                queue.setBarbershopName(barbershop.getName());
+                queue.setQueueTime(hours.get(i));
+                queue.setQueueDate(j + "/" + 6 + "/2021");
+                queue.setQueueAddress(barbershop.getAddress());
                 queuesList.add(queue);
             }
         }

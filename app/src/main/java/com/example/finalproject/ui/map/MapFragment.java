@@ -1,7 +1,6 @@
 package com.example.finalproject.ui.map;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -16,7 +15,6 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
@@ -27,8 +25,6 @@ import com.example.finalproject.model.Barbershop;
 import com.example.finalproject.model.Model;
 import com.example.finalproject.ui.edit_Barbershop.EditBarbershopFragment;
 import com.example.finalproject.ui.signUp.SignUpFragment;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -51,15 +47,15 @@ import com.karumi.dexter.listener.single.PermissionListener;
 public class MapFragment extends Fragment implements OnMapReadyCallback {
 
 
+    View view;
+    MapViewModel mapViewModel;
+    boolean isPermissionGranted;
     FusedLocationProviderClient client;
     GoogleMap mGoogleMap;
     FloatingActionButton zoom;
-    boolean isPermissionGranted;
-    View view;
     Button saveLocationBtn;
     double mLatitude = 0;
     double mLongitude = 0;
-    MapViewModel mapViewModel;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

@@ -17,6 +17,15 @@ public class Model {
 
     private Model() {}
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user,OnCompleteListener listener) {
+        this.user = user;
+        listener.onComplete();
+    }
+
     public interface OnCompleteListener {
         void onComplete();
     }
@@ -33,55 +42,47 @@ public class Model {
     public MutableLiveData<LoadingState> loadingState =
             new MutableLiveData<LoadingState>(LoadingState.loaded);
 
-    public User getUser() {
-        return user;
-    }
 
-    public void setUser(User user,OnCompleteListener listener) {
-        this.user = user;
-        listener.onComplete();
-    }
 
-    //---------------------------------------users---------------------------------------
+    //---------------------------------------User---------------------------------------------
 
     LiveData<List<User>> allUsers =   AppLocalDB.db.userDao().getAll();
 
     public LiveData<List<User>> getAllUsers() {
-    loadingState.setValue(LoadingState.loading);
-    //read the local last update time
-    Long localLastUpdate = User.getLocalLastUpdateTime();
-    //ge all updates from firebase
-    ModelFirebase.getAllUsers(localLastUpdate,(users)->{
-        executorService.execute(()->
-        {
-            Long lastUpdate = new Long(0);
-            //update the local DB with the new records
-            for (User user: users)
+        loadingState.setValue(LoadingState.loading);
+        //read the local last update time
+        Long localLastUpdate = User.getLocalLastUpdateTime();
+        //ge all updates from firebase
+        ModelFirebase.getAllUsers(localLastUpdate,(users)->{
+            executorService.execute(()->
             {
-
-                if(!(user.isAvailable()))
+                Long lastUpdate = new Long(0);
+                //update the local DB with the new records
+                for (User user: users)
                 {
-                    AppLocalDB.db.userDao().delete(user);
+                    if(!(user.isAvailable()))
+                    {
+                        AppLocalDB.db.userDao().delete(user);
+                    }
+                    else{
+                        AppLocalDB.db.userDao().insertAll(user);
+                    }
+                    //update the local last update time
+                    if(lastUpdate < user.lastUpdated)
+                    {
+                        lastUpdate = user.lastUpdated;
+                    }
                 }
-                else{
-                    AppLocalDB.db.userDao().insertAll(user);
-                }
-                //update the local last update time
-                if(lastUpdate < user.lastUpdated)
-                {
-                    lastUpdate = user.lastUpdated;
-                }
-            }
-            User.setLocalLastUpdateTime(lastUpdate);
-            //postValue make it happen in main thread of the view and not in this thread:
-            loadingState.postValue(LoadingState.loaded);
-            //read all the data from the local DB -> return the data to the caller
-            //automatically perform by room -> live data gets updated
+                User.setLocalLastUpdateTime(lastUpdate);
+                //postValue make it happen in main thread of the view and not in this thread:
+                loadingState.postValue(LoadingState.loaded);
+                //read all the data from the local DB -> return the data to the caller
+                //automatically perform by room -> live data gets updated
+            });
         });
-    });
 
-    return allUsers;
-}
+        return allUsers;
+    }
 
     public void saveUser(User user, String action, OnCompleteListener listener) {
         loadingState.setValue(LoadingState.loading);
@@ -95,7 +96,6 @@ public class Model {
         ModelFirebase.login(username, password, () -> listener.onComplete());
     }
 
-
     public void isLoggedIn(OnCompleteListener listener) {
         ModelFirebase.isLoggedIn(() ->{
             loadingStateDialog.setValue(LoadingState.loaded);
@@ -108,7 +108,7 @@ public class Model {
     }
 
 
-    //-----------------------------------------Queues----------------------------------------
+    //-----------------------------------------Queue----------------------------------------
 
     LiveData<List<Queue>> allQueues = AppLocalDB.db.QueueDao().getAll();
 
@@ -121,7 +121,6 @@ public class Model {
         ModelFirebase.getAllQueues(localLastUpdate,(queues)->{
             executorService.execute(()->
             {
-
                 Long lastUpdate = new Long(0);
                 //update the local DB with the new records
                 for (Queue queue : queues)
@@ -159,17 +158,13 @@ public class Model {
     }
 
     public void createCalendar(List<Queue> queues, OnCompleteListener listener) {
-        loadingState.setValue(LoadingState.loading);
         for (int i = 0; i < queues.size(); i++) {
-            ModelFirebase.saveQueue(queues.get(i),()->{
-                getAllQueues();
-                listener.onComplete();
-            });
+            saveQueue(queues.get(i),()->{});
         }
     }
 
 
-    //---------------------------------------barberShops-----------------------------------
+    //---------------------------------------Barbershop-----------------------------------
 
     LiveData<List<Barbershop>> allBarbershops = AppLocalDB.db.BarbershopDao().getAll();
 
@@ -180,8 +175,7 @@ public class Model {
         Long localLastUpdate = Barbershop.getLocalLastUpdateTime();
         //ge all updates from firebase
         ModelFirebase.getAllBarbershops(localLastUpdate,(barbershops)->{
-                executorService.execute(()->
-                {
+            executorService.execute(()-> {
 
                 Long lastUpdate = new Long(0);
                 //update the local DB with the new records
@@ -217,7 +211,7 @@ public class Model {
     }
 
 
-    //----------------------------Save images in firebase----------------------------------
+    //----------------------------Save Images In Firebase----------------------------------
     public interface  UpLoadImageListener{
         void onComplete(String url);
     }

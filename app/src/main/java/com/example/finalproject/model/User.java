@@ -11,7 +11,6 @@ import com.example.finalproject.MyApplication;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.FieldValue;
 
-import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -131,6 +130,7 @@ public class User{
 
         return json;
     }
+
     static public User create(Map<String,Object> json) {
         User user = new User();
         user.id = (String)json.get(ID);

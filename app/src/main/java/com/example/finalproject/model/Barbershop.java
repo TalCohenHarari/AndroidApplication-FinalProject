@@ -55,8 +55,8 @@ public class Barbershop{
         this.address = address;
     }
 
-    public String getPhone() {
-        return phone;
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     public void setAvatar(String avatar) {
@@ -93,8 +93,8 @@ public class Barbershop{
         return address;
     }
 
-    public void setPhone(String phone) {
-        this.phone = phone;
+    public String getPhone() {
+        return phone;
     }
 
     public String getAvatar() {

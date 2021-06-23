@@ -10,26 +10,22 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
 import com.example.finalproject.MainActivity;
 import com.example.finalproject.R;
-import com.example.finalproject.Utilities;
 import com.example.finalproject.model.Model;
-import com.example.finalproject.model.User;
 
 
 public class LoginFragment extends Fragment {
 
-    public Dialog dialog;
-    public LoginViewModel loginViewModel;
+    Dialog dialog;
+    LoginViewModel loginViewModel;
     View view;
-
     EditText userName;
     EditText password;
     Button loginBtn;
@@ -51,13 +47,10 @@ public class LoginFragment extends Fragment {
         loginViewModel = new ViewModelProvider(this).get(LoginViewModel.class);
         loginViewModel.getData().observe(getViewLifecycleOwner(), (data)->{});
 
-
         popupLoadingDialog();
         //Disable return toolBar Btn:
         if( MainActivity.actionBar!=null)
             MainActivity.actionBar.setDisplayHomeAsUpEnabled(false);
-
-
 
         //Listeners
         signUp.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.nav_signUpFragment));

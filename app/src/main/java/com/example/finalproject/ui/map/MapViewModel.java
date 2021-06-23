@@ -22,10 +22,9 @@ public class MapViewModel extends ViewModel {
     public int getBarbershopPosition(String barbershopName){
 
         for(int i=0; i<barbershopsList.getValue().size(); ++i)
-        {
             if(barbershopsList.getValue().get(i).getName().equals(barbershopName))
                 return i;
-        }
+
         return 0;
     }
 }

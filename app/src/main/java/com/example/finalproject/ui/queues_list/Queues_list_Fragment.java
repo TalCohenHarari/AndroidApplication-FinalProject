@@ -37,21 +37,26 @@ import java.util.Random;
 public class Queues_list_Fragment extends Fragment {
 
 
-    public static QueuesListViewModel queuesListViewModel;
-    MyAdapter adapter;
-    Dialog dialog;
-    Button backDialogBtn;
-    Button deleteDialogBtn;
     View view;
+    public static QueuesListViewModel queuesListViewModel;
     FloatingActionButton plusBtn;
-    String date;
+    Button deleteDialogBtn;
+    Button backDialogBtn;
+    MyAdapter adapter;
     ProgressBar pb;
+    Dialog dialog;
+    String date;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        //Initialise Params
+        view = inflater.inflate(R.layout.fragment_queues_list, container, false);
+        plusBtn = view.findViewById(R.id.myQueues_add_btn);
+        pb = view.findViewById(R.id.myQueues_progressBar);
+        pb.setVisibility(View.GONE);
 
-        //If it's barbershop get the data from his calendar:
+        //Get data from bundle
         if(Model.instance.getUser().isBarbershop())
             date = Queues_list_FragmentArgs.fromBundle(getArguments()).getFuulDate();
 
@@ -66,16 +71,9 @@ public class Queues_list_Fragment extends Fragment {
                         queuesListViewModel.getFilterForUser(Model.instance.getUser().getId());
                     adapter.notifyDataSetChanged();
                 });
-        queuesListViewModel.getBarbershopsList().observe(getViewLifecycleOwner(),
-                (data)->{});
-        queuesListViewModel.getUsersList().observe(getViewLifecycleOwner(),
-                (data)->{});
+        queuesListViewModel.getBarbershopsList().observe(getViewLifecycleOwner(), (data)->{});
+        queuesListViewModel.getUsersList().observe(getViewLifecycleOwner(), (data)->{});
 
-        //Initialize params
-       view = inflater.inflate(R.layout.fragment_queues_list, container, false);
-        pb = view.findViewById(R.id.myQueues_progressBar);
-        pb.setVisibility(View.GONE);
-        plusBtn = view.findViewById(R.id.myQueues_add_btn);
 
         // RecyclerView
         RecyclerView queueList = view.findViewById(R.id.myQueues_RecyclerView);
@@ -115,6 +113,13 @@ public class Queues_list_Fragment extends Fragment {
                 openNewQueueDialog();
         });
 
+        setUpProgressListener();
+
+
+        return view;
+    }
+
+    private void setUpProgressListener() {
         Model.instance.loadingState.observe(getViewLifecycleOwner(),(state)->{
             switch(state){
                 case loaded:
@@ -128,8 +133,6 @@ public class Queues_list_Fragment extends Fragment {
             }
         });
 
-
-        return view;
     }
 
     private void openNewQueueDialog() {
@@ -174,7 +177,7 @@ public class Queues_list_Fragment extends Fragment {
     }
 
     private void openCancelDialog(int position) {
-        //Dialog settings:
+        //Dialog settings
         dialog = new Dialog(getContext());
         dialog.setContentView(R.layout.popup_dialog_delete_queue);
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
@@ -183,33 +186,29 @@ public class Queues_list_Fragment extends Fragment {
         dialog.setCancelable(true);
         dialog.getWindow().getAttributes().windowAnimations = R.style.popup_dialog_animation;
         dialog.show();
-        //Params:
+
+        //Initialise Params
         deleteDialogBtn = dialog.findViewById(R.id.popup_dialod_delete_btn);
         backDialogBtn = dialog.findViewById(R.id.popup_dialod_cancel_btn);
-        //Listeners:
-        backDialogBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getContext(), "Canceled", Toast.LENGTH_SHORT).show();
-                dialog.dismiss();
-            }
+
+        //Listeners
+        backDialogBtn.setOnClickListener(v -> {
+            Toast.makeText(getContext(), "Canceled", Toast.LENGTH_SHORT).show();
+            dialog.dismiss();
         });
 
-        deleteDialogBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Queue queue = queuesListViewModel.list.get(position);
-                queue.setQueueAvailable(true);
-                queue.userId="";
-                Model.instance.saveQueue(queue,()->{
-                    if(!Model.instance.getUser().isBarbershop)
-                        adapter.notifyItemRemoved(position);
-                    else
-                        adapter.notifyItemChanged(position);
-                });
-                Toast.makeText(getContext(), "Deleted", Toast.LENGTH_SHORT).show();
-                dialog.dismiss();
-            }
+        deleteDialogBtn.setOnClickListener(v -> {
+            Queue queue = queuesListViewModel.list.get(position);
+            queue.setQueueAvailable(true);
+            queue.userId="";
+            Model.instance.saveQueue(queue,()->{
+                if(!Model.instance.getUser().isBarbershop)
+                    adapter.notifyItemRemoved(position);
+                else
+                    adapter.notifyItemChanged(position);
+            });
+            Toast.makeText(getContext(), "Deleted", Toast.LENGTH_SHORT).show();
+            dialog.dismiss();
         });
     }
 
@@ -239,36 +238,27 @@ public class Queues_list_Fragment extends Fragment {
             deleteBtn = itemView.findViewById(R.id.queuesListrow_delete_imgBtn);
             //After we created the listener we connect it to this row:
             this.listener=listener;
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if(listener!=null){
-                        int position=getAdapterPosition();
-                        if(position!=RecyclerView.NO_POSITION){
-                            listener.onClick(position);
-                        }
+            itemView.setOnClickListener(v -> {
+                if(listener!=null){
+                    int position=getAdapterPosition();
+                    if(position!=RecyclerView.NO_POSITION){
+                        listener.onClick(position);
                     }
                 }
             });
-            cancelBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if(listener!=null){
-                        int position=getAdapterPosition();
-                        if(position!=RecyclerView.NO_POSITION){
-                            listener.onCancelClick(position);
-                        }
+            cancelBtn.setOnClickListener(v -> {
+                if(listener!=null){
+                    int position=getAdapterPosition();
+                    if(position!=RecyclerView.NO_POSITION){
+                        listener.onCancelClick(position);
                     }
                 }
             });
-            deleteBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if(listener!=null){
-                        int position=getAdapterPosition();
-                        if(position!=RecyclerView.NO_POSITION){
-                            listener.onDeleteClick(position);
-                        }
+            deleteBtn.setOnClickListener(v -> {
+                if(listener!=null){
+                    int position=getAdapterPosition();
+                    if(position!=RecyclerView.NO_POSITION){
+                        listener.onDeleteClick(position);
                     }
                 }
             });
