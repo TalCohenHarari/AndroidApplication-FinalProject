@@ -22,9 +22,13 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
+import com.example.finalproject.MainActivity;
 import com.example.finalproject.R;
 import com.example.finalproject.model.Barbershop;
 import com.example.finalproject.model.Model;
+import com.example.finalproject.model.Queue;
+import com.example.finalproject.model.User;
+import com.google.android.material.navigation.NavigationView;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
@@ -56,6 +60,7 @@ public class EditBarbershopFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+        //Initialize Params
         view = inflater.inflate(R.layout.fragment_edit_barbershop, container, false);
         backBtn = view.findViewById(R.id.editBaebershop_back_btn);
         saveBtn = view.findViewById(R.id.editBaebershop_save_btn);
@@ -68,11 +73,9 @@ public class EditBarbershopFragment extends Fragment {
         deleteImgV = view.findViewById(R.id.editBaebershop_delete_imgV);
         clickMeLocationOnMap = view.findViewById(R.id.editBarbershop_clickMe);
 
-        editBarbershopViewModel = new ViewModelProvider(this).
-                get(EditBarbershopViewModel.class);
-
+        //ViewModel
+        editBarbershopViewModel = new ViewModelProvider(this).get(EditBarbershopViewModel.class);
         editBarbershopViewModel.getData().observe(getViewLifecycleOwner(), (data)->{
-
             barbershop = editBarbershopViewModel.getCurrentBarbershop(Model.instance.getUser().getId());
             nameEt.setText(barbershop.getName());
             addressEt.setText(barbershop.getAddress());
@@ -80,35 +83,20 @@ public class EditBarbershopFragment extends Fragment {
             if(barbershop.getAvatar()!=null && !(barbershop.getAvatar().equals("")))
                 Picasso.get().load(barbershop.getAvatar()).into(imageV);
         });
+        editBarbershopViewModel.getQueues().observe(getViewLifecycleOwner(), (data)->{});
 
-
-        backBtn.setOnClickListener(v->Navigation.findNavController(v).navigateUp());
-        saveBtn.setOnClickListener(v->save());
-        cameraImgB.setOnClickListener(v->takePicture());
-        galleryImgB.setOnClickListener(v->takePictureFromGallery());
+        //Listeners
         clickMeLocationOnMap.setOnClickListener(v->Navigation.findNavController(v).navigate(R.id.nav_mapFragment));
-        //Delete Barbershop:
-        deleteImgV.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Model.instance.getUser().setBarbershop(false);
-                barbershop.setDeleted(true);
-                //TODO: set unavailable on his all queues...
-                Model.instance.saveBarbershop(barbershop,()->{
-                    Model.instance.saveUser(Model.instance.getUser(),"update",
-                                    ()->{
-                        Navigation.findNavController(v).navigate(R.id.nav_barbershops_list_Fragment);
-
-                    });
-                });
-            }
-        });
+        backBtn.setOnClickListener(v->Navigation.findNavController(v).navigateUp());
+        galleryImgB.setOnClickListener(v->takePictureFromGallery());
+        deleteImgV.setOnClickListener(v -> deleteBarbershop());
+        cameraImgB.setOnClickListener(v->takePicture());
+        saveBtn.setOnClickListener(v->save());
 
         return view;
     }
 
-
-
+    //------------------------------------saveBarbershop----------------------------------------------
     void save()
     {
         popupLoadingDialog();
@@ -117,15 +105,7 @@ public class EditBarbershopFragment extends Fragment {
         galleryImgB.setEnabled(false);
 
         if(imageBitmap!=null)
-        {
-            Model.instance.uploadImage(imageBitmap,Model.instance.getUser().getId(),
-                    "barbershop", new Model.UpLoadImageListener() {
-                        @Override
-                        public void onComplete(String url) {
-                            saveBarbershop(url);
-                        }
-                    });
-        }
+            Model.instance.uploadImage(imageBitmap,Model.instance.getUser().getId(), "barbershop", url -> saveBarbershop(url));
         else
             saveBarbershop(null);
 
@@ -152,6 +132,38 @@ public class EditBarbershopFragment extends Fragment {
         });
     }
 
+    //------------------------------------DeleteBarbershop----------------------------------------------
+    private void deleteBarbershop() {
+
+        popupLoadingDialog();
+        saveBtn.setEnabled(false);
+        deleteImgV.setEnabled(false);
+        cameraImgB.setEnabled(false);
+        galleryImgB.setEnabled(false);
+
+        //Delete all barbershop queuesList
+        for (Queue queue: editBarbershopViewModel.getQueues().getValue()) {
+            if(queue.getBarbershopId().equals(barbershop.getOwner())) {
+                queue.setDeleted(true);
+                queue.setQueueAvailable(false);
+                queue.setUserId("");
+                Model.instance.saveQueue(queue, () -> {
+                });
+            }
+        }
+        //Delete the barbershop and updating user isBarbershop status to false
+        barbershop.setDeleted(true);
+        User user =Model.instance.getUser();
+        user.setBarbershop(false);
+        Model.instance.saveBarbershop(barbershop,()->{
+            Model.instance.saveUser(user,"update", ()-> {
+                MainActivity.navigationView.getMenu().getItem(0).getSubMenu().getItem(1).setVisible(true);
+                dialog.dismiss();
+                 Navigation.findNavController(view).navigate(R.id.nav_barbershops_list_Fragment);
+            });
+        });
+    }
+    //------------------------------------LoadingDialog----------------------------------------------
     private void popupLoadingDialog() {
 
         dialog = new Dialog(getContext());
@@ -162,11 +174,11 @@ public class EditBarbershopFragment extends Fragment {
         dialog.setCancelable(true);
         dialog.getWindow().getAttributes().windowAnimations = R.style.popup_dialog_animation;
         pb = dialog.findViewById(R.id.loading_progressBar_pb);
-
         pb.setVisibility(View.VISIBLE);
         dialog.show();
-
     }
+
+    //------------------------------------Image----------------------------------------------
 
     //This is a sign for us to know from where activity we back to onActivityResult function:
     static final int REQUEST_IMAGE_CAPTURE = 1;

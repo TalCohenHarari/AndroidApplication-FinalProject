@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.MutableLiveData;
 
 import com.example.finalproject.ui.login.LoginFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -89,7 +90,7 @@ public class ModelFirebase {
                         }
                     });
         }
-        else if(action.equals("delete")) //delete user
+        else if(action.equals("delete")) //delete user 'Auth'
         {
             save(user,action,()->{
             FirebaseUser deletedUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -139,12 +140,14 @@ public class ModelFirebase {
                 });
     }
 
+
+
     public static void isLoggedIn(Model.OnCompleteListener listener) {
 
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if(currentUser != null){
-            LoginFragment.dialog.show();  //TODO: Do we need it?
+            Model.instance.loadingStateDialog.setValue(Model.LoadingState.loading);
             getCurrentUser(()->listener.onComplete());
         }
     }

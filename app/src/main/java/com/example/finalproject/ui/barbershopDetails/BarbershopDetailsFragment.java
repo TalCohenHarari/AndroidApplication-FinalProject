@@ -52,28 +52,21 @@ public class BarbershopDetailsFragment extends Fragment {
             phoneTv.setText(barbershop.getPhone());
             if(barbershop.getAvatar()!=null && !(barbershop.getAvatar().equals("")))
                 Picasso.get().load(barbershop.getAvatar()).into(imageV);
-            //If (current session user is this barbershop) so Invisible the add appointment
-            //else (if it's not current barbershop in session) Invisible edit button
-            if(Model.instance.getUser().isBarbershop()
-                    && Model.instance.getUser().getId().equals(barbershop.getOwner()))
+
+            if(Model.instance.getUser().isBarbershop() && Model.instance.getUser().getId().equals(barbershop.getOwner()))
                 addBtn.setVisibility(View.INVISIBLE);
             else
                 editBtn.setVisibility(View.INVISIBLE);
         });
 
-
-
-
-        //Add an appointment:
+        //Listeners
+        backBtn.setOnClickListener(v->Navigation.findNavController(v).navigateUp());
+        editBtn.setOnClickListener(v ->Navigation.findNavController(v).navigate(R.id.nav_editBarbershopFragment));
         addBtn.setOnClickListener(v -> {
             BarbershopDetailsFragmentDirections.ActionBarbershopDetailsFragmentToNewQueueFragment
                     action = BarbershopDetailsFragmentDirections.actionBarbershopDetailsFragmentToNewQueueFragment(barbershop.owner);
             Navigation.findNavController(view).navigate(action);
        });
-
-        backBtn.setOnClickListener(v->Navigation.findNavController(v).navigateUp());
-
-        editBtn.setOnClickListener(v ->Navigation.findNavController(v).navigate(R.id.nav_editBarbershopFragment));
 
         return view;
     }

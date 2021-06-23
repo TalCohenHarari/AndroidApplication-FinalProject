@@ -14,6 +14,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.finalproject.MyApplication;
 import com.example.finalproject.R;
@@ -24,82 +25,81 @@ import com.example.finalproject.model.Queue;
 public class HoursListFragment extends Fragment {
 
     hoursListViewModel hoursListViewModel;
-    public static String fullDate;
-    public static String barbershopId;
+    String fullDate;
+    String barbershopId;
     MyAdapter adapter;
     TextView dateTv;
     RecyclerView queueList;
     ProgressBar pb;
-
+    SwipeRefreshLayout swipeRefreshLayout;
+    View view;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-
-
+        //Initialise Params
+        view = inflater.inflate(R.layout.fragment_hours_list, container, false);
         fullDate = HoursListFragmentArgs.fromBundle(getArguments()).getDate();
         barbershopId = HoursListFragmentArgs.fromBundle(getArguments()).getBarbershopId();
-
-        hoursListViewModel  = new ViewModelProvider(this).
-                get(hoursListViewModel.class);
-
-        hoursListViewModel.getData().observe(getViewLifecycleOwner(),
-                (data)->{
-                    hoursListViewModel.getFilterData(fullDate,barbershopId);
-                    adapter.notifyDataSetChanged();
-                });
-
-
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_hours_list, container, false);
-
         dateTv = view.findViewById(R.id.hoursList_selectedDate_tv);
         dateTv.setText(fullDate);
-
-        queueList = view.findViewById(R.id.hoursList_RecyclerView);
-        // :שיפור ביצועים
-        queueList.setHasFixedSize(true);
-        // LayoutManager:
-        RecyclerView.LayoutManager manager = new LinearLayoutManager(MyApplication.context);
-        queueList.setLayoutManager(manager);
-        //Connect the Adapter to the RecyclerView:
-        adapter = new MyAdapter();
-        queueList.setAdapter(adapter);
-        //Add the onItemClickListener:
-        adapter.setOnClickListener(new OnItemClickListener() {
-            @Override
-            public void onClick(int position) {
-                //row was selected...
-                Queue queue = hoursListViewModel.list.get(position);
-                if(queue.isQueueAvailable) {
-                    queue.setQueueAvailable(false);
-                    queue.userId= Model.instance.getUser().getId();
-                    Model.instance.saveQueue(queue,()->{
-                        Navigation.findNavController(view).navigate(R.id.nav_queues_list_Fragment);
-                    });
-                }
-            }
-        });
-
         pb = view.findViewById(R.id.hoursList_progressBar);
         pb.setVisibility(View.GONE);
+        swipeRefreshLayout = view.findViewById(R.id.hoursList_swipeRefreshLayout);
+        swipeRefreshLayout.setRefreshing(false);
 
+        //ViewModel
+        hoursListViewModel  = new ViewModelProvider(this).get(hoursListViewModel.class);
+        hoursListViewModel.getData().observe(getViewLifecycleOwner(), (data)->{
+                    hoursListViewModel.getFilterData(fullDate,barbershopId);
+                    adapter.notifyDataSetChanged();
+        });
+
+
+        //RecyclerView
+        queueList = view.findViewById(R.id.hoursList_RecyclerView);
+        queueList.setHasFixedSize(true);
+        RecyclerView.LayoutManager manager = new LinearLayoutManager(MyApplication.context);
+        queueList.setLayoutManager(manager);
+        adapter = new MyAdapter();
+        queueList.setAdapter(adapter);
+
+        //Listeners:
+        adapter.setOnClickListener((position)-> {
+
+            Queue queue = hoursListViewModel.list.get(position);
+            if(queue.isQueueAvailable)
+            {
+                queue.setQueueAvailable(false);
+                queue.userId= Model.instance.getUser().getId();
+                Model.instance.saveQueue(queue,()->{
+                    Navigation.findNavController(view).navigate(R.id.nav_queues_list_Fragment);
+                });
+            }
+        });
+        swipeRefreshLayout.setOnRefreshListener(()->hoursListViewModel.refresh());
+        setUpProgressListener();
+
+        return view;
+    }
+
+    private void setUpProgressListener() {
         Model.instance.loadingState.observe(getViewLifecycleOwner(),(state)->{
             switch(state){
                 case loaded:
                     pb.setVisibility(View.GONE);
+                    swipeRefreshLayout.setRefreshing(false);
                     break;
                 case loading:
                     pb.setVisibility(View.VISIBLE);
+                    swipeRefreshLayout.setRefreshing(false);
                     break;
                 case error:
-                    //TODO: display error message
+                    //...
             }
         });
-
-        return view;
     }
+
 
     static class MyViewHolder extends RecyclerView.ViewHolder{
         OnItemClickListener listener;
@@ -112,18 +112,16 @@ public class HoursListFragment extends Fragment {
             isQueueAvailableTv = itemView.findViewById(R.id.hoursListRow_isAvailable_tv);
             //After we created the listener we connect it to this row:
             this.listener=listener;
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if(listener!=null){
-                        int position=getAdapterPosition();
-                        if(position!=RecyclerView.NO_POSITION){
-                            listener.onClick(position);
-                        }
+            itemView.setOnClickListener(v -> {
+                if(listener!=null){
+                    int position=getAdapterPosition();
+                    if(position!=RecyclerView.NO_POSITION){
+                        listener.onClick(position);
                     }
                 }
             });
         }
+
         public void bind(Queue queue)
         {
             timeTv.setText(queue.getQueueTime());

@@ -13,27 +13,32 @@ public class hoursListViewModel extends ViewModel {
 
     private LiveData<List<Queue>> queuesList;
     public static List<Queue> list;
+
     public hoursListViewModel() {
         queuesList = Model.instance.getAllQueues();
+        list = new LinkedList<>();
     }
 
     public LiveData<List<Queue>> getData() {
-        getFilterData(HoursListFragment.fullDate,HoursListFragment.barbershopId);
+//        getFilterData(HoursListFragment.fullDate,HoursListFragment.barbershopId);
         return queuesList;
     }
 
     public List<Queue> getFilterData(String fullDate,String barbershopId)
     {
         list = new LinkedList<>();
-        if( queuesList.getValue()!=null) {
+//        if( queuesList.getValue()!=null) {
             for (Queue queue : queuesList.getValue()) {
                 if (queue.getBarbershopId().equals(barbershopId)
                         && queue.queueDate.equals(fullDate)
                         && !(queue.isDeleted()))
                     list.add(queue);
             }
-        }
-
+//        }
         return list;
+    }
+
+    public void refresh(){
+        Model.instance.getAllQueues();
     }
 }

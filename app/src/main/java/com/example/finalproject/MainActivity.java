@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 R.id.nav_queues_list_Fragment,
                 R.id.nav_barbershopDetailsFragment,
                 R.id.nav_newQueue,
-                R.id.nav_hoursListFragment,
+//                R.id.nav_hoursListFragment,
                 R.id.nav_editUserFragment,
                 R.id.nav_barbershopCalendarFragment)
                 .setDrawerLayout(drawer)
@@ -60,11 +60,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if(actionBar!=null)
             actionBar.setDisplayHomeAsUpEnabled(false);
 
+        isLoggedIn();
+
+    }
+
+    private void isLoggedIn(){
         //If the user is still logged in:
-        Model.isLoggedIn(()->{
+        Model.instance.isLoggedIn(()->{
             //Pop the last login page to start from main page for connected users:
             navController.popBackStack();
-            LoginFragment.dialog.dismiss();
 
             if(Model.instance.getUser().isBarbershop) {
                 navController.navigate(R.id.nav_barbershopCalendarFragment);
@@ -74,7 +78,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 navigationView.getMenu().getItem(0).getSubMenu().getItem(1).setVisible(true);
             }
         });
-
     }
 
     @Override
@@ -111,8 +114,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     //Set user on Model to null
                     Model.instance.setUser(null,()->{});
                     //Set item menu visible if he is np visible:
-                    if(!(MainActivity.navigationView.getMenu().getItem(0).getSubMenu().getItem(1).isVisible()))
-                        MainActivity.navigationView.getMenu().getItem(0).getSubMenu().getItem(1).setVisible(true);
+                    if(!(navigationView.getMenu().getItem(0).getSubMenu().getItem(1).isVisible()))
+                        navigationView.getMenu().getItem(0).getSubMenu().getItem(1).setVisible(true);
                     drawer.closeDrawer(GravityCompat.START);
                     navController.navigate(R.id.nav_login);
                     break;

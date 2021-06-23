@@ -1,7 +1,6 @@
 package com.example.finalproject.ui.baebershops_list;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,9 +28,18 @@ public class barbershops_list_Fragment extends Fragment {
     View view;
     ProgressBar pb;
     TextView clickMeTv;
+
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        //Initialise Params
+        view = inflater.inflate(R.layout.fragment_barbershops_list_, container, false);
+        clickMeTv = view.findViewById(R.id.barbershopsList_seeAllBarbershopsOnMap_tv);
+        pb = view.findViewById(R.id.barberShopsList_progressBar);
+        pb.setVisibility(View.GONE);
 
         //BarbershopsList ViewModel
         barbershopsListViewModel  = new ViewModelProvider(this).
@@ -43,7 +51,6 @@ public class barbershops_list_Fragment extends Fragment {
                 });
 
         //RecyclerView:
-        view = inflater.inflate(R.layout.fragment_barbershops_list_, container, false);
         RecyclerView  barbershopsList = view.findViewById(R.id.barberShopsList__RecyclerView);
         barbershopsList.setHasFixedSize(true);
 //        GridLayoutManager manager = new GridLayoutManager(MyApplication.context,2,GridLayoutManager.VERTICAL,false);
@@ -51,23 +58,22 @@ public class barbershops_list_Fragment extends Fragment {
         barbershopsList.setLayoutManager(manager);
          adapter = new MyAdapter();
         barbershopsList.setAdapter(adapter);
-        adapter.setOnClickListener(new OnItemClickListener() {
-            @Override
-            public void onClick(int position) {
-                //row was selected and we add arguments between the fragments:
-                barbershops_list_FragmentDirections.ActionBarbershopsListFragmentToBarbershopDetailsFragment
-                        action = barbershops_list_FragmentDirections.actionBarbershopsListFragmentToBarbershopDetailsFragment(position);
-                Navigation.findNavController(view).navigate(action);
-            }
+
+        //Listeners
+        adapter.setOnClickListener((position) -> {
+            barbershops_list_FragmentDirections.ActionBarbershopsListFragmentToBarbershopDetailsFragment
+                    action = barbershops_list_FragmentDirections.actionBarbershopsListFragmentToBarbershopDetailsFragment(position);
+            Navigation.findNavController(view).navigate(action);
         });
-
-
-        clickMeTv = view.findViewById(R.id.barbershopsList_seeAllBarbershopsOnMap_tv);
         clickMeTv.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.nav_barbershopsOnMapFragment));
 
-        pb = view.findViewById(R.id.barberShopsList_progressBar);
-        pb.setVisibility(View.GONE);
+        setUpProgressListener();
 
+
+        return view;
+    }
+
+    private void setUpProgressListener() {
         Model.instance.loadingState.observe(getViewLifecycleOwner(),(state)->{
             switch(state){
                 case loaded:
@@ -77,12 +83,10 @@ public class barbershops_list_Fragment extends Fragment {
                     pb.setVisibility(View.VISIBLE);
                     break;
                 case error:
+                    //...
             }
         });
-
-        return view;
     }
-
 
     static class MyViewHolder extends RecyclerView.ViewHolder{
         OnItemClickListener listener;

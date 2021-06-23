@@ -27,6 +27,9 @@ public class Model {
         error
     }
 
+    public MutableLiveData<LoadingState> loadingStateDialog =
+            new MutableLiveData<LoadingState>(LoadingState.loaded);
+
     public MutableLiveData<LoadingState> loadingState =
             new MutableLiveData<LoadingState>(LoadingState.loaded);
 
@@ -93,8 +96,11 @@ public class Model {
     }
 
 
-    public static void isLoggedIn(OnCompleteListener listener) {
-        ModelFirebase.isLoggedIn(() -> listener.onComplete());
+    public void isLoggedIn(OnCompleteListener listener) {
+        ModelFirebase.isLoggedIn(() ->{
+            loadingStateDialog.setValue(LoadingState.loaded);
+            listener.onComplete();
+        });
     }
 
     public static void signOut() {

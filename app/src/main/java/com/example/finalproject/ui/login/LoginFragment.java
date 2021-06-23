@@ -26,69 +26,88 @@ import com.example.finalproject.model.User;
 
 public class LoginFragment extends Fragment {
 
-    public static Dialog dialog;
+    public Dialog dialog;
     public LoginViewModel loginViewModel;
     View view;
 
+    EditText userName;
+    EditText password;
+    Button loginBtn;
+    TextView signUp;
+    TextView isExistTv;
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
+
+        //Initialize params:
+        view = inflater.inflate(R.layout.fragment_login, container, false);
+        userName = view.findViewById(R.id.login_userName_txtE);
+        password = view.findViewById(R.id.login_password_txtE);
+        loginBtn=view.findViewById(R.id.login_login_btn);
+        signUp=view.findViewById(R.id.login_signUp_txt);
+        isExistTv = view.findViewById(R.id.login_validationText_tv);
 
         //ViewModel:
         loginViewModel = new ViewModelProvider(this).get(LoginViewModel.class);
         loginViewModel.getData().observe(getViewLifecycleOwner(), (data)->{});
 
-        view = inflater.inflate(R.layout.fragment_login, container, false);
 
         popupLoadingDialog();
-
         //Disable return toolBar Btn:
         if( MainActivity.actionBar!=null)
             MainActivity.actionBar.setDisplayHomeAsUpEnabled(false);
 
-        //Initialize params:
-        EditText userName = view.findViewById(R.id.login_userName_txtE);
-        EditText password = view.findViewById(R.id.login_password_txtE);
-        Button login=view.findViewById(R.id.login_login_btn);
-        TextView signUp=view.findViewById(R.id.login_signUp_txt);
-        TextView isExistTv = view.findViewById(R.id.login_validationText_tv);
-        signUp.setOnClickListener(
-                Navigation.createNavigateOnClickListener(R.id.nav_signUpFragment));
 
-        login.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(userName.getText().toString().isEmpty() && password.getText().toString().isEmpty())
-                   isExistTv.setText("Please enter a username and password");
-                else if(LoginViewModel.isUserExist(userName.getText().toString(), password.getText().toString()))
-                {
-                    dialog.show();
-                    isExistTv.setText("");
-                    Model.instance.login(userName.getText().toString(),
-                            password.getText().toString(),
-                            () -> {
 
-                                //Pop up login page after we connected:
-//                                Navigation.findNavController(v).popBackStack();
-                                while(Navigation.findNavController(view).popBackStack());
-                                dialog.dismiss();
-                                if (Model.instance.getUser().isBarbershop()){
-                                    Navigation.findNavController(v).
-                                            navigate(R.id.nav_barbershopCalendarFragment);
-                                    MainActivity.navigationView.getMenu().getItem(0).getSubMenu().getItem(1).setVisible(false);
-                                }
-                                else{
-                                    Navigation.findNavController(v).
-                                            navigate(R.id.nav_barbershops_list_Fragment);
-                                    MainActivity.navigationView.getMenu().getItem(0).getSubMenu().getItem(1).setVisible(true);
-                                }
-                            });
-                }
-                else
-                    isExistTv.setText("The username or password is incorrect");
-            }
-        });
+        //Listeners
+        signUp.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.nav_signUpFragment));
+        loginBtn.setOnClickListener(v->login());
+        setUpProgressListener();
 
         return view;
+    }
+
+    private void login(){
+        if(userName.getText().toString().isEmpty() && password.getText().toString().isEmpty())
+            isExistTv.setText("Please enter a username and password");
+        else if(LoginViewModel.isUserExist(userName.getText().toString(), password.getText().toString()))
+        {
+            dialog.show();
+            isExistTv.setText("");
+            Model.instance.login(userName.getText().toString(), password.getText().toString(), () -> {
+
+                //Pop up login page after we connected:
+                while(Navigation.findNavController(view).popBackStack());
+                dialog.dismiss();
+                if (Model.instance.getUser().isBarbershop()){
+                    Navigation.findNavController(view).
+                            navigate(R.id.nav_barbershopCalendarFragment);
+                    MainActivity.navigationView.getMenu().getItem(0).getSubMenu().getItem(1).setVisible(false);
+                }
+                else{
+                    Navigation.findNavController(view).
+                            navigate(R.id.nav_barbershops_list_Fragment);
+                    MainActivity.navigationView.getMenu().getItem(0).getSubMenu().getItem(1).setVisible(true);
+                }
+            });
+        }
+        else
+            isExistTv.setText("The username or password is incorrect");
+    }
+
+    private void setUpProgressListener() {
+        Model.instance.loadingStateDialog.observe(getViewLifecycleOwner(),(state)->{
+            switch(state){
+                case loaded:
+                    dialog.dismiss();
+                    break;
+                case loading:
+                    dialog.show();
+                    break;
+                case error:
+                    //...
+            }
+        });
     }
 
     private void popupLoadingDialog() {
