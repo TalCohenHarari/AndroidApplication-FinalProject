@@ -6,10 +6,12 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,6 +41,7 @@ public class Queues_list_Fragment extends Fragment {
 
     View view;
     public static QueuesListViewModel queuesListViewModel;
+    SwipeRefreshLayout swipeRefreshLayout;
     FloatingActionButton plusBtn;
     Button deleteDialogBtn;
     Button backDialogBtn;
@@ -52,6 +55,7 @@ public class Queues_list_Fragment extends Fragment {
                              Bundle savedInstanceState) {
         //Initialise Params
         view = inflater.inflate(R.layout.fragment_queues_list, container, false);
+        swipeRefreshLayout = view.findViewById(R.id.myQueues_swipeRefreshLayout);
         plusBtn = view.findViewById(R.id.myQueues_add_btn);
         pb = view.findViewById(R.id.myQueues_progressBar);
         pb.setVisibility(View.GONE);
@@ -71,8 +75,8 @@ public class Queues_list_Fragment extends Fragment {
                         queuesListViewModel.getFilterForUser(Model.instance.getUser().getId());
                     adapter.notifyDataSetChanged();
                 });
-        queuesListViewModel.getBarbershopsList().observe(getViewLifecycleOwner(), (data)->{});
-        queuesListViewModel.getUsersList().observe(getViewLifecycleOwner(), (data)->{});
+        queuesListViewModel.getBarbershopsList().observe(getViewLifecycleOwner(), new Observer<List<Barbershop>>() {@Override public void onChanged(List<Barbershop> barbershops) {}});
+        queuesListViewModel.getUsersList().observe(getViewLifecycleOwner(), new Observer<List<User>>() {@Override public void onChanged(List<User> users) {}});
 
 
         // RecyclerView
@@ -113,6 +117,7 @@ public class Queues_list_Fragment extends Fragment {
                 openNewQueueDialog();
         });
 
+        swipeRefreshLayout.setOnRefreshListener(()->queuesListViewModel.refresh());
         setUpProgressListener();
 
 
@@ -124,9 +129,11 @@ public class Queues_list_Fragment extends Fragment {
             switch(state){
                 case loaded:
                     pb.setVisibility(View.GONE);
+                    swipeRefreshLayout.setRefreshing(false);
                     break;
                 case loading:
                     pb.setVisibility(View.VISIBLE);
+                    swipeRefreshLayout.setRefreshing(true);
                     break;
                 case error:
                     //TODO: display error message

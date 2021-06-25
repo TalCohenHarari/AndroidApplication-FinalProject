@@ -20,7 +20,7 @@
         android:id="@+id/barbershopsOnMap_floatingActionButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
+        android:layout_marginEnd="55dp"
         android:layout_marginBottom="8dp"
         android:backgroundTint="#BA9E9E9E"
         android:clickable="true"

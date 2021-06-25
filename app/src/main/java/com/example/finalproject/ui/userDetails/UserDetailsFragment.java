@@ -13,12 +13,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
 import com.example.finalproject.R;
+import com.example.finalproject.model.Barbershop;
 import com.example.finalproject.model.Model;
 import com.squareup.picasso.Picasso;
+
+import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -59,7 +63,7 @@ public class UserDetailsFragment extends Fragment {
         //ViewModel
         userDetailsViewModel  = new ViewModelProvider(this).
                 get(UserDetailsViewModel.class);
-        userDetailsViewModel.getData().observe(getViewLifecycleOwner(), (data)->{});
+        userDetailsViewModel.getData().observe(getViewLifecycleOwner(), new Observer<List<Barbershop>>() {@Override public void onChanged(List<Barbershop> barbershops) {}});
 
         //Set visibility
         userName.setText(Model.instance.getUser().name);

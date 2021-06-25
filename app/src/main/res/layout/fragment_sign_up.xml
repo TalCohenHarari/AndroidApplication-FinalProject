@@ -160,6 +160,7 @@
                 android:layout_width="298dp"
                 android:layout_height="52dp"
                 android:layout_marginTop="24dp"
+                android:gravity="center"
                 android:text="Sign Up for the app and you can make appointments conveniently and easily with the click of a bottun"
                 android:textAlignment="center"
                 android:textColor="@color/white"

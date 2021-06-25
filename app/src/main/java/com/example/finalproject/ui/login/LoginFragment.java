@@ -12,11 +12,13 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
 import com.example.finalproject.MainActivity;
+import com.example.finalproject.MyApplication;
 import com.example.finalproject.R;
 import com.example.finalproject.model.Model;
 
@@ -42,20 +44,16 @@ public class LoginFragment extends Fragment {
         loginBtn=view.findViewById(R.id.login_login_btn);
         signUp=view.findViewById(R.id.login_signUp_txt);
         isExistTv = view.findViewById(R.id.login_validationText_tv);
+        popupLoadingDialog();
+        setUpProgressListener();
 
         //ViewModel:
         loginViewModel = new ViewModelProvider(this).get(LoginViewModel.class);
         loginViewModel.getData().observe(getViewLifecycleOwner(), (data)->{});
 
-        popupLoadingDialog();
-        //Disable return toolBar Btn:
-        if( MainActivity.actionBar!=null)
-            MainActivity.actionBar.setDisplayHomeAsUpEnabled(false);
-
         //Listeners
         signUp.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.nav_signUpFragment));
         loginBtn.setOnClickListener(v->login());
-        setUpProgressListener();
 
         return view;
     }
@@ -92,17 +90,16 @@ public class LoginFragment extends Fragment {
         Model.instance.loadingStateDialog.observe(getViewLifecycleOwner(),(state)->{
             switch(state){
                 case loaded:
-                    dialog.dismiss();
+                   dialog.dismiss();
                     break;
                 case loading:
-                    dialog.show();
+                   dialog.show();
                     break;
                 case error:
                     //...
             }
         });
     }
-
     private void popupLoadingDialog() {
 
         dialog = new Dialog(getContext());
@@ -115,5 +112,17 @@ public class LoginFragment extends Fragment {
         ProgressBar pb = dialog.findViewById(R.id.loading_progressBar_pb);
         pb.setVisibility(View.VISIBLE);
     }
+    @Override
+    public void onResume() {
+        super.onResume();
+        if( ((AppCompatActivity)getActivity()).getSupportActionBar()!=null)
+            ((AppCompatActivity)getActivity()).getSupportActionBar().hide();
+    }
 
+    @Override
+    public void onStop() {
+        super.onStop();
+        if( ((AppCompatActivity)getActivity()).getSupportActionBar()!=null)
+            ((AppCompatActivity)getActivity()).getSupportActionBar().show();
+    }
 }

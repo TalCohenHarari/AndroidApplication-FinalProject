@@ -24,29 +24,29 @@ import com.example.finalproject.model.Queue;
 
 public class HoursListFragment extends Fragment {
 
+    View view;
     hoursListViewModel hoursListViewModel;
-    String fullDate;
+    SwipeRefreshLayout swipeRefreshLayout;
+    RecyclerView queueList;
     String barbershopId;
     MyAdapter adapter;
+    String fullDate;
     TextView dateTv;
-    RecyclerView queueList;
     ProgressBar pb;
-    SwipeRefreshLayout swipeRefreshLayout;
-    View view;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         //Initialise Params
         view = inflater.inflate(R.layout.fragment_hours_list, container, false);
-        fullDate = HoursListFragmentArgs.fromBundle(getArguments()).getDate();
         barbershopId = HoursListFragmentArgs.fromBundle(getArguments()).getBarbershopId();
-        dateTv = view.findViewById(R.id.hoursList_selectedDate_tv);
-        dateTv.setText(fullDate);
-        pb = view.findViewById(R.id.hoursList_progressBar);
-        pb.setVisibility(View.GONE);
         swipeRefreshLayout = view.findViewById(R.id.hoursList_swipeRefreshLayout);
+        fullDate = HoursListFragmentArgs.fromBundle(getArguments()).getDate();
+        dateTv = view.findViewById(R.id.hoursList_selectedDate_tv);
+        pb = view.findViewById(R.id.hoursList_progressBar);
         swipeRefreshLayout.setRefreshing(false);
+        pb.setVisibility(View.GONE);
+        dateTv.setText(fullDate);
 
         //ViewModel
         hoursListViewModel  = new ViewModelProvider(this).get(hoursListViewModel.class);
@@ -92,7 +92,7 @@ public class HoursListFragment extends Fragment {
                     break;
                 case loading:
                     pb.setVisibility(View.VISIBLE);
-                    swipeRefreshLayout.setRefreshing(false);
+                    swipeRefreshLayout.setRefreshing(true);
                     break;
                 case error:
                     //...

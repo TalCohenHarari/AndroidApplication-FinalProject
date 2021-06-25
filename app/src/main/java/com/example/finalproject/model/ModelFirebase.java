@@ -75,33 +75,28 @@ public class ModelFirebase {
                 }
             });
         }
-        else if(action.equals("updateEmail"))//If it's an update username based on firebase authentication:
+        else if(action.equals("updateEmail") || action.equals("updatePassword") || action.equals("updateEmailAndPassword") )//If it's an update username based on firebase authentication:
         {
             FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
-            currentUser.updateEmail(user.getName()+"@a.com")
-                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if (task.isSuccessful()) {
-                                save(user,action,()->listener.onComplete());
-                            }
-                        }
-                    });
+            if(action.equals("updateEmail"))
+                currentUser.updateEmail(user.getName()+"@a.com").addOnCompleteListener(task -> { if (task.isSuccessful()) { save(user,action,()->listener.onComplete()); } });
+            else if(action.equals("updatePassword"))
+                 currentUser.updatePassword(user.getPassword()).addOnCompleteListener(task -> { if (task.isSuccessful()) { save(user,action,()->listener.onComplete()); } });
+            else{
+                currentUser.updateEmail(user.getName()+"@a.com").addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        currentUser.updatePassword(user.getPassword()).addOnCompleteListener(task1 -> { if (task1.isSuccessful()) save(user,action,()->listener.onComplete()); });
+                    }
+                });
+            }
         }
         else if(action.equals("delete")) //delete user 'Auth'
         {
             save(user,action,()->{
             FirebaseUser deletedUser = FirebaseAuth.getInstance().getCurrentUser();
-            deletedUser.delete()
-                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if (task.isSuccessful()) {
-                               listener.onComplete();
-                            }
-                        }
-                    });});
+            deletedUser.delete().addOnCompleteListener(task -> { if (task.isSuccessful()) { listener.onComplete(); } });});
         }
         else //If it's an update details:
             save(user,action,listener);

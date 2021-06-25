@@ -14,6 +14,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.finalproject.MyApplication;
 import com.example.finalproject.R;
@@ -23,11 +24,13 @@ import com.squareup.picasso.Picasso;
 
 
 public class barbershops_list_Fragment extends Fragment {
-    BarbershopsListViewModel barbershopsListViewModel;
-    MyAdapter adapter;
+
     View view;
-    ProgressBar pb;
+    BarbershopsListViewModel barbershopsListViewModel;
+    SwipeRefreshLayout swipeRefreshLayout;
     TextView clickMeTv;
+    MyAdapter adapter;
+    ProgressBar pb;
 
 
 
@@ -38,6 +41,7 @@ public class barbershops_list_Fragment extends Fragment {
         //Initialise Params
         view = inflater.inflate(R.layout.fragment_barbershops_list_, container, false);
         clickMeTv = view.findViewById(R.id.barbershopsList_seeAllBarbershopsOnMap_tv);
+        swipeRefreshLayout = view.findViewById(R.id.barbershopsList_swipeRefreshLayout);
         pb = view.findViewById(R.id.barberShopsList_progressBar);
         pb.setVisibility(View.GONE);
 
@@ -66,7 +70,7 @@ public class barbershops_list_Fragment extends Fragment {
             Navigation.findNavController(view).navigate(action);
         });
         clickMeTv.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.nav_barbershopsOnMapFragment));
-
+        swipeRefreshLayout.setOnRefreshListener(()->barbershopsListViewModel.refresh());
         setUpProgressListener();
 
 
@@ -78,9 +82,11 @@ public class barbershops_list_Fragment extends Fragment {
             switch(state){
                 case loaded:
                     pb.setVisibility(View.GONE);
+                    swipeRefreshLayout.setRefreshing(false);
                     break;
                 case loading:
                     pb.setVisibility(View.VISIBLE);
+                    swipeRefreshLayout.setRefreshing(true);
                     break;
                 case error:
                     //...

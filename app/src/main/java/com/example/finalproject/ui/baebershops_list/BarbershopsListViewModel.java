@@ -22,4 +22,9 @@ public class BarbershopsListViewModel extends ViewModel {
     public LiveData<List<Barbershop>> getData() {
         return barbershopsList;
     }
+
+    public void refresh(){
+        Model.instance.getAllBarbershops();
+    }
+
 }

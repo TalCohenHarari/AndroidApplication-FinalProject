@@ -119,7 +119,7 @@ public class BarbershopsOnMapFragment extends Fragment implements OnMapReadyCall
     private void goToLocation(double latitude, double longitude) {
         LatLng latLng = new LatLng(latitude, longitude);
 //        LatLng latLng = new LatLng(32.013733,34.765637);
-        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 16);
+        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 15);
         mGoogleMap.moveCamera(cameraUpdate);
         mGoogleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
 //        mGoogleMap.addMarker(new MarkerOptions().position(latLng).title("My Location"));
@@ -146,7 +146,7 @@ public class BarbershopsOnMapFragment extends Fragment implements OnMapReadyCall
             return;
         }
         mGoogleMap.setMyLocationEnabled(true);
-
+        mGoogleMap.getUiSettings().setZoomControlsEnabled(true);
         mGoogleMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
             @Override
             public void onInfoWindowClick(@NonNull Marker marker) {
@@ -156,6 +156,8 @@ public class BarbershopsOnMapFragment extends Fragment implements OnMapReadyCall
                 Navigation.findNavController(view).navigate(action);
             }
         });
+        if(isPermissionGranted)
+            getCurrentFocus();
         drawAllBarbershopsMarks();
     }
 

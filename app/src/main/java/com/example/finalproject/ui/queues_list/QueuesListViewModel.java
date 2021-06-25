@@ -32,6 +32,10 @@ public class QueuesListViewModel extends ViewModel {
         return queuesList;
     }
 
+    public void refresh(){
+        Model.instance.getAllQueues();
+    }
+
     public LiveData<List<Barbershop>> getBarbershopsList() {
         return barbershopsList;
     }

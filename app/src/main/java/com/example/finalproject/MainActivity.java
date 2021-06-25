@@ -1,7 +1,9 @@
 package com.example.finalproject;
 
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -21,9 +23,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private AppBarConfiguration mAppBarConfiguration;
     NavController navController;
-    public static ActionBar actionBar;
     public static NavigationView navigationView;
     DrawerLayout drawer;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,6 +44,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 R.id.nav_queues_list_Fragment,
                 R.id.nav_barbershopDetailsFragment,
                 R.id.nav_newQueue,
+                R.id.nav_editBarbershopFragment,
 //                R.id.nav_hoursListFragment,
                 R.id.nav_editUserFragment,
                 R.id.nav_barbershopCalendarFragment)
@@ -54,10 +57,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         NavigationUI.setupWithNavController(navigationView, navController);
         navigationView.setNavigationItemSelectedListener(this);
 
-        //Disable return toolBar Btn:
-        actionBar = getSupportActionBar();
-        if(actionBar!=null)
-            actionBar.setDisplayHomeAsUpEnabled(false);
 
         isLoggedIn();
 
@@ -80,10 +79,26 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+    @Override
     public boolean onSupportNavigateUp() {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.message_icon) {
+            navController.navigate(R.id.nav_userDetailsFragment);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

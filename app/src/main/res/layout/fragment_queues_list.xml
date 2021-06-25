@@ -20,6 +20,7 @@
         android:layout_marginStart="32dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="32dp"
+        android:gravity="center"
         android:text="Watch Your Queues"
         android:textAlignment="center"
         android:textColor="@color/white"
@@ -41,14 +42,20 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:visibility="visible" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/myQueues_RecyclerView"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/myQueues_swipeRefreshLayout"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/myQueues_whiteLine_tv" />
+        app:layout_constraintTop_toBottomOf="@+id/myQueues_whiteLine_tv">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/myQueues_RecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/myQueues_add_btn"

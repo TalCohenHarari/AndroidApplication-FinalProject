@@ -70,7 +70,6 @@ public class EditUserFragment extends Fragment {
         phoneEt.setText(phone);
         emailEt.setText(email);
         passwordEt.setText(password);
-        passwordEt.setEnabled(false);
         if(Model.instance.getUser().getAvatar()!=null && !(Model.instance.getUser().getAvatar().equals("")))
             Picasso.get().load(Model.instance.getUser().avatar).into(imageV);
 
@@ -125,12 +124,17 @@ public class EditUserFragment extends Fragment {
         saveBtn.setEnabled(false);
 
         User user = Model.instance.getUser();
-
         String actionOnSave="";
-        if(user.getName().equals(nameEt.getText().toString()))
+
+        if(user.getName().equals(nameEt.getText().toString()) && user.getPassword().equals(passwordEt.getText().toString()))
             actionOnSave="update";
-        else
+        else if(user.getName().equals(nameEt.getText().toString()) && !(user.getPassword().equals(passwordEt.getText().toString())))
+            actionOnSave="updatePassword";
+        else if(!(user.getName().equals(nameEt.getText().toString())) && user.getPassword().equals(passwordEt.getText().toString()))
             actionOnSave="updateEmail";
+        else
+            actionOnSave="updateEmailAndPassword";
+
 
         user.setName(nameEt.getText().toString());
         user.setEmail(emailEt.getText().toString());

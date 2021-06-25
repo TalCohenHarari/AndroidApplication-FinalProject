@@ -141,7 +141,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private void goToLocation(double latitude, double longitude) {
         LatLng latLng = new LatLng(latitude, longitude);
 //        LatLng latLng = new LatLng(32.013733,34.765637);
-        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 16);
+        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 15);
         mGoogleMap.moveCamera(cameraUpdate);
         mGoogleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
 //        mGoogleMap.addMarker(new MarkerOptions().position(latLng).title("My Location"));
@@ -168,6 +168,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             return;
         }
         mGoogleMap.setMyLocationEnabled(true);
+        mGoogleMap.getUiSettings().setZoomControlsEnabled(true);
         mGoogleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(@NonNull LatLng latLng) {
@@ -185,7 +186,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 return false;
             }
         });
-
+        if(isPermissionGranted)
+            getCurrentFocus();
         if(Model.instance.getUser()!=null && Model.instance.getUser().isBarbershop())
             drawBarbershopMark();
     }
@@ -195,7 +197,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             for (Barbershop b : mapViewModel.getData().getValue()) {
                 if(Model.instance.getUser().getId().equals(b.getOwner())) {
                     LatLng latLng = new LatLng(b.latitude, b.longitude);
-                    mGoogleMap.addMarker(new MarkerOptions().position(latLng).title(b.getName() + " (My Barbershop"));
+                    mGoogleMap.addMarker(new MarkerOptions().position(latLng).title(b.getName() + " (My Barbershop)"));
                 }
             }
         }

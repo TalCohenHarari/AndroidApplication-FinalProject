@@ -36,6 +36,7 @@
         android:layout_height="32dp"
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"
+        android:gravity="center"
         android:text="Choose an Hour"
         android:textAlignment="center"
         android:textColor="@color/white"

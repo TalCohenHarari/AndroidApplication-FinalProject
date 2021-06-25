@@ -18,6 +18,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
@@ -71,17 +72,9 @@ public class SignUpFragment extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+
+        //Initialize params:
        view = inflater.inflate(R.layout.fragment_sign_up, container, false);
-
-        //Disable return toolBar Btn:
-        if( MainActivity.actionBar!=null)
-            MainActivity.actionBar.setDisplayHomeAsUpEnabled(false);
-
-        //The fragment viewModel:
-        signUpViewModel  = new ViewModelProvider(this).get(SignUpViewModel.class);
-
-        //Initialize the params:
         haveAccount = view.findViewById(R.id.signUp_already_tv);
         signUp = view.findViewById(R.id.signup_signup_btn);
         addBarbershop = view.findViewById(R.id.signUp_add_Barbershop_imgBtn);
@@ -97,11 +90,14 @@ public class SignUpFragment extends Fragment{
         textAddBarbershop = view.findViewById(R.id.signUp_addBarbershop_text_tv);
         locationIcon = view.findViewById(R.id.signUp_locationIcon_imgV);
 
+        //viewModel:
+        signUpViewModel  = new ViewModelProvider(this).get(SignUpViewModel.class);
+
         //Listeners:
         addBarbershop.setOnClickListener(v->openDialog());
         imageCameraImgV.setOnClickListener(v->takePicture("user"));
         imageGalleryImgV.setOnClickListener(v->takePictureFromGallery("user"));
-        haveAccount.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.nav_login));
+        haveAccount.setOnClickListener(v->Navigation.findNavController(v).navigateUp());
         locationIcon.setOnClickListener(v->Navigation.findNavController(v).navigate(R.id.nav_mapFragment));
         userName.setOnKeyListener((v,keyCode,event)->{Utilities.offValidationUserName(userName);return false;});
         password.setOnKeyListener((v,keyCode,event)->{Utilities.offValidationPassword(password);return false;});
@@ -114,7 +110,6 @@ public class SignUpFragment extends Fragment{
                     !(userName.getText().toString().isEmpty()) &&
                     !(userName.getText().toString().matches(".*\\s.*"))){
                     dialog.show();
-                    signUp.setEnabled(false);
                     save();
             }
             else
@@ -127,7 +122,10 @@ public class SignUpFragment extends Fragment{
 
     private void save() {
 
+        signUp.setEnabled(false);
         imageCameraImgV.setEnabled(false);
+        imageGalleryImgV.setEnabled(false);
+
         newUser = new User();
         newUser.setName(userName.getText().toString());
         newUser.setEmail(email.getText().toString());
@@ -225,6 +223,7 @@ public class SignUpFragment extends Fragment{
         dialogBarbershop.setCancelable(true);
         dialogBarbershop.getWindow().getAttributes().windowAnimations = R.style.popup_dialog_animation;
 
+        //Initialize params:
         barbershopNameEt = dialogBarbershop.findViewById(R.id.newBarbershop_name);
         barbershopAddressEt = dialogBarbershop.findViewById(R.id.newBarbershop_address);
         barbershopPhoneEt = dialogBarbershop.findViewById(R.id.newBarbershop_phone);
@@ -234,6 +233,7 @@ public class SignUpFragment extends Fragment{
         barbershopImageCameraBtn = dialogBarbershop.findViewById(R.id.newBarbershop_imageCameraBtn);
         barbershopImageGalleryBtn = dialogBarbershop.findViewById(R.id.newBarbershop_imageGalleryBtn);
 
+        //Listeners
         barbershopImageCameraBtn.setOnClickListener(v->takePicture("barbershop"));
         barbershopImageGalleryBtn.setOnClickListener(v->takePictureFromGallery("barbershop"));
         barbershopBackBtn.setOnClickListener(v->{
@@ -409,5 +409,19 @@ public class SignUpFragment extends Fragment{
                     barbershopImageV.setImageBitmap(barbershopImageBitmap);
             }
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if( ((AppCompatActivity)getActivity()).getSupportActionBar()!=null)
+            ((AppCompatActivity)getActivity()).getSupportActionBar().hide();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if( ((AppCompatActivity)getActivity()).getSupportActionBar()!=null)
+            ((AppCompatActivity)getActivity()).getSupportActionBar().show();
     }
 }
