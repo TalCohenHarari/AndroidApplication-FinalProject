@@ -48,7 +48,7 @@ public class SignUpFragment extends Fragment{
     ImageView imageCameraImgV;                  ImageView imageV;
     ImageView imageGalleryImgV;                 Bitmap imageBitmap;
     SignUpViewModel signUpViewModel;
-
+    TextView locationTextTv;
     //Barbershop Params:
     Dialog dialogBarbershop;
     EditText barbershopNameEt;
@@ -89,6 +89,7 @@ public class SignUpFragment extends Fragment{
         dialogBarbershop.setContentView(R.layout.fragment_new_baebershop);
         textAddBarbershop = view.findViewById(R.id.signUp_addBarbershop_text_tv);
         locationIcon = view.findViewById(R.id.signUp_locationIcon_imgV);
+        locationTextTv= view.findViewById(R.id.signUp_locationText_text_tv);
 
         //viewModel:
         signUpViewModel  = new ViewModelProvider(this).get(SignUpViewModel.class);
@@ -97,7 +98,7 @@ public class SignUpFragment extends Fragment{
         addBarbershop.setOnClickListener(v->openDialog());
         imageCameraImgV.setOnClickListener(v->takePicture("user"));
         imageGalleryImgV.setOnClickListener(v->takePictureFromGallery("user"));
-        haveAccount.setOnClickListener(v->Navigation.findNavController(v).navigateUp());
+        haveAccount.setOnClickListener(v->{latitude=0; longitude=0; Navigation.findNavController(v).navigateUp();});
         locationIcon.setOnClickListener(v->Navigation.findNavController(v).navigate(R.id.nav_mapFragment));
         userName.setOnKeyListener((v,keyCode,event)->{Utilities.offValidationUserName(userName);return false;});
         password.setOnKeyListener((v,keyCode,event)->{Utilities.offValidationPassword(password);return false;});
@@ -117,7 +118,23 @@ public class SignUpFragment extends Fragment{
 
         });
 
+        //If we back from the map fragment
+        backFromLocationFragment();
+
         return view;
+    }
+
+    private void backFromLocationFragment() {
+        if(imageBitmap!=null)
+            imageV.setImageBitmap(imageBitmap);
+        if(latitude!=0 && longitude!=0){
+            locationTextTv.setText("Location added");
+            locationTextTv.setTextColor(MyApplication.context.getResources().getColor(R.color.green));
+        }
+        if(barbershop!=null){
+            textAddBarbershop.setText("Barbershop added");
+            textAddBarbershop.setTextColor(MyApplication.context.getResources().getColor(R.color.green));
+        }
     }
 
     private void save() {

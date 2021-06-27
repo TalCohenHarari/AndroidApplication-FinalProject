@@ -55,7 +55,7 @@
                 app:layout_constraintEnd_toEndOf="@+id/signUp_password_txtE"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="@+id/signUp_password_txtE"
-                app:layout_constraintTop_toBottomOf="@+id/temp" />
+                app:layout_constraintTop_toBottomOf="@+id/signUp_locationText_text_tv" />
 
             <EditText
                 android:id="@+id/signUp_password_txtE"
@@ -240,7 +240,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/signUp_password_txtE" />
 
             <TextView
-                android:id="@+id/temp"
+                android:id="@+id/signUp_locationText_text_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
