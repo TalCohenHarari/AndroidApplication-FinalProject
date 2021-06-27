@@ -150,7 +150,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
-                android:text="CANCLE"
+                android:text="CANCEL"
                 app:background="@drawable/button"
                 app:backgroundTint="#86FF0000"
                 app:layout_constraintStart_toStartOf="parent"

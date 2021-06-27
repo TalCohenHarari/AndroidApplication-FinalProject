@@ -18,7 +18,6 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
 import com.example.finalproject.MainActivity;
-import com.example.finalproject.MyApplication;
 import com.example.finalproject.R;
 import com.example.finalproject.model.Model;
 
@@ -46,6 +45,7 @@ public class LoginFragment extends Fragment {
         isExistTv = view.findViewById(R.id.login_validationText_tv);
         popupLoadingDialog();
         setUpProgressListener();
+        isLoggedIn();
 
         //ViewModel:
         loginViewModel = new ViewModelProvider(this).get(LoginViewModel.class);
@@ -55,7 +55,24 @@ public class LoginFragment extends Fragment {
         signUp.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.nav_signUpFragment));
         loginBtn.setOnClickListener(v->login());
 
+
         return view;
+    }
+
+    private void isLoggedIn(){
+        //If the user is still logged in:
+        Model.instance.isLoggedIn(()->{
+            //Pop the last login page to start from main page for connected users:
+            Navigation.findNavController(view).popBackStack();
+
+            if(Model.instance.getUser().isBarbershop) {
+                Navigation.findNavController(view).navigate(R.id.nav_barbershopCalendarFragment);
+                MainActivity.navigationView.getMenu().getItem(0).getSubMenu().getItem(1).setVisible(false);
+            }else{
+                Navigation.findNavController(view).navigate(R.id.nav_barbershops_list_Fragment);
+                MainActivity.navigationView.getMenu().getItem(0).getSubMenu().getItem(1).setVisible(true);
+            }
+        });
     }
 
     private void login(){
@@ -107,11 +124,12 @@ public class LoginFragment extends Fragment {
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
             dialog.getWindow().setBackgroundDrawable(getActivity().getDrawable(R.drawable.popup_dialog_background));
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT);
-        dialog.setCancelable(true);
+        dialog.setCancelable(false);
         dialog.getWindow().getAttributes().windowAnimations = R.style.popup_dialog_animation;
         ProgressBar pb = dialog.findViewById(R.id.loading_progressBar_pb);
         pb.setVisibility(View.VISIBLE);
     }
+
     @Override
     public void onResume() {
         super.onResume();

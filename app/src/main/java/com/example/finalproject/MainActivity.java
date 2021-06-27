@@ -1,12 +1,9 @@
 package com.example.finalproject;
 
 import android.os.Bundle;
-import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
@@ -57,33 +54,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         NavigationUI.setupWithNavController(navigationView, navController);
         navigationView.setNavigationItemSelectedListener(this);
 
-
-        isLoggedIn();
-
     }
 
-    private void isLoggedIn(){
-        //If the user is still logged in:
-        Model.instance.isLoggedIn(()->{
-            //Pop the last login page to start from main page for connected users:
-            navController.popBackStack();
-
-            if(Model.instance.getUser().isBarbershop) {
-                navController.navigate(R.id.nav_barbershopCalendarFragment);
-                navigationView.getMenu().getItem(0).getSubMenu().getItem(1).setVisible(false);
-            }else{
-                navController.navigate(R.id.nav_barbershops_list_Fragment);
-                navigationView.getMenu().getItem(0).getSubMenu().getItem(1).setVisible(true);
-            }
-        });
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
     @Override
     public boolean onSupportNavigateUp() {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);

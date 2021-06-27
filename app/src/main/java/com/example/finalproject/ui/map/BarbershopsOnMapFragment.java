@@ -156,8 +156,7 @@ public class BarbershopsOnMapFragment extends Fragment implements OnMapReadyCall
                 Navigation.findNavController(view).navigate(action);
             }
         });
-        if(isPermissionGranted)
-            getCurrentFocus();
+
         drawAllBarbershopsMarks();
     }
 

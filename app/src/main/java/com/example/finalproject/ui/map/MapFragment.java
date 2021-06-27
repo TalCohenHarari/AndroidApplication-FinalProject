@@ -186,8 +186,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 return false;
             }
         });
-        if(isPermissionGranted)
-            getCurrentFocus();
+
         if(Model.instance.getUser()!=null && Model.instance.getUser().isBarbershop())
             drawBarbershopMark();
     }
@@ -202,6 +201,4 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             }
         }
     }
-
-
 }
