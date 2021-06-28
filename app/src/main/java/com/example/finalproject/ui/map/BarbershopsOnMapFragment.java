@@ -164,7 +164,7 @@ public class BarbershopsOnMapFragment extends Fragment implements OnMapReadyCall
         if(isPermissionGranted) {
             for (Barbershop b : mapViewModel.getData().getValue()) {
                 LatLng latLng = new LatLng(b.latitude, b.longitude);
-                mGoogleMap.addMarker(new MarkerOptions().position(latLng).title(b.getName() + " (Barbershop)"));
+                mGoogleMap.addMarker(new MarkerOptions().position(latLng).title(b.getName()));
             }
         }
     }
