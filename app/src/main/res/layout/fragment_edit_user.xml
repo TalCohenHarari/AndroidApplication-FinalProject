@@ -30,7 +30,7 @@
                 android:layout_width="41dp"
                 android:layout_height="35dp"
                 android:layout_marginStart="8dp"
-                android:background="@drawable/camera_icon"
+                android:background="@drawable/custom_camera_icon"
                 app:layout_constraintBottom_toBottomOf="@+id/editUser_imageGalleryBtn"
                 app:layout_constraintStart_toEndOf="@+id/editUser_imageGalleryBtn"
                 app:layout_constraintTop_toTopOf="@+id/editUser_imageGalleryBtn" />
@@ -41,7 +41,7 @@
                 android:layout_height="35dp"
                 android:layout_marginStart="14dp"
                 android:layout_marginTop="69dp"
-                android:background="@drawable/gallery_icon"
+                android:background="@drawable/custom_gallery_icon"
                 app:layout_constraintStart_toEndOf="@+id/editUser_iamgev"
                 app:layout_constraintTop_toTopOf="parent" />
 

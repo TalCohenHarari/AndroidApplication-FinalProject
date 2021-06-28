@@ -49,6 +49,7 @@ public class SignUpFragment extends Fragment{
     ImageView imageGalleryImgV;                 Bitmap imageBitmap;
     SignUpViewModel signUpViewModel;
     TextView locationTextTv;
+
     //Barbershop Params:
     Dialog dialogBarbershop;
     EditText barbershopNameEt;
@@ -74,7 +75,7 @@ public class SignUpFragment extends Fragment{
                              Bundle savedInstanceState) {
 
         //Initialize params:
-       view = inflater.inflate(R.layout.fragment_sign_up, container, false);
+        view = inflater.inflate(R.layout.fragment_sign_up, container, false);
         haveAccount = view.findViewById(R.id.signUp_already_tv);
         signUp = view.findViewById(R.id.signup_signup_btn);
         addBarbershop = view.findViewById(R.id.signUp_add_Barbershop_imgBtn);
@@ -107,9 +108,7 @@ public class SignUpFragment extends Fragment{
 
             if(signUpViewModel.isUserNameExist(userName.getText().toString()))
                 Utilities.userNameExist(userName);
-            else if(password.getText().toString().length()>=6 &&
-                    !(userName.getText().toString().isEmpty()) &&
-                    !(userName.getText().toString().matches(".*\\s.*"))){
+            else if(password.getText().toString().length()>=6 && !(userName.getText().toString().isEmpty()) && !(userName.getText().toString().matches(".*\\s.*"))){
                     dialog.show();
                     save();
             }
@@ -125,12 +124,15 @@ public class SignUpFragment extends Fragment{
     }
 
     private void backFromLocationFragment() {
+
         if(imageBitmap!=null)
             imageV.setImageBitmap(imageBitmap);
+
         if(latitude!=0 && longitude!=0){
             locationTextTv.setText("Location added");
             locationTextTv.setTextColor(MyApplication.context.getResources().getColor(R.color.green));
         }
+
         if(barbershop!=null){
             textAddBarbershop.setText("Barbershop added");
             textAddBarbershop.setTextColor(MyApplication.context.getResources().getColor(R.color.green));
@@ -230,6 +232,7 @@ public class SignUpFragment extends Fragment{
         }
     }
 
+    //----------------------------------------- Add a Barbershop -----------------------------------------
 
     private void openDialog() {
 
@@ -319,7 +322,7 @@ public class SignUpFragment extends Fragment{
                 queue.setQueueAvailable(true);
                 queue.setBarbershopName(barbershop.getName());
                 queue.setQueueTime(hours.get(i));
-                queue.setQueueDate(j + "/" + 6 + "/2021");
+                queue.setQueueDate(j + "/" + 7 + "/2021");
                 queue.setQueueAddress(barbershop.getAddress());
                 queuesList.add(queue);
             }
@@ -332,8 +335,6 @@ public class SignUpFragment extends Fragment{
         Navigation.findNavController(view).navigate(R.id.nav_barbershopCalendarFragment);
 
     }
-
-
 
     //----------------------------------------- Loading Dialog -----------------------------------------
     private void popupLoadingDialog() {
