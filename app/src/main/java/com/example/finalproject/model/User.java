@@ -152,19 +152,19 @@ public class User{
         return user;
     }
 
-    private static final String STUDENT_LAST_UPDATE = "StudentLastUpdate";
+    private static final String USER_LAST_UPDATE = "UserLastUpdate";
 
     static public void setLocalLastUpdateTime(Long ts){
         //Shared preference, saving the ts on the disk (like the db):
         SharedPreferences.Editor editor = MyApplication.context.getSharedPreferences("TAG", Context.MODE_PRIVATE).edit();
-        editor.putLong(STUDENT_LAST_UPDATE,ts);
+        editor.putLong(USER_LAST_UPDATE,ts);
         editor.commit();
     }
 
     static public Long getLocalLastUpdateTime(){
         //Shared preference, saving the ts in app:
          return MyApplication.context.getSharedPreferences("TAG", Context.MODE_PRIVATE)
-                 .getLong(STUDENT_LAST_UPDATE,0);
+                 .getLong(USER_LAST_UPDATE,0);
     }
 
 }
