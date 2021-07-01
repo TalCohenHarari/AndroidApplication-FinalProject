@@ -171,7 +171,7 @@ public class EditBarbershopFragment extends Fragment {
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
             dialog.getWindow().setBackgroundDrawable(getActivity().getDrawable(R.drawable.popup_dialog_background));
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT);
-        dialog.setCancelable(true);
+        dialog.setCancelable(false);
         dialog.getWindow().getAttributes().windowAnimations = R.style.popup_dialog_animation;
         pb = dialog.findViewById(R.id.loading_progressBar_pb);
         pb.setVisibility(View.VISIBLE);

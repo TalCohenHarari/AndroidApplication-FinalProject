@@ -78,7 +78,7 @@ public class LoginFragment extends Fragment {
     private void login(){
         if(userName.getText().toString().isEmpty() && password.getText().toString().isEmpty())
             isExistTv.setText("Please enter a username and password");
-        else if(LoginViewModel.isUserExist(userName.getText().toString(), password.getText().toString()))
+        else if(loginViewModel.isUserExist(userName.getText().toString(), password.getText().toString()))
         {
             dialog.show();
             isExistTv.setText("");

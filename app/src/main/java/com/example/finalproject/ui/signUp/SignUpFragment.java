@@ -105,7 +105,6 @@ public class SignUpFragment extends Fragment{
         password.setOnKeyListener((v,keyCode,event)->{Utilities.offValidationPassword(password);return false;});
         popupLoadingDialog();
         signUp.setOnClickListener(v -> {
-
             if(signUpViewModel.isUserNameExist(userName.getText().toString()))
                 Utilities.userNameExist(userName);
             else if(password.getText().toString().length()>=6 && !(userName.getText().toString().isEmpty()) && !(userName.getText().toString().matches(".*\\s.*"))){
@@ -114,7 +113,6 @@ public class SignUpFragment extends Fragment{
             }
             else
                 Utilities.validationOn(password,userName);
-
         });
 
         //If we back from the map fragment
@@ -158,7 +156,7 @@ public class SignUpFragment extends Fragment{
         if(imageBitmap==null && barbershop==null)
         {
             Model.instance.saveUser(newUser, "signUp", ()->{
-            dialog.dismiss();
+                dialog.dismiss();
                 while(Navigation.findNavController(view).popBackStack());
                 Navigation.findNavController(view).navigate(R.id.nav_barbershops_list_Fragment);
             });
@@ -183,7 +181,6 @@ public class SignUpFragment extends Fragment{
                 });
             });
         }
-
         //User with no image but he is a Barbershop:
         else if(imageBitmap==null && barbershop!=null)
         {
@@ -194,14 +191,13 @@ public class SignUpFragment extends Fragment{
                 barbershop.setOwner(newUser.getId());
                 barbershop.setLatitude(latitude);
                 barbershop.setLongitude(longitude);
-
+                latitude=0; longitude=0;
                 if(barbershopImageBitmap!=null)
                     Model.instance.uploadImage(barbershopImageBitmap, newUser.getId(),"barbershop", (barbershopUrl)-> saveBarbershop(barbershopUrl));
                 else
                     saveBarbershop(null);
             });
         }
-
         //User wih image and he is a Barbershop:
         else if(imageBitmap!=null && barbershop!=null)
         {
@@ -220,6 +216,7 @@ public class SignUpFragment extends Fragment{
                             barbershop.setOwner(newUser.getId());
                             barbershop.setLatitude(latitude);
                             barbershop.setLongitude(longitude);
+                            latitude=0; longitude=0;
                             //If there is an image to the barbershop saving his image and then saving himself:
                             if(barbershopImageBitmap!=null)
                                 Model.instance.uploadImage(barbershopImageBitmap, newUser.getId(), "barbershop",(barbershopUrl)-> saveBarbershop(barbershopUrl));
@@ -344,7 +341,7 @@ public class SignUpFragment extends Fragment{
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
             dialog.getWindow().setBackgroundDrawable(getActivity().getDrawable(R.drawable.popup_dialog_background));
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT);
-        dialog.setCancelable(true);
+        dialog.setCancelable(false);
         dialog.getWindow().getAttributes().windowAnimations = R.style.popup_dialog_animation;
         ProgressBar pb = dialog.findViewById(R.id.loading_progressBar_pb);
         pb.setVisibility(View.VISIBLE);

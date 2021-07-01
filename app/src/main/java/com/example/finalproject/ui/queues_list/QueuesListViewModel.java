@@ -1,7 +1,5 @@
 package com.example.finalproject.ui.queues_list;
 
-import android.util.Log;
-
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -9,7 +7,6 @@ import com.example.finalproject.model.Barbershop;
 import com.example.finalproject.model.Model;
 import com.example.finalproject.model.Queue;
 import com.example.finalproject.model.User;
-import com.example.finalproject.ui.login.LoginFragment;
 
 import java.util.LinkedList;
 import java.util.List;
